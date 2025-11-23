@@ -1280,7 +1280,7 @@ a[href*=mailto] {
 
 @media(min-width:1200px) {
 	.box-icon-creative {
-		padding: 25px 0px 25px 25px
+		padding: 0px 0px 100px 0px
 	}
 
 	.box-icon-creative-icon {
@@ -7322,9 +7322,7 @@ textarea.textarea-lg {
 }
 
 @media(max-width:767px) {
-	.footer-modern-title {
-		text-align: left;
-	}
+
 
 	.d-sm-inline-block {
 		display: block !important;
@@ -11734,6 +11732,7 @@ p.rights a:hover {
 .quote-about .unit-left {
 	margin-left: 0px;
 	text-align: center;
+    margin-top: 90px;
 }
 
 @media(max-width:1200px) {

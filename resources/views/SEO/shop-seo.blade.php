@@ -28,136 +28,136 @@
 </div>
 
 <!-- Structured Data for Product Collection Page -->
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "CollectionPage",
-        "name": "Магазин мебели - Emmy Furniture Munich",
-        "description": "Каталог премиальной мебели для дома и офиса в Мюнхене",
-        "url": "{{ url()->current() }}",
-    "mainEntity": {
-        "@type": "ItemList",
-        "name": "Каталог мебели",
-        "description": "Широкий выбор качественной мебели различных категорий",
-        "numberOfItems": {{ $products->count() ?? 0 }},
-        "itemListElement": [
-    @if(isset($products) && $products->count() > 0)
-        @foreach($products->take(10) as $product)
-            {
-                "@type": "ListItem",
-                "position": {{ $loop->iteration }},
-                    "item": {
-                        "@type": "Product",
-                        "name": "{{ $product->name }}",
-                        "description": "{{ Str::limit(strip_tags($product->description), 100) }}",
-                        "url": "{{ route('dashboard.web.product', $product->id) }}",
-                        "image": "{{ $product->photo1->file_url ?? asset('images/shop/product-placeholder.png') }}",
-                        "offers": {
-                            "@type": "Offer",
-                            "price": "{{ $product->price }}",
-                            "priceCurrency": "USD",
-                            "availability": "https://schema.org/InStock"
-                        }
-                    }
-                }{{ !$loop->last ? ',' : '' }}
-        @endforeach
-    @endif
-    ]
-}
-}
-</script>
+{{--<script type="application/ld+json">--}}
+{{--    {--}}
+{{--        "@context": "https://schema.org",--}}
+{{--        "@type": "CollectionPage",--}}
+{{--        "name": "Магазин мебели - Emmy Furniture Munich",--}}
+{{--        "description": "Каталог премиальной мебели для дома и офиса в Мюнхене",--}}
+{{--        "url": "{{ url()->current() }}",--}}
+{{--    "mainEntity": {--}}
+{{--        "@type": "ItemList",--}}
+{{--        "name": "Каталог мебели",--}}
+{{--        "description": "Широкий выбор качественной мебели различных категорий",--}}
+{{--        "numberOfItems": {{ $products->count() ?? 0 }},--}}
+{{--        "itemListElement": [--}}
+{{--    @if(isset($products) && $products->count() > 0)--}}
+{{--        @foreach($products->take(10) as $product)--}}
+{{--            {--}}
+{{--                "@type": "ListItem",--}}
+{{--                "position": {{ $loop->iteration }},--}}
+{{--                    "item": {--}}
+{{--                        "@type": "Product",--}}
+{{--                        "name": "{{ $product->name }}",--}}
+{{--                        "description": "{{ Str::limit(strip_tags($product->description), 100) }}",--}}
+{{--                        "url": "{{ route('dashboard.web.product', $product->id) }}",--}}
+{{--                        "image": "{{ $product->photo1->file_url ?? asset('images/shop/product-placeholder.png') }}",--}}
+{{--                        "offers": {--}}
+{{--                            "@type": "Offer",--}}
+{{--                            "price": "{{ $product->price }}",--}}
+{{--                            "priceCurrency": "USD",--}}
+{{--                            "availability": "https://schema.org/InStock"--}}
+{{--                        }--}}
+{{--                    }--}}
+{{--                }{{ !$loop->last ? ',' : '' }}--}}
+{{--        @endforeach--}}
+{{--    @endif--}}
+{{--    ]--}}
+{{--}--}}
+{{--}--}}
+{{--</script>--}}
 
 <!-- Breadcrumb Structured Data -->
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-            {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Главная",
-                "item": "{{ route('web.home') }}"
-        },
-        {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "Магазин мебели",
-            "item": "{{ route('web.shop') }}"
-        },
-        {
-            "@type": "ListItem",
-            "position": 3,
-            "name": "Каталог товаров",
-            "item": "{{ url()->current() }}"
-        }
-    ]
-}
-</script>
+{{--<script type="application/ld+json">--}}
+{{--    {--}}
+{{--        "@context": "https://schema.org",--}}
+{{--        "@type": "BreadcrumbList",--}}
+{{--        "itemListElement": [--}}
+{{--            {--}}
+{{--                "@type": "ListItem",--}}
+{{--                "position": 1,--}}
+{{--                "name": "Главная",--}}
+{{--                "item": "{{ route('web.home') }}"--}}
+{{--        },--}}
+{{--        {--}}
+{{--            "@type": "ListItem",--}}
+{{--            "position": 2,--}}
+{{--            "name": "Магазин мебели",--}}
+{{--            "item": "{{ route('web.shop') }}"--}}
+{{--        },--}}
+{{--        {--}}
+{{--            "@type": "ListItem",--}}
+{{--            "position": 3,--}}
+{{--            "name": "Каталог товаров",--}}
+{{--            "item": "{{ url()->current() }}"--}}
+{{--        }--}}
+{{--    ]--}}
+{{--}--}}
+{{--</script>--}}
 
 <!-- Local Business Structured Data -->
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "FurnitureStore",
-        "name": "Emmy Furniture Munich",
-        "description": "Магазин премиальной мебели в Мюнхене",
-        "url": "{{ url('/') }}",
-    "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Мюнхен",
-        "addressCountry": "DE"
-    },
-    "openingHours": [
-        "Mo-Fr 10:00-18:00",
-        "Sa 10:00-16:00"
-    ],
-    "priceRange": "$$",
-    "hasOfferCatalog": {
-        "@type": "OfferCatalog",
-        "name": "Категории мебели",
-        "itemListElement": [
-            {
-                "@type": "OfferCatalog",
-                "name": "Мебель для гостиной",
-                "itemListElement": [
-                    {
-                        "@type": "Offer",
-                        "itemOffered": {
-                            "@type": "Product",
-                            "name": "Диваны и кресла"
-                        }
-                    },
-                    {
-                        "@type": "Offer",
-                        "itemOffered": {
-                            "@type": "Product",
-                            "name": "Журнальные столики"
-                        }
-                    }
-                ]
-            },
-            {
-                "@type": "OfferCatalog",
-                "name": "Спальная мебель",
-                "itemListElement": [
-                    {
-                        "@type": "Offer",
-                        "itemOffered": {
-                            "@type": "Product",
-                            "name": "Кровати и матрасы"
-                        }
-                    },
-                    {
-                        "@type": "Offer",
-                        "itemOffered": {
-                            "@type": "Product",
-                            "name": "Шкафы и комоды"
-                        }
-                    }
-                ]
-            }
-        ]
-    }
-}
-</script>
+{{--<script type="application/ld+json">--}}
+{{--    {--}}
+{{--        "@context": "https://schema.org",--}}
+{{--        "@type": "FurnitureStore",--}}
+{{--        "name": "Emmy Furniture Munich",--}}
+{{--        "description": "Магазин премиальной мебели в Мюнхене",--}}
+{{--        "url": "{{ url('/') }}",--}}
+{{--    "address": {--}}
+{{--        "@type": "PostalAddress",--}}
+{{--        "addressLocality": "Мюнхен",--}}
+{{--        "addressCountry": "DE"--}}
+{{--    },--}}
+{{--    "openingHours": [--}}
+{{--        "Mo-Fr 10:00-18:00",--}}
+{{--        "Sa 10:00-16:00"--}}
+{{--    ],--}}
+{{--    "priceRange": "$$",--}}
+{{--    "hasOfferCatalog": {--}}
+{{--        "@type": "OfferCatalog",--}}
+{{--        "name": "Категории мебели",--}}
+{{--        "itemListElement": [--}}
+{{--            {--}}
+{{--                "@type": "OfferCatalog",--}}
+{{--                "name": "Мебель для гостиной",--}}
+{{--                "itemListElement": [--}}
+{{--                    {--}}
+{{--                        "@type": "Offer",--}}
+{{--                        "itemOffered": {--}}
+{{--                            "@type": "Product",--}}
+{{--                            "name": "Диваны и кресла"--}}
+{{--                        }--}}
+{{--                    },--}}
+{{--                    {--}}
+{{--                        "@type": "Offer",--}}
+{{--                        "itemOffered": {--}}
+{{--                            "@type": "Product",--}}
+{{--                            "name": "Журнальные столики"--}}
+{{--                        }--}}
+{{--                    }--}}
+{{--                ]--}}
+{{--            },--}}
+{{--            {--}}
+{{--                "@type": "OfferCatalog",--}}
+{{--                "name": "Спальная мебель",--}}
+{{--                "itemListElement": [--}}
+{{--                    {--}}
+{{--                        "@type": "Offer",--}}
+{{--                        "itemOffered": {--}}
+{{--                            "@type": "Product",--}}
+{{--                            "name": "Кровати и матрасы"--}}
+{{--                        }--}}
+{{--                    },--}}
+{{--                    {--}}
+{{--                        "@type": "Offer",--}}
+{{--                        "itemOffered": {--}}
+{{--                            "@type": "Product",--}}
+{{--                            "name": "Шкафы и комоды"--}}
+{{--                        }--}}
+{{--                    }--}}
+{{--                ]--}}
+{{--            }--}}
+{{--        ]--}}
+{{--    }--}}
+{{--}--}}
+{{--</script>--}}

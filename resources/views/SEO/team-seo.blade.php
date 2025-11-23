@@ -14,12 +14,12 @@
     <p>Ключевые слова: команда мебельного магазина мюнхен, дизайнеры интерьера, консультанты по мебели, специалисты по обустройству дома</p>
 </div>
 
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "AboutPage",
-        "name": "Наша команда - Emmy Furniture Munich",
-        "description": "Профессиональная команда специалистов мебельного магазина Emmy Furniture Munich",
-        "url": "{{ url()->current() }}"
-}
-</script>
+{{--<script type="application/ld+json">--}}
+{{--    {--}}
+{{--        "@context": "https://schema.org",--}}
+{{--        "@type": "AboutPage",--}}
+{{--        "name": "Наша команда - Emmy Furniture Munich",--}}
+{{--        "description": "Профессиональная команда специалистов мебельного магазина Emmy Furniture Munich",--}}
+{{--        "url": "{{ url()->current() }}"--}}
+{{--}--}}
+{{--</script>--}}

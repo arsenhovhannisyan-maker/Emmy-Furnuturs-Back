@@ -39,7 +39,7 @@
     <section class="section section-md text-md-left quote-about">
         <div class="container">
             <div class="row row-30">
-                <div class="col-md-4 col-lg-4 wow fadeInLeft" data-wow-delay=".2s">
+                <div class="col-md-4 col-lg-4 wow fadeInLeft custom-banner" data-wow-delay=".2s">
                     <article class="box-icon-creative">
                         <div class="unit flex-column flex-md-row flex-lg-column flex-xl-row align-items-md-center align-items-lg-start align-items-xl-center">
                             <div class="unit-left">
@@ -55,7 +55,7 @@
                         </div>
                     </article>
                 </div>
-                <div class="col-md-4 col-lg-4 wow fadeInLeft" data-wow-delay=".1s">
+                <div class="col-md-4 col-lg-4 wow fadeInLeft custom-banner" data-wow-delay=".1s">
                     <article class="box-icon-creative">
                         <div class="unit flex-column flex-md-row flex-lg-column flex-xl-row align-items-md-center align-items-lg-start align-items-xl-center">
                             <div class="unit-left">
@@ -72,7 +72,7 @@
                         </div>
                     </article>
                 </div>
-                <div class="col-md-4 col-lg-4 wow fadeInLeft">
+                <div class="col-md-4 col-lg-4 wow fadeInLeft custom-banner">
                     <article class="box-icon-creative">
                         <div class="unit flex-column flex-md-row flex-lg-column flex-xl-row align-items-md-center align-items-lg-start align-items-xl-center">
                             <div class="unit-left">

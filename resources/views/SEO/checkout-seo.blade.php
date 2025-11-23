@@ -40,125 +40,125 @@
     <p><strong>Ключевые слова:</strong> оформление заказа мебели мюнхен, оплата мебели, доставка мебели мюнхен, корзина покупок, безопасная оплата, Emmy Furniture заказ, способы оплаты мебель</p>
 </div>
 
-<!-- Structured Data for Checkout Page -->
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "CheckoutPage",
-        "name": "Оформление заказа - Emmy Furniture Munich",
-        "description": "Безопасное оформление заказа мебели с доставкой по Мюнхену",
-        "url": "{{ url()->current() }}",
-    "mainEntity": {
-        "@type": "Order",
-        "orderNumber": "CHECKOUT_PAGE",
-        "orderStatus": "https://schema.org/OrderProcessing",
-        "acceptedOffer": [
-    @if(isset($items) && count($items) > 0)
-        @foreach($items as $item)
-            {
-                "@type": "Offer",
-                "itemOffered": {
-                    "@type": "Product",
-                    "name": "{{ $item->product->name }}",
-                        "description": "{{ Str::limit(strip_tags($item->product->description), 100) }}",
-                        "price": "{{ $item->product->price }}",
-                        "priceCurrency": "USD"
-                    },
-                    "price": "{{ $item->product->price }}",
-                    "priceCurrency": "USD",
-                    "eligibleQuantity": {
-                        "@type": "QuantitativeValue",
-                        "value": "{{ $item->quantity }}"
-                    }
-                }{{ !$loop->last ? ',' : '' }}
-        @endforeach
-    @endif
-    ],
-    "priceCurrency": "USD",
-    "price": "{{ $total ?? 0 }}",
-        "seller": {
-            "@type": "FurnitureStore",
-            "name": "Emmy Furniture Munich",
-            "url": "{{ url('/') }}"
-        }
-    }
-}
-</script>
+{{--<!-- Structured Data for Checkout Page -->--}}
+{{--<script type="application/ld+json">--}}
+{{--    {--}}
+{{--        "@context": "https://schema.org",--}}
+{{--        "@type": "CheckoutPage",--}}
+{{--        "name": "Оформление заказа - Emmy Furniture Munich",--}}
+{{--        "description": "Безопасное оформление заказа мебели с доставкой по Мюнхену",--}}
+{{--        "url": "{{ url()->current() }}",--}}
+{{--    "mainEntity": {--}}
+{{--        "@type": "Order",--}}
+{{--        "orderNumber": "CHECKOUT_PAGE",--}}
+{{--        "orderStatus": "https://schema.org/OrderProcessing",--}}
+{{--        "acceptedOffer": [--}}
+{{--    @if(isset($items) && count($items) > 0)--}}
+{{--        @foreach($items as $item)--}}
+{{--            {--}}
+{{--                "@type": "Offer",--}}
+{{--                "itemOffered": {--}}
+{{--                    "@type": "Product",--}}
+{{--                    "name": "{{ $item->product->name }}",--}}
+{{--                        "description": "{{ Str::limit(strip_tags($item->product->description), 100) }}",--}}
+{{--                        "price": "{{ $item->product->price }}",--}}
+{{--                        "priceCurrency": "USD"--}}
+{{--                    },--}}
+{{--                    "price": "{{ $item->product->price }}",--}}
+{{--                    "priceCurrency": "USD",--}}
+{{--                    "eligibleQuantity": {--}}
+{{--                        "@type": "QuantitativeValue",--}}
+{{--                        "value": "{{ $item->quantity }}"--}}
+{{--                    }--}}
+{{--                }{{ !$loop->last ? ',' : '' }}--}}
+{{--        @endforeach--}}
+{{--    @endif--}}
+{{--    ],--}}
+{{--    "priceCurrency": "USD",--}}
+{{--    "price": "{{ $total ?? 0 }}",--}}
+{{--        "seller": {--}}
+{{--            "@type": "FurnitureStore",--}}
+{{--            "name": "Emmy Furniture Munich",--}}
+{{--            "url": "{{ url('/') }}"--}}
+{{--        }--}}
+{{--    }--}}
+{{--}--}}
+{{--</script>--}}
 
-<!-- Payment Method Structured Data -->
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "ItemList",
-        "name": "Способы оплаты",
-        "description": "Доступные способы оплаты заказов мебели",
-        "numberOfItems": 3,
-        "itemListElement": [
-            {
-                "@type": "ListItem",
-                "position": 1,
-                "item": {
-                    "@type": "PaymentMethod",
-                    "name": "Банковский перевод",
-                    "description": "Оплата через банковский перевод"
-                }
-            },
-            {
-                "@type": "ListItem",
-                "position": 2,
-                "item": {
-                    "@type": "PaymentMethod",
-                    "name": "PayPal",
-                    "description": "Безопасная онлайн-оплата через PayPal"
-                }
-            },
-            {
-                "@type": "ListItem",
-                "position": 3,
-                "item": {
-                    "@type": "PaymentMethod",
-                    "name": "Кредитная карта",
-                    "description": "Оплата кредитной картой Visa/MasterCard"
-                }
-            }
-        ]
-    }
-</script>
+{{--<!-- Payment Method Structured Data -->--}}
+{{--<script type="application/ld+json">--}}
+{{--    {--}}
+{{--        "@context": "https://schema.org",--}}
+{{--        "@type": "ItemList",--}}
+{{--        "name": "Способы оплаты",--}}
+{{--        "description": "Доступные способы оплаты заказов мебели",--}}
+{{--        "numberOfItems": 3,--}}
+{{--        "itemListElement": [--}}
+{{--            {--}}
+{{--                "@type": "ListItem",--}}
+{{--                "position": 1,--}}
+{{--                "item": {--}}
+{{--                    "@type": "PaymentMethod",--}}
+{{--                    "name": "Банковский перевод",--}}
+{{--                    "description": "Оплата через банковский перевод"--}}
+{{--                }--}}
+{{--            },--}}
+{{--            {--}}
+{{--                "@type": "ListItem",--}}
+{{--                "position": 2,--}}
+{{--                "item": {--}}
+{{--                    "@type": "PaymentMethod",--}}
+{{--                    "name": "PayPal",--}}
+{{--                    "description": "Безопасная онлайн-оплата через PayPal"--}}
+{{--                }--}}
+{{--            },--}}
+{{--            {--}}
+{{--                "@type": "ListItem",--}}
+{{--                "position": 3,--}}
+{{--                "item": {--}}
+{{--                    "@type": "PaymentMethod",--}}
+{{--                    "name": "Кредитная карта",--}}
+{{--                    "description": "Оплата кредитной картой Visa/MasterCard"--}}
+{{--                }--}}
+{{--            }--}}
+{{--        ]--}}
+{{--    }--}}
+{{--</script>--}}
 
-<!-- Delivery Method Structured Data -->
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "DeliveryMethod",
-        "name": "Доставка мебели по Мюнхену",
-        "description": "Профессиональная доставка мебели по всему Мюнхену",
-        "areaServed": {
-            "@type": "City",
-            "name": "Мюнхен"
-        },
-        "provider": {
-            "@type": "FurnitureStore",
-            "name": "Emmy Furniture Munich"
-        }
-    }
-</script>
+{{--<!-- Delivery Method Structured Data -->--}}
+{{--<script type="application/ld+json">--}}
+{{--    {--}}
+{{--        "@context": "https://schema.org",--}}
+{{--        "@type": "DeliveryMethod",--}}
+{{--        "name": "Доставка мебели по Мюнхену",--}}
+{{--        "description": "Профессиональная доставка мебели по всему Мюнхену",--}}
+{{--        "areaServed": {--}}
+{{--            "@type": "City",--}}
+{{--            "name": "Мюнхен"--}}
+{{--        },--}}
+{{--        "provider": {--}}
+{{--            "@type": "FurnitureStore",--}}
+{{--            "name": "Emmy Furniture Munich"--}}
+{{--        }--}}
+{{--    }--}}
+{{--</script>--}}
 
-<!-- Security Assurance Structured Data -->
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "Безопасное оформление заказа",
-        "description": "Гарантия безопасности платежей и защиты персональных данных",
-        "url": "{{ url()->current() }}",
-    "maintainer": {
-        "@type": "Organization",
-        "name": "Emmy Furniture Munich",
-        "securityAssurance": [
-            "SSL шифрование",
-            "Защита персональных данных",
-            "Безопасные платежные шлюзы"
-        ]
-    }
-}
-</script>
+{{--<!-- Security Assurance Structured Data -->--}}
+{{--<script type="application/ld+json">--}}
+{{--    {--}}
+{{--        "@context": "https://schema.org",--}}
+{{--        "@type": "WebPage",--}}
+{{--        "name": "Безопасное оформление заказа",--}}
+{{--        "description": "Гарантия безопасности платежей и защиты персональных данных",--}}
+{{--        "url": "{{ url()->current() }}",--}}
+{{--    "maintainer": {--}}
+{{--        "@type": "Organization",--}}
+{{--        "name": "Emmy Furniture Munich",--}}
+{{--        "securityAssurance": [--}}
+{{--            "SSL шифрование",--}}
+{{--            "Защита персональных данных",--}}
+{{--            "Безопасные платежные шлюзы"--}}
+{{--        ]--}}
+{{--    }--}}
+{{--}--}}
+{{--</script>--}}

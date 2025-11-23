@@ -21,7 +21,7 @@
                 </div>
 
                 <!-- Navigation Column -->
-                <div class="col-md-3 wow fadeInUp new-res" data-wow-delay=".2s">
+                <div class="col-md-4 wow fadeInUp new-res" data-wow-delay=".2s">
                     <div class="footer-column">
                         <h5 class="footer-modern-title">@lang('messages.navigation')</h5>
                         <ul class="footer-modern-list">
@@ -173,8 +173,9 @@
         -webkit-column-break-inside: avoid;
         page-break-inside: avoid;
         display: inline-block;
-        width: 100%;
+        width: 110%;
     }
+
 
     .footer-categories-list a {
         color: #555;
@@ -401,8 +402,11 @@
         .footer-modern {
             padding: 50px 0 0;
         }
+        .footer-categories-list li {
+            width: 100% !important;
+        }
 
-        .footer-column {
+            .footer-column {
             margin-bottom: 40px;
             text-align: center;
         }
@@ -465,6 +469,7 @@
     @media (max-width: 576px) {
         .footer-modern-title {
             font-size: 1.2rem;
+            margin-left: 15px;
         }
 
         .footer-modern-list a,

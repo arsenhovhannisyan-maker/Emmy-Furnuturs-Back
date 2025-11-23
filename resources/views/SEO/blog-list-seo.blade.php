@@ -55,133 +55,133 @@
 </div>
 
 <!-- Structured Data for Blog Listing Page -->
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "CollectionPage",
-        "name": "Блог о мебели - Emmy Furniture Munich",
-        "description": "Статьи и новости о мебели, дизайне интерьера и обустройстве дома в Мюнхене",
-        "url": "{{ url()->current() }}",
-    "mainEntity": {
-        "@type": "ItemList",
-        "name": "Статьи блога",
-        "description": "Список статей о мебели и дизайне интерьера",
-        "numberOfItems": {{ count($blogs) }},
-        "itemListElement": [
-    @foreach($blogs as $blog)
-        {
-            "@type": "ListItem",
-            "position": {{ $loop->iteration }},
-                "item": {
-                    "@type": "BlogPosting",
-                    "headline": "{{ $blog['name'] }}",
-                    "description": "{{ $blog['shortDescription'] }}",
-                    "url": "{{ url('blog/'.$blog['id']) }}",
-                    "image": "{{ $blog['photo'] }}",
-                    "datePublished": "{{ $blog['created_at_formatted'] }}",
-                    "author": {
-                        "@type": "Organization",
-                        "name": "Emmy Furniture Munich"
-                    },
-                    "publisher": {
-                        "@type": "Organization",
-                        "name": "Emmy Furniture Munich",
-                        "logo": {
-                            "@type": "ImageObject",
-                            "url": "{{ asset('img/web/logo-emmy.png') }}"
-                        }
-                    },
-                    "articleSection": "Мебель и дизайн интерьера"
-                }
-            }{{ !$loop->last ? ',' : '' }}
-    @endforeach
-    ]
-}
-}
-</script>
+{{--<script type="application/ld+json">--}}
+{{--    {--}}
+{{--        "@context": "https://schema.org",--}}
+{{--        "@type": "CollectionPage",--}}
+{{--        "name": "Блог о мебели - Emmy Furniture Munich",--}}
+{{--        "description": "Статьи и новости о мебели, дизайне интерьера и обустройстве дома в Мюнхене",--}}
+{{--        "url": "{{ url()->current() }}",--}}
+{{--    "mainEntity": {--}}
+{{--        "@type": "ItemList",--}}
+{{--        "name": "Статьи блога",--}}
+{{--        "description": "Список статей о мебели и дизайне интерьера",--}}
+{{--        "numberOfItems": {{ count($blogs) }},--}}
+{{--        "itemListElement": [--}}
+{{--    @foreach($blogs as $blog)--}}
+{{--        {--}}
+{{--            "@type": "ListItem",--}}
+{{--            "position": {{ $loop->iteration }},--}}
+{{--                "item": {--}}
+{{--                    "@type": "BlogPosting",--}}
+{{--                    "headline": "{{ $blog['name'] }}",--}}
+{{--                    "description": "{{ $blog['shortDescription'] }}",--}}
+{{--                    "url": "{{ url('blog/'.$blog['id']) }}",--}}
+{{--                    "image": "{{ $blog['photo'] }}",--}}
+{{--                    "datePublished": "{{ $blog['created_at_formatted'] }}",--}}
+{{--                    "author": {--}}
+{{--                        "@type": "Organization",--}}
+{{--                        "name": "Emmy Furniture Munich"--}}
+{{--                    },--}}
+{{--                    "publisher": {--}}
+{{--                        "@type": "Organization",--}}
+{{--                        "name": "Emmy Furniture Munich",--}}
+{{--                        "logo": {--}}
+{{--                            "@type": "ImageObject",--}}
+{{--                            "url": "{{ asset('img/web/logo-emmy.png') }}"--}}
+{{--                        }--}}
+{{--                    },--}}
+{{--                    "articleSection": "Мебель и дизайн интерьера"--}}
+{{--                }--}}
+{{--            }{{ !$loop->last ? ',' : '' }}--}}
+{{--    @endforeach--}}
+{{--    ]--}}
+{{--}--}}
+{{--}--}}
+{{--</script>--}}
 
-<!-- Breadcrumb Structured Data -->
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-            {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Главная",
-                "item": "{{ route('web.home') }}"
-        },
-        {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "Блог о мебели",
-            "item": "{{ route('web.blog') }}"
-        },
-        {
-            "@type": "ListItem",
-            "position": 3,
-            "name": "Список статей",
-            "item": "{{ url()->current() }}"
-        }
-    ]
-}
-</script>
+{{--<!-- Breadcrumb Structured Data -->--}}
+{{--<script type="application/ld+json">--}}
+{{--    {--}}
+{{--        "@context": "https://schema.org",--}}
+{{--        "@type": "BreadcrumbList",--}}
+{{--        "itemListElement": [--}}
+{{--            {--}}
+{{--                "@type": "ListItem",--}}
+{{--                "position": 1,--}}
+{{--                "name": "Главная",--}}
+{{--                "item": "{{ route('web.home') }}"--}}
+{{--        },--}}
+{{--        {--}}
+{{--            "@type": "ListItem",--}}
+{{--            "position": 2,--}}
+{{--            "name": "Блог о мебели",--}}
+{{--            "item": "{{ route('web.blog') }}"--}}
+{{--        },--}}
+{{--        {--}}
+{{--            "@type": "ListItem",--}}
+{{--            "position": 3,--}}
+{{--            "name": "Список статей",--}}
+{{--            "item": "{{ url()->current() }}"--}}
+{{--        }--}}
+{{--    ]--}}
+{{--}--}}
+{{--</script>--}}
 
-<!-- Blog Structured Data -->
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Blog",
-        "name": "Блог Emmy Furniture Munich",
-        "description": "Экспертный блог о мебели, дизайне интерьера и обустройстве дома в Мюнхене",
-        "url": "{{ route('web.blog') }}",
-    "publisher": {
-        "@type": "Organization",
-        "name": "Emmy Furniture Munich",
-        "logo": {
-            "@type": "ImageObject",
-            "url": "{{ asset('img/web/logo-emmy.png') }}"
-        }
-    },
-    "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": "{{ route('web.blog') }}"
-    },
-    "blogPost": [
-    @foreach($blogs->take(5) as $blog)
-        {
-            "@type": "BlogPosting",
-            "headline": "{{ $blog['name'] }}",
-            "url": "{{ url('blog/'.$blog['id']) }}",
-            "datePublished": "{{ $blog['created_at_formatted'] }}"
-        }{{ !$loop->last ? ',' : '' }}
-    @endforeach
-    ]
-}
-</script>
+{{--<!-- Blog Structured Data -->--}}
+{{--<script type="application/ld+json">--}}
+{{--    {--}}
+{{--        "@context": "https://schema.org",--}}
+{{--        "@type": "Blog",--}}
+{{--        "name": "Блог Emmy Furniture Munich",--}}
+{{--        "description": "Экспертный блог о мебели, дизайне интерьера и обустройстве дома в Мюнхене",--}}
+{{--        "url": "{{ route('web.blog') }}",--}}
+{{--    "publisher": {--}}
+{{--        "@type": "Organization",--}}
+{{--        "name": "Emmy Furniture Munich",--}}
+{{--        "logo": {--}}
+{{--            "@type": "ImageObject",--}}
+{{--            "url": "{{ asset('img/web/logo-emmy.png') }}"--}}
+{{--        }--}}
+{{--    },--}}
+{{--    "mainEntityOfPage": {--}}
+{{--        "@type": "WebPage",--}}
+{{--        "@id": "{{ route('web.blog') }}"--}}
+{{--    },--}}
+{{--    "blogPost": [--}}
+{{--    @foreach($blogs->take(5) as $blog)--}}
+{{--        {--}}
+{{--            "@type": "BlogPosting",--}}
+{{--            "headline": "{{ $blog['name'] }}",--}}
+{{--            "url": "{{ url('blog/'.$blog['id']) }}",--}}
+{{--            "datePublished": "{{ $blog['created_at_formatted'] }}"--}}
+{{--        }{{ !$loop->last ? ',' : '' }}--}}
+{{--    @endforeach--}}
+{{--    ]--}}
+{{--}--}}
+{{--</script>--}}
 
-<!-- Organization Structured Data -->
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "Emmy Furniture Munich",
-        "url": "{{ url('/') }}",
-    "logo": "{{ asset('img/web/logo-emmy.png') }}",
-    "description": "Магазин премиальной мебели в Мюнхене с экспертным блогом о дизайне интерьера",
-    "knowsAbout": [
-        "Дизайн интерьера",
-        "Мебель для гостиной",
-        "Спальная мебель",
-        "Офисная мебель",
-        "Современные тенденции мебели",
-        "Обустройство дома",
-        "Материалы для мебели"
-    ],
-    "areaServed": {
-        "@type": "City",
-        "name": "Мюнхен"
-    }
-}
-</script>
+{{--<!-- Organization Structured Data -->--}}
+{{--<script type="application/ld+json">--}}
+{{--    {--}}
+{{--        "@context": "https://schema.org",--}}
+{{--        "@type": "Organization",--}}
+{{--        "name": "Emmy Furniture Munich",--}}
+{{--        "url": "{{ url('/') }}",--}}
+{{--    "logo": "{{ asset('img/web/logo-emmy.png') }}",--}}
+{{--    "description": "Магазин премиальной мебели в Мюнхене с экспертным блогом о дизайне интерьера",--}}
+{{--    "knowsAbout": [--}}
+{{--        "Дизайн интерьера",--}}
+{{--        "Мебель для гостиной",--}}
+{{--        "Спальная мебель",--}}
+{{--        "Офисная мебель",--}}
+{{--        "Современные тенденции мебели",--}}
+{{--        "Обустройство дома",--}}
+{{--        "Материалы для мебели"--}}
+{{--    ],--}}
+{{--    "areaServed": {--}}
+{{--        "@type": "City",--}}
+{{--        "name": "Мюнхен"--}}
+{{--    }--}}
+{{--}--}}
+{{--</script>--}}

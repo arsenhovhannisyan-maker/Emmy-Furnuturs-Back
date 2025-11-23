@@ -21,88 +21,88 @@
 
     <p><strong>Ключевые слова:</strong> услуги мебельного магазина мюнхен, доставка мебели мюнхен бесплатно, покупка мебели в Мюнхене, мебельные услуги, Emmy Furniture услуги, премиальная мебель с доставкой, сервис мебельного магазина</p>
 </div>
+{{--<!-- Structured Data for Service Page -->--}}
+{{--<script type="application/ld+json">--}}
+{{--{--}}
+{{--        "@context": "https://schema.org",--}}
+{{--        "@type": "Service",--}}
+{{--        "name": "Услуги мебельного магазина Emmy Furniture Munich",--}}
+{{--        "description": "Комплексные услуги по продаже и доставке премиальной мебели в Мюнхене",--}}
+{{--        "provider": {--}}
+{{--            "@type": "FurnitureStore",--}}
+{{--            "name": "Emmy Furniture Munich",--}}
+{{--            "url": "{{ url('/') }}"--}}
+{{--    },--}}
+{{--    "areaServed": {--}}
+{{--        "@type": "City",--}}
+{{--        "name": "Мюнхен"--}}
+{{--    },--}}
+{{--    "hasOfferCatalog": {--}}
+{{--        "@type": "OfferCatalog",--}}
+{{--        "name": "Наши услуги",--}}
+{{--        "itemListElement": [--}}
+{{--            {--}}
+{{--                "@type": "Offer",--}}
+{{--                "itemOffered": {--}}
+{{--                    "@type": "Service",--}}
+{{--                    "name": "Бесплатная доставка мебели",--}}
+{{--                    "description": "Бесплатная доставка мебели по Мюнхену"--}}
+{{--                }--}}
 
-<!-- Structured Data for Service Page -->
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Service",
-        "name": "Услуги мебельного магазина Emmy Furniture Munich",
-        "description": "Комплексные услуги по продаже и доставке премиальной мебели в Мюнхене",
-        "provider": {
-            "@type": "FurnitureStore",
-            "name": "Emmy Furniture Munich",
-            "url": "{{ url('/') }}"
-    },
-    "areaServed": {
-        "@type": "City",
-        "name": "Мюнхен"
-    },
-    "hasOfferCatalog": {
-        "@type": "OfferCatalog",
-        "name": "Наши услуги",
-        "itemListElement": [
-            {
-                "@type": "Offer",
-                "itemOffered": {
-                    "@type": "Service",
-                    "name": "Бесплатная доставка мебели",
-                    "description": "Бесплатная доставка мебели по Мюнхену"
-                }
-            },
-            {
-                "@type": "Offer",
-                "itemOffered": {
-                    "@type": "Service",
-                    "name": "Современные коллекции мебели",
-                    "description": "Постоянное обновление ассортимента модной мебелью"
-                }
-            },
-            {
-                "@type": "Offer",
-                "itemOffered": {
-                    "@type": "Service",
-                    "name": "Качественная мебель ручной работы",
-                    "description": "Мебель премиального качества с гарантией"
-                }
-            },
-            {
-                "@type": "Offer",
-                "itemOffered": {
-                    "@type": "Service",
-                    "name": "Разнообразие стилей мебели",
-                    "description": "Широкий выбор стилей от классики до современности"
-                }
-            }
-        ]
-    }
-}
-</script>
+{{--            },--}}
+{{--            {--}}
+{{--                "@type": "Offer",--}}
+{{--                "itemOffered": {--}}
+{{--                    "@type": "Service",--}}
+{{--                    "name": "Современные коллекции мебели",--}}
+{{--                    "description": "Постоянное обновление ассортимента модной мебелью"--}}
+{{--                }--}}
+{{--            },--}}
+{{--            {--}}
+{{--                "@type": "Offer",--}}
+{{--                "itemOffered": {--}}
+{{--                    "@type": "Service",--}}
+{{--                    "name": "Качественная мебель ручной работы",--}}
+{{--                    "description": "Мебель премиального качества с гарантией"--}}
+{{--                }--}}
+{{--            },--}}
+{{--            {--}}
+{{--                "@type": "Offer",--}}
+{{--                "itemOffered": {--}}
+{{--                    "@type": "Service",--}}
+{{--                    "name": "Разнообразие стилей мебели",--}}
+{{--                    "description": "Широкий выбор стилей от классики до современности"--}}
+{{--                }--}}
+{{--            }--}}
+{{--        ]--}}
+{{--    }--}}
+{{--}--}}
+{{--</script>--}}
 
-<!-- Breadcrumb Structured Data -->
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-            {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Главная",
-                "item": "{{ route('web.home') }}"
-        },
-        {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "Страницы",
-            "item": "{{ url()->current() }}"
-        },
-        {
-            "@type": "ListItem",
-            "position": 3,
-            "name": "Что мы предлагаем",
-            "item": "{{ url()->current() }}"
-        }
-    ]
-}
-</script>
+{{--<!-- Breadcrumb Structured Data -->--}}
+{{--<script type="application/ld+json">--}}
+{{--    {--}}
+{{--        "@context": "https://schema.org",--}}
+{{--        "@type": "BreadcrumbList",--}}
+{{--        "itemListElement": [--}}
+{{--            {--}}
+{{--                "@type": "ListItem",--}}
+{{--                "position": 1,--}}
+{{--                "name": "Главная",--}}
+{{--                "item": "{{ route('web.home') }}"--}}
+{{--        },--}}
+{{--        {--}}
+{{--            "@type": "ListItem",--}}
+{{--            "position": 2,--}}
+{{--            "name": "Страницы",--}}
+{{--            "item": "{{ url()->current() }}"--}}
+{{--        },--}}
+{{--        {--}}
+{{--            "@type": "ListItem",--}}
+{{--            "position": 3,--}}
+{{--            "name": "Что мы предлагаем",--}}
+{{--            "item": "{{ url()->current() }}"--}}
+{{--        }--}}
+{{--    ]--}}
+{{--}--}}
+{{--</script>--}}

@@ -264,41 +264,6 @@
         flex-wrap: wrap;
     }
 
-    .product-stepper {
-        display: flex;
-        align-items: center;
-        border: 2px solid #e0e0e0;
-        border-radius: 8px;
-        overflow: hidden;
-        background: white;
-    }
-
-    .product-stepper input {
-        width: 70px;
-        padding: 12px 15px;
-        border: none;
-        text-align: center;
-        font-size: 16px;
-        font-weight: 600;
-    }
-
-    .product-stepper input:focus {
-        outline: none;
-    }
-
-    .product-stepper button {
-        background: #f8f9fa;
-        border: none;
-        width: 40px;
-        height: 100%;
-        font-size: 18px;
-        cursor: pointer;
-        transition: background 0.2s;
-    }
-
-    .product-stepper button:hover {
-        background: #e9ecef;
-    }
 
     #add-to-cart {
         padding: 14px 30px;
@@ -375,6 +340,8 @@
 
         .product-stepper {
             align-self: flex-start;
+            display: flex !important;
+            flex-direction: row !important;
         }
     }
 
@@ -422,6 +389,131 @@
         .nav-tabs-1 .nav-item .nav-link {
             border-radius: 8px;
             margin-bottom: 5px;
+        }
+    }
+    .product-stepper {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: 12px;
+        overflow: hidden;
+        background: white;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e8e8e8;
+        transition: all 0.3s ease;
+        max-width: 160px;
+    }
+
+    .product-stepper:hover {
+        box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+        border-color: #d0d0d0;
+    }
+
+    .product-stepper button {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%) !important;
+        border: none !important;
+        width: 44px !important;
+        height: 44px !important;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        color: #4a5568;
+        position: relative !important;
+        overflow: hidden;
+        flex-shrink: 0 !important;
+    }
+
+    .product-stepper button:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .product-stepper button:hover {
+        color: white;
+    }
+
+    .product-stepper button:hover:before {
+        opacity: 1;
+    }
+
+    .product-stepper button span {
+        position: relative;
+        z-index: 1;
+    }
+
+    .product-stepper button:active {
+        transform: scale(0.95);
+    }
+
+    .product-stepper button:first-child {
+        border-right: 1px solid #e8e8e8 !important;
+        order: 1 !important;
+    }
+
+    .product-stepper input {
+        width: 70px !important;
+        padding: 12px 5px !important;
+        border: none !important;
+        text-align: center !important;
+        font-size: 18px;
+        font-weight: 700;
+        color: #2d3748;
+        background: transparent !important;
+        transition: all 0.3s ease;
+        flex-shrink: 0 !important;
+        display: block !important;
+        order: 2 !important;
+    }
+
+    .product-stepper button:last-child {
+        border-left: 1px solid #e8e8e8 !important;
+        order: 3 !important;
+    }
+
+    .product-stepper input:focus {
+        outline: none;
+        background: rgba(102, 126, 234, 0.05);
+    }
+
+    /* Animation for value changes */
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+
+    .product-stepper input.value-changed {
+        animation: pulse 0.3s ease;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 575px) {
+        .product-stepper {
+            max-width: 140px;
+            display: flex !important;
+            flex-direction: row !important;
+        }
+
+        .product-stepper button {
+            width: 40px !important;
+            height: 40px !important;
+        }
+
+        .product-stepper input {
+            width: 60px !important;
+            font-size: 16px;
         }
     }
 </style>
@@ -532,9 +624,13 @@
 
                             <div class="group-xs group-middle">
                                 <div class="product-stepper">
-                                    <button type="button" class="decrement-btn">-</button>
+                                    <button type="button" class="decrement-btn">
+                                        <span>-</span>
+                                    </button>
                                     <input id="quantity-input" class="form-input" type="number" data-zeros="true" value="1" min="1" max="1000">
-                                    <button type="button" class="increment-btn">+</button>
+                                    <button type="button" class="increment-btn">
+                                        <span>+</span>
+                                    </button>
                                 </div>
 
                                 <form action="{{ route('basket.add') }}" method="POST" class="d-inline-block ms-2" id="add-to-cart-form">
@@ -765,5 +861,39 @@
                 })
                 .catch(error => console.error('Error:', error));
         });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const quantityInput = document.getElementById('quantity-input');
+        const decrementBtn = document.querySelector('.decrement-btn');
+        const incrementBtn = document.querySelector('.increment-btn');
+
+        function updateQuantity(value) {
+            quantityInput.value = value;
+            quantityInput.classList.add('value-changed');
+            setTimeout(() => {
+                quantityInput.classList.remove('value-changed');
+            }, 300);
+        }
+
+        if (decrementBtn && incrementBtn) {
+            decrementBtn.addEventListener('click', function() {
+                if (quantityInput.value > 1) {
+                    updateQuantity(parseInt(quantityInput.value) - 1);
+                }
+            });
+
+            incrementBtn.addEventListener('click', function() {
+                if (quantityInput.value < 1000) {
+                    updateQuantity(parseInt(quantityInput.value) + 1);
+                }
+            });
+
+            quantityInput.addEventListener('change', function() {
+                if (this.value < 1) this.value = 1;
+                if (this.value > 1000) this.value = 1000;
+                updateQuantity(this.value);
+            });
+        }
     });
 </script>

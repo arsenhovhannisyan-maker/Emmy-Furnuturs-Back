@@ -38,131 +38,131 @@
 </div>
 
 <!-- Structured Data for Gallery Page -->
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "CollectionPage",
-        "name": "Галерея мебели - Emmy Furniture Munich",
-        "description": "Фотографии наших работ и проектов по обустройству интерьеров в Мюнхене",
-        "url": "{{ url()->current() }}",
-    "mainEntity": {
-        "@type": "ImageGallery",
-        "name": "Галерея мебели Emmy Furniture",
-        "description": "Фотографии мебели в реальных интерьерах наших клиентов в Мюнхене",
-        "numberOfItems": 20,
-        "about": {
-            "@type": "Thing",
-            "name": "Мебель в интерьере"
-        },
-        "genre": ["Интерьер", "Дизайн", "Мебель"],
-        "locationCreated": {
-            "@type": "City",
-            "name": "Мюнхен"
-        }
-    }
-}
-</script>
+{{--<script type="application/ld+json">--}}
+{{--    {--}}
+{{--        "@context": "https://schema.org",--}}
+{{--        "@type": "CollectionPage",--}}
+{{--        "name": "Галерея мебели - Emmy Furniture Munich",--}}
+{{--        "description": "Фотографии наших работ и проектов по обустройству интерьеров в Мюнхене",--}}
+{{--        "url": "{{ url()->current() }}",--}}
+{{--    "mainEntity": {--}}
+{{--        "@type": "ImageGallery",--}}
+{{--        "name": "Галерея мебели Emmy Furniture",--}}
+{{--        "description": "Фотографии мебели в реальных интерьерах наших клиентов в Мюнхене",--}}
+{{--        "numberOfItems": 20,--}}
+{{--        "about": {--}}
+{{--            "@type": "Thing",--}}
+{{--            "name": "Мебель в интерьере"--}}
+{{--        },--}}
+{{--        "genre": ["Интерьер", "Дизайн", "Мебель"],--}}
+{{--        "locationCreated": {--}}
+{{--            "@type": "City",--}}
+{{--            "name": "Мюнхен"--}}
+{{--        }--}}
+{{--    }--}}
+{{--}--}}
+{{--</script>--}}
 
-<!-- Breadcrumb Structured Data -->
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-            {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Главная",
-                "item": "{{ route('web.home') }}"
-        },
-        {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "Галерея",
-            "item": "{{ route('web.gallery') }}"
-        },
-        {
-            "@type": "ListItem",
-            "position": 3,
-            "name": "Масонри галерея",
-            "item": "{{ url()->current() }}"
-        }
-    ]
-}
-</script>
+{{--<!-- Breadcrumb Structured Data -->--}}
+{{--<script type="application/ld+json">--}}
+{{--    {--}}
+{{--        "@context": "https://schema.org",--}}
+{{--        "@type": "BreadcrumbList",--}}
+{{--        "itemListElement": [--}}
+{{--            {--}}
+{{--                "@type": "ListItem",--}}
+{{--                "position": 1,--}}
+{{--                "name": "Главная",--}}
+{{--                "item": "{{ route('web.home') }}"--}}
+{{--        },--}}
+{{--        {--}}
+{{--            "@type": "ListItem",--}}
+{{--            "position": 2,--}}
+{{--            "name": "Галерея",--}}
+{{--            "item": "{{ route('web.gallery') }}"--}}
+{{--        },--}}
+{{--        {--}}
+{{--            "@type": "ListItem",--}}
+{{--            "position": 3,--}}
+{{--            "name": "Масонри галерея",--}}
+{{--            "item": "{{ url()->current() }}"--}}
+{{--        }--}}
+{{--    ]--}}
+{{--}--}}
+{{--</script>--}}
 
-<!-- Organization Structured Data -->
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "Emmy Furniture Munich",
-        "url": "{{ url('/') }}",
-    "logo": "{{ asset('img/web/logo-emmy.png') }}",
-    "description": "Магазин премиальной мебели в Мюнхене с портфолио реализованных проектов",
-    "knowsAbout": [
-        "Дизайн интерьера",
-        "Мебель для гостиной",
-        "Спальная мебель",
-        "Офисная мебель",
-        "Фотография интерьеров",
-        "Обустройство дома в Мюнхене"
-    ],
-    "makesOffer": [
-        {
-            "@type": "Offer",
-            "itemOffered": {
-                "@type": "Service",
-                "name": "Консультация по дизайну интерьера",
-                "description": "Профессиональная консультация по подбору мебели для вашего дома"
-            }
-        }
-    ]
-}
-</script>
+{{--<!-- Organization Structured Data -->--}}
+{{--<script type="application/ld+json">--}}
+{{--    {--}}
+{{--        "@context": "https://schema.org",--}}
+{{--        "@type": "Organization",--}}
+{{--        "name": "Emmy Furniture Munich",--}}
+{{--        "url": "{{ url('/') }}",--}}
+{{--    "logo": "{{ asset('img/web/logo-emmy.png') }}",--}}
+{{--    "description": "Магазин премиальной мебели в Мюнхене с портфолио реализованных проектов",--}}
+{{--    "knowsAbout": [--}}
+{{--        "Дизайн интерьера",--}}
+{{--        "Мебель для гостиной",--}}
+{{--        "Спальная мебель",--}}
+{{--        "Офисная мебель",--}}
+{{--        "Фотография интерьеров",--}}
+{{--        "Обустройство дома в Мюнхене"--}}
+{{--    ],--}}
+{{--    "makesOffer": [--}}
+{{--        {--}}
+{{--            "@type": "Offer",--}}
+{{--            "itemOffered": {--}}
+{{--                "@type": "Service",--}}
+{{--                "name": "Консультация по дизайну интерьера",--}}
+{{--                "description": "Профессиональная консультация по подбору мебели для вашего дома"--}}
+{{--            }--}}
+{{--        }--}}
+{{--    ]--}}
+{{--}--}}
+{{--</script>--}}
 
-<!-- Image Object Structured Data (пример для нескольких изображений) -->
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "ItemList",
-        "name": "Примеры мебели в интерьере",
-        "description": "Фотографии нашей мебели в реальных интерьерах клиентов",
-        "numberOfItems": 6,
-        "itemListElement": [
-            {
-                "@type": "ListItem",
-                "position": 1,
-                "item": {
-                    "@type": "ImageObject",
-                    "contentUrl": "{{ asset('img/gallery/gallery-1.jpg') }}",
-                "name": "Гостиная с диваном Emmy Furniture",
-                "description": "Современная гостиная с диваном от Emmy Furniture Munich",
-                "acquireLicensePage": "{{ url('/') }}"
-            }
-        },
-        {
-            "@type": "ListItem",
-            "position": 2,
-            "item": {
-                "@type": "ImageObject",
-                "contentUrl": "{{ asset('img/gallery/gallery-2.jpg') }}",
-                "name": "Спальня с кроватью премиум класса",
-                "description": "Элегантная спальня с кроватью от Emmy Furniture",
-                "acquireLicensePage": "{{ url('/') }}"
-            }
-        },
-        {
-            "@type": "ListItem",
-            "position": 3,
-            "item": {
-                "@type": "ImageObject",
-                "contentUrl": "{{ asset('img/gallery/gallery-3.jpg') }}",
-                "name": "Обеденная зона со столом и стульями",
-                "description": "Современная обеденная группа в столовой",
-                "acquireLicensePage": "{{ url('/') }}"
-            }
-        }
-    ]
-}
-</script>
+{{--<!-- Image Object Structured Data (пример для нескольких изображений) -->--}}
+{{--<script type="application/ld+json">--}}
+{{--    {--}}
+{{--        "@context": "https://schema.org",--}}
+{{--        "@type": "ItemList",--}}
+{{--        "name": "Примеры мебели в интерьере",--}}
+{{--        "description": "Фотографии нашей мебели в реальных интерьерах клиентов",--}}
+{{--        "numberOfItems": 6,--}}
+{{--        "itemListElement": [--}}
+{{--            {--}}
+{{--                "@type": "ListItem",--}}
+{{--                "position": 1,--}}
+{{--                "item": {--}}
+{{--                    "@type": "ImageObject",--}}
+{{--                    "contentUrl": "{{ asset('img/gallery/gallery-1.jpg') }}",--}}
+{{--                "name": "Гостиная с диваном Emmy Furniture",--}}
+{{--                "description": "Современная гостиная с диваном от Emmy Furniture Munich",--}}
+{{--                "acquireLicensePage": "{{ url('/') }}"--}}
+{{--            }--}}
+{{--        },--}}
+{{--        {--}}
+{{--            "@type": "ListItem",--}}
+{{--            "position": 2,--}}
+{{--            "item": {--}}
+{{--                "@type": "ImageObject",--}}
+{{--                "contentUrl": "{{ asset('img/gallery/gallery-2.jpg') }}",--}}
+{{--                "name": "Спальня с кроватью премиум класса",--}}
+{{--                "description": "Элегантная спальня с кроватью от Emmy Furniture",--}}
+{{--                "acquireLicensePage": "{{ url('/') }}"--}}
+{{--            }--}}
+{{--        },--}}
+{{--        {--}}
+{{--            "@type": "ListItem",--}}
+{{--            "position": 3,--}}
+{{--            "item": {--}}
+{{--                "@type": "ImageObject",--}}
+{{--                "contentUrl": "{{ asset('img/gallery/gallery-3.jpg') }}",--}}
+{{--                "name": "Обеденная зона со столом и стульями",--}}
+{{--                "description": "Современная обеденная группа в столовой",--}}
+{{--                "acquireLicensePage": "{{ url('/') }}"--}}
+{{--            }--}}
+{{--        }--}}
+{{--    ]--}}
+{{--}--}}
+{{--</script>--}}

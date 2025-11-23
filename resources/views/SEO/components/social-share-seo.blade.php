@@ -35,68 +35,68 @@
     <p><strong>Ключевые слова:</strong> поделиться в соцсетях, социальные кнопки, мебель мюнхен, Emmy Furniture, Facebook, Twitter, Instagram, Pinterest, социальный шаринг</p>
 </div>
 
-<!-- Structured Data for Social Sharing -->
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "Поделиться в социальных сетях - Emmy Furniture Munich",
-        "description": "Кнопки для sharing контента о мебели в социальных сетях",
-        "url": "{{ url()->current() }}",
-    "mainEntity": {
-        "@type": "ShareAction",
-        "name": "Поделиться мебелью Emmy Furniture",
-        "description": "Sharing информации о качественной мебели из Мюнхена",
-        "instrument": [
-            {
-                "@type": "ChooseAction",
-                "name": "Выбор социальной сети",
-                "actionOption": [
-                    {
-                        "@type": "Action",
-                        "name": "Поделиться в Facebook",
-                        "url": "https://www.facebook.com/sharer/sharer.php?u={{ url()->current() }}"
-                    },
-                    {
-                        "@type": "Action",
-                        "name": "Поделиться в Twitter",
-                        "url": "https://twitter.com/intent/tweet?url={{ url()->current() }}&text=Посмотрите%20качественную%20мебель%20от%20Emmy%20Furniture%20Munich"
-                    },
-                    {
-                        "@type": "Action",
-                        "name": "Поделиться в Instagram",
-                        "url": "https://www.instagram.com/"
-                    },
-                    {
-                        "@type": "Action",
-                        "name": "Сохранить в Pinterest",
-                        "url": "https://pinterest.com/pin/create/button/?url={{ url()->current() }}"
-                    }
-                ]
-            }
-        ],
-        "object": {
-            "@type": "Product",
-            "name": "Мебель Emmy Furniture Munich",
-            "description": "Качественная мебель для дома и офиса в Мюнхене"
-        }
-    }
-}
-</script>
+{{--<!-- Structured Data for Social Sharing -->--}}
+{{--<script type="application/ld+json">--}}
+{{--    {--}}
+{{--        "@context": "https://schema.org",--}}
+{{--        "@type": "WebPage",--}}
+{{--        "name": "Поделиться в социальных сетях - Emmy Furniture Munich",--}}
+{{--        "description": "Кнопки для sharing контента о мебели в социальных сетях",--}}
+{{--        "url": "{{ url()->current() }}",--}}
+{{--    "mainEntity": {--}}
+{{--        "@type": "ShareAction",--}}
+{{--        "name": "Поделиться мебелью Emmy Furniture",--}}
+{{--        "description": "Sharing информации о качественной мебели из Мюнхена",--}}
+{{--        "instrument": [--}}
+{{--            {--}}
+{{--                "@type": "ChooseAction",--}}
+{{--                "name": "Выбор социальной сети",--}}
+{{--                "actionOption": [--}}
+{{--                    {--}}
+{{--                        "@type": "Action",--}}
+{{--                        "name": "Поделиться в Facebook",--}}
+{{--                        "url": "https://www.facebook.com/sharer/sharer.php?u={{ url()->current() }}"--}}
+{{--                    },--}}
+{{--                    {--}}
+{{--                        "@type": "Action",--}}
+{{--                        "name": "Поделиться в Twitter",--}}
+{{--                        "url": "https://twitter.com/intent/tweet?url={{ url()->current() }}&text=Посмотрите%20качественную%20мебель%20от%20Emmy%20Furniture%20Munich"--}}
+{{--                    },--}}
+{{--                    {--}}
+{{--                        "@type": "Action",--}}
+{{--                        "name": "Поделиться в Instagram",--}}
+{{--                        "url": "https://www.instagram.com/"--}}
+{{--                    },--}}
+{{--                    {--}}
+{{--                        "@type": "Action",--}}
+{{--                        "name": "Сохранить в Pinterest",--}}
+{{--                        "url": "https://pinterest.com/pin/create/button/?url={{ url()->current() }}"--}}
+{{--                    }--}}
+{{--                ]--}}
+{{--            }--}}
+{{--        ],--}}
+{{--        "object": {--}}
+{{--            "@type": "Product",--}}
+{{--            "name": "Мебель Emmy Furniture Munich",--}}
+{{--            "description": "Качественная мебель для дома и офиса в Мюнхене"--}}
+{{--        }--}}
+{{--    }--}}
+{{--}--}}
+{{--</script>--}}
 
-<!-- Social Media Structured Data -->
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "Emmy Furniture Munich",
-        "url": "{{ url('/') }}",
-    "logo": "{{ asset('img/web/logo-emmy.png') }}",
-    "sameAs": [
-        "https://www.facebook.com/emmyfurnituremunich",
-        "https://www.twitter.com/emmyfurniture",
-        "https://www.instagram.com/emmyfurnituremunich",
-        "https://www.pinterest.com/emmyfurniture"
-    ]
-}
-</script>
+{{--<!-- Social Media Structured Data -->--}}
+{{--<script type="application/ld+json">--}}
+{{--    {--}}
+{{--        "@context": "https://schema.org",--}}
+{{--        "@type": "Organization",--}}
+{{--        "name": "Emmy Furniture Munich",--}}
+{{--        "url": "{{ url('/') }}",--}}
+{{--    "logo": "{{ asset('img/web/logo-emmy.png') }}",--}}
+{{--    "sameAs": [--}}
+{{--        "https://www.facebook.com/emmyfurnituremunich",--}}
+{{--        "https://www.twitter.com/emmyfurniture",--}}
+{{--        "https://www.instagram.com/emmyfurnituremunich",--}}
+{{--        "https://www.pinterest.com/emmyfurniture"--}}
+{{--    ]--}}
+{{--}--}}
+{{--</script>--}}

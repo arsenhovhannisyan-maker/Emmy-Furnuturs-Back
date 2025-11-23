@@ -49,177 +49,177 @@
     <p><strong>Ключевые слова:</strong> о компании Emmy Furniture, история мебельного магазина мюнхен, миссия компании, ценности мебельного бренда, достижения Emmy Furniture, философия компании, развитие мебельного бизнеса</p>
 </div>
 
-<!-- Structured Data for About Page -->
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "AboutPage",
-        "name": "О компании - Emmy Furniture Munich",
-        "description": "История, миссия и ценности мебельного магазина Emmy Furniture в Мюнхене",
-        "url": "{{ url()->current() }}",
-    "mainEntity": {
-        "@type": "Organization",
-        "name": "Emmy Furniture Munich",
-        "alternateName": "Emmy Furniture",
-        "description": "Магазин премиальной мебели в Мюнхене с многолетней историей",
-        "url": "{{ url('/') }}",
-        "logo": "{{ asset('img/web/logo-emmy.png') }}",
-        "foundingDate": "2014",
-        "founders": [
-            {
-                "@type": "Person",
-                "name": "Основатель Emmy Furniture"
-            }
-        ],
-        "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Мюнхен",
-            "addressCountry": "DE"
-        },
-        "contactPoint": {
-            "@type": "ContactPoint",
-            "contactType": "customer service",
-            "email": "emmy-web@mail.ru",
-            "availableLanguage": ["de", "ru", "en"]
-        },
-        "numberOfEmployees": "47",
-        "slogan": "@lang('messages.america_best_furniture')",
-        "knowsAbout": [
-            "Дизайн интерьера",
-            "Мебельное производство",
-            "Качество материалов",
-            "Современные тенденции мебели",
-            "Обустройство жилых пространств"
-        ]
-    }
-}
-</script>
+{{--<!-- Structured Data for About Page -->--}}
+{{--<script type="application/ld+json">--}}
+{{--    {--}}
+{{--        "@context": "https://schema.org",--}}
+{{--        "@type": "AboutPage",--}}
+{{--        "name": "О компании - Emmy Furniture Munich",--}}
+{{--        "description": "История, миссия и ценности мебельного магазина Emmy Furniture в Мюнхене",--}}
+{{--        "url": "{{ url()->current() }}",--}}
+{{--    "mainEntity": {--}}
+{{--        "@type": "Organization",--}}
+{{--        "name": "Emmy Furniture Munich",--}}
+{{--        "alternateName": "Emmy Furniture",--}}
+{{--        "description": "Магазин премиальной мебели в Мюнхене с многолетней историей",--}}
+{{--        "url": "{{ url('/') }}",--}}
+{{--        "logo": "{{ asset('img/web/logo-emmy.png') }}",--}}
+{{--        "foundingDate": "2014",--}}
+{{--        "founders": [--}}
+{{--            {--}}
+{{--                "@type": "Person",--}}
+{{--                "name": "Основатель Emmy Furniture"--}}
+{{--            }--}}
+{{--        ],--}}
+{{--        "address": {--}}
+{{--            "@type": "PostalAddress",--}}
+{{--            "addressLocality": "Мюнхен",--}}
+{{--            "addressCountry": "DE"--}}
+{{--        },--}}
+{{--        "contactPoint": {--}}
+{{--            "@type": "ContactPoint",--}}
+{{--            "contactType": "customer service",--}}
+{{--            "email": "emmy-web@mail.ru",--}}
+{{--            "availableLanguage": ["de", "ru", "en"]--}}
+{{--        },--}}
+{{--        "numberOfEmployees": "47",--}}
+{{--        "slogan": "@lang('messages.america_best_furniture')",--}}
+{{--        "knowsAbout": [--}}
+{{--            "Дизайн интерьера",--}}
+{{--            "Мебельное производство",--}}
+{{--            "Качество материалов",--}}
+{{--            "Современные тенденции мебели",--}}
+{{--            "Обустройство жилых пространств"--}}
+{{--        ]--}}
+{{--    }--}}
+{{--}--}}
+{{--</script>--}}
 
-<!-- Breadcrumb Structured Data -->
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-            {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Главная",
-                "item": "{{ route('web.home') }}"
-        },
-        {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "Страницы",
-            "item": "{{ url()->current() }}"
-        },
-        {
-            "@type": "ListItem",
-            "position": 3,
-            "name": "О компании",
-            "item": "{{ url()->current() }}"
-        }
-    ]
-}
-</script>
+{{--<!-- Breadcrumb Structured Data -->--}}
+{{--<script type="application/ld+json">--}}
+{{--    {--}}
+{{--        "@context": "https://schema.org",--}}
+{{--        "@type": "BreadcrumbList",--}}
+{{--        "itemListElement": [--}}
+{{--            {--}}
+{{--                "@type": "ListItem",--}}
+{{--                "position": 1,--}}
+{{--                "name": "Главная",--}}
+{{--                "item": "{{ route('web.home') }}"--}}
+{{--        },--}}
+{{--        {--}}
+{{--            "@type": "ListItem",--}}
+{{--            "position": 2,--}}
+{{--            "name": "Страницы",--}}
+{{--            "item": "{{ url()->current() }}"--}}
+{{--        },--}}
+{{--        {--}}
+{{--            "@type": "ListItem",--}}
+{{--            "position": 3,--}}
+{{--            "name": "О компании",--}}
+{{--            "item": "{{ url()->current() }}"--}}
+{{--        }--}}
+{{--    ]--}}
+{{--}--}}
+{{--</script>--}}
 
-<!-- Organization Achievements Structured Data -->
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "ItemList",
-        "name": "Достижения Emmy Furniture Munich",
-        "description": "Ключевые показатели и достижения компании",
-        "numberOfItems": 4,
-        "itemListElement": [
-            {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Эксклюзивные модели мебели",
-                "description": "245 уникальных моделей мебели в ассортименте"
-            },
-            {
-                "@type": "ListItem",
-                "position": 2,
-                "name": "Индивидуальные проекты",
-                "description": "182 выполненных заказа по индивидуальным проектам"
-            },
-            {
-                "@type": "ListItem",
-                "position": 3,
-                "name": "Довольные клиенты",
-                "description": "Более 1267 довольных клиентов в Мюнхене"
-            },
-            {
-                "@type": "ListItem",
-                "position": 4,
-                "name": "Профессиональная команда",
-                "description": "47 специалистов в области мебели и дизайна"
-            }
-        ]
-    }
-</script>
+{{--<!-- Organization Achievements Structured Data -->--}}
+{{--<script type="application/ld+json">--}}
+{{--    {--}}
+{{--        "@context": "https://schema.org",--}}
+{{--        "@type": "ItemList",--}}
+{{--        "name": "Достижения Emmy Furniture Munich",--}}
+{{--        "description": "Ключевые показатели и достижения компании",--}}
+{{--        "numberOfItems": 4,--}}
+{{--        "itemListElement": [--}}
+{{--            {--}}
+{{--                "@type": "ListItem",--}}
+{{--                "position": 1,--}}
+{{--                "name": "Эксклюзивные модели мебели",--}}
+{{--                "description": "245 уникальных моделей мебели в ассортименте"--}}
+{{--            },--}}
+{{--            {--}}
+{{--                "@type": "ListItem",--}}
+{{--                "position": 2,--}}
+{{--                "name": "Индивидуальные проекты",--}}
+{{--                "description": "182 выполненных заказа по индивидуальным проектам"--}}
+{{--            },--}}
+{{--            {--}}
+{{--                "@type": "ListItem",--}}
+{{--                "position": 3,--}}
+{{--                "name": "Довольные клиенты",--}}
+{{--                "description": "Более 1267 довольных клиентов в Мюнхене"--}}
+{{--            },--}}
+{{--            {--}}
+{{--                "@type": "ListItem",--}}
+{{--                "position": 4,--}}
+{{--                "name": "Профессиональная команда",--}}
+{{--                "description": "47 специалистов в области мебели и дизайна"--}}
+{{--            }--}}
+{{--        ]--}}
+{{--    }--}}
+{{--</script>--}}
 
-<!-- Local Business Structured Data -->
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "FurnitureStore",
-        "name": "Emmy Furniture Munich",
-        "image": "{{ asset('img/web/logo-emmy.png') }}",
-    "@id": "{{ url('/') }}",
-    "url": "{{ url('/') }}",
-    "telephone": "+49-89-XXXX-XXXX",
-    "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Ваш адрес",
-        "addressLocality": "Мюнхен",
-        "postalCode": "80331",
-        "addressCountry": "DE"
-    },
-    "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": "48.1351",
-        "longitude": "11.5820"
-    },
-    "openingHoursSpecification": {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": [
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday"
-        ],
-        "opens": "10:00",
-        "closes": "18:00"
-    },
-    "priceRange": "€€",
-    "areaServed": {
-        "@type": "City",
-        "name": "Мюнхен"
-    },
-    "hasOfferCatalog": {
-        "@type": "OfferCatalog",
-        "name": "Услуги компании",
-        "itemListElement": [
-            {
-                "@type": "Offer",
-                "itemOffered": {
-                    "@type": "Service",
-                    "name": "Консультация по дизайну",
-                    "description": "Профессиональная консультация по подбору мебели"
-                }
-            },
-            {
-                "@type": "Offer",
-                "itemOffered": {
-                    "@type": "Service",
-                    "name": "Доставка и сборка",
-                    "description": "Полный цикл услуг по доставке и сборке мебели"
-                }
-            }
-        ]
-    }
-}
-</script>
+{{--<!-- Local Business Structured Data -->--}}
+{{--<script type="application/ld+json">--}}
+{{--    {--}}
+{{--        "@context": "https://schema.org",--}}
+{{--        "@type": "FurnitureStore",--}}
+{{--        "name": "Emmy Furniture Munich",--}}
+{{--        "image": "{{ asset('img/web/logo-emmy.png') }}",--}}
+{{--    "@id": "{{ url('/') }}",--}}
+{{--    "url": "{{ url('/') }}",--}}
+{{--    "telephone": "+49-89-XXXX-XXXX",--}}
+{{--    "address": {--}}
+{{--        "@type": "PostalAddress",--}}
+{{--        "streetAddress": "Ваш адрес",--}}
+{{--        "addressLocality": "Мюнхен",--}}
+{{--        "postalCode": "80331",--}}
+{{--        "addressCountry": "DE"--}}
+{{--    },--}}
+{{--    "geo": {--}}
+{{--        "@type": "GeoCoordinates",--}}
+{{--        "latitude": "48.1351",--}}
+{{--        "longitude": "11.5820"--}}
+{{--    },--}}
+{{--    "openingHoursSpecification": {--}}
+{{--        "@type": "OpeningHoursSpecification",--}}
+{{--        "dayOfWeek": [--}}
+{{--            "Monday",--}}
+{{--            "Tuesday",--}}
+{{--            "Wednesday",--}}
+{{--            "Thursday",--}}
+{{--            "Friday"--}}
+{{--        ],--}}
+{{--        "opens": "10:00",--}}
+{{--        "closes": "18:00"--}}
+{{--    },--}}
+{{--    "priceRange": "€€",--}}
+{{--    "areaServed": {--}}
+{{--        "@type": "City",--}}
+{{--        "name": "Мюнхен"--}}
+{{--    },--}}
+{{--    "hasOfferCatalog": {--}}
+{{--        "@type": "OfferCatalog",--}}
+{{--        "name": "Услуги компании",--}}
+{{--        "itemListElement": [--}}
+{{--            {--}}
+{{--                "@type": "Offer",--}}
+{{--                "itemOffered": {--}}
+{{--                    "@type": "Service",--}}
+{{--                    "name": "Консультация по дизайну",--}}
+{{--                    "description": "Профессиональная консультация по подбору мебели"--}}
+{{--                }--}}
+{{--            },--}}
+{{--            {--}}
+{{--                "@type": "Offer",--}}
+{{--                "itemOffered": {--}}
+{{--                    "@type": "Service",--}}
+{{--                    "name": "Доставка и сборка",--}}
+{{--                    "description": "Полный цикл услуг по доставке и сборке мебели"--}}
+{{--                }--}}
+{{--            }--}}
+{{--        ]--}}
+{{--    }--}}
+{{--}--}}
+{{--</script>--}}

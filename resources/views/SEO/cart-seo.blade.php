@@ -51,130 +51,130 @@
 </div>
 
 <!-- Structured Data for Shopping Cart Page -->
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "Корзина покупок - Emmy Furniture Munich",
-        "description": "Управление товарами в корзине перед оформлением заказа мебели",
-        "url": "{{ url()->current() }}",
-    "mainEntity": {
-        "@type": "ItemList",
-        "name": "Товары в корзине",
-        "description": "Список выбранных товаров мебели",
-        "numberOfItems": {{ $items->count() }},
-        "itemListElement": [
-    @if($items->count() > 0)
-        @foreach($items as $item)
-            {
-                "@type": "ListItem",
-                "position": {{ $loop->iteration }},
-                    "item": {
-                        "@type": "Product",
-                        "name": "{{ $item->product->name }}",
-                        "description": "{{ Str::limit(strip_tags($item->product->description), 100) }}",
-                        "image": "{{ $item->product->photo1->file_url ?? asset('images/shop/product-placeholder.png') }}",
-                        "offers": {
-                            "@type": "Offer",
-                            "price": "{{ $item->product->price }}",
-                            "priceCurrency": "USD",
-                            "availability": "https://schema.org/InStock"
-                        }
-                    }
-                }{{ !$loop->last ? ',' : '' }}
-        @endforeach
-    @endif
-    ]
-}
-}
-</script>
+{{--<script type="application/ld+json">--}}
+{{--    {--}}
+{{--        "@context": "https://schema.org",--}}
+{{--        "@type": "WebPage",--}}
+{{--        "name": "Корзина покупок - Emmy Furniture Munich",--}}
+{{--        "description": "Управление товарами в корзине перед оформлением заказа мебели",--}}
+{{--        "url": "{{ url()->current() }}",--}}
+{{--    "mainEntity": {--}}
+{{--        "@type": "ItemList",--}}
+{{--        "name": "Товары в корзине",--}}
+{{--        "description": "Список выбранных товаров мебели",--}}
+{{--        "numberOfItems": {{ $items->count() }},--}}
+{{--        "itemListElement": [--}}
+{{--    @if($items->count() > 0)--}}
+{{--        @foreach($items as $item)--}}
+{{--            {--}}
+{{--                "@type": "ListItem",--}}
+{{--                "position": {{ $loop->iteration }},--}}
+{{--                    "item": {--}}
+{{--                        "@type": "Product",--}}
+{{--                        "name": "{{ $item->product->name }}",--}}
+{{--                        "description": "{{ Str::limit(strip_tags($item->product->description), 100) }}",--}}
+{{--                        "image": "{{ $item->product->photo1->file_url ?? asset('images/shop/product-placeholder.png') }}",--}}
+{{--                        "offers": {--}}
+{{--                            "@type": "Offer",--}}
+{{--                            "price": "{{ $item->product->price }}",--}}
+{{--                            "priceCurrency": "USD",--}}
+{{--                            "availability": "https://schema.org/InStock"--}}
+{{--                        }--}}
+{{--                    }--}}
+{{--                }{{ !$loop->last ? ',' : '' }}--}}
+{{--        @endforeach--}}
+{{--    @endif--}}
+{{--    ]--}}
+{{--}--}}
+{{--}--}}
+{{--</script>--}}
 
-<!-- Breadcrumb Structured Data -->
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-            {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Главная",
-                "item": "{{ route('web.home') }}"
-        },
-        {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "Магазин мебели",
-            "item": "{{ route('web.shop') }}"
-        },
-        {
-            "@type": "ListItem",
-            "position": 3,
-            "name": "Корзина покупок",
-            "item": "{{ url()->current() }}"
-        }
-    ]
-}
-</script>
+{{--<!-- Breadcrumb Structured Data -->--}}
+{{--<script type="application/ld+json">--}}
+{{--    {--}}
+{{--        "@context": "https://schema.org",--}}
+{{--        "@type": "BreadcrumbList",--}}
+{{--        "itemListElement": [--}}
+{{--            {--}}
+{{--                "@type": "ListItem",--}}
+{{--                "position": 1,--}}
+{{--                "name": "Главная",--}}
+{{--                "item": "{{ route('web.home') }}"--}}
+{{--        },--}}
+{{--        {--}}
+{{--            "@type": "ListItem",--}}
+{{--            "position": 2,--}}
+{{--            "name": "Магазин мебели",--}}
+{{--            "item": "{{ route('web.shop') }}"--}}
+{{--        },--}}
+{{--        {--}}
+{{--            "@type": "ListItem",--}}
+{{--            "position": 3,--}}
+{{--            "name": "Корзина покупок",--}}
+{{--            "item": "{{ url()->current() }}"--}}
+{{--        }--}}
+{{--    ]--}}
+{{--}--}}
+{{--</script>--}}
 
-<!-- Shopping Action Structured Data -->
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Action",
-        "name": "Перейти к оформлению заказа",
-        "description": "Переход к оформлению заказа выбранных товаров мебели",
-        "target": {
-            "@type": "EntryPoint",
-            "urlTemplate": "{{ route('order.checkout') }}",
-        "actionPlatform": [
-            "http://schema.org/DesktopWebPlatform",
-            "http://schema.org/MobileWebPlatform"
-        ]
-    },
-    "result": {
-        "@type": "Order",
-        "name": "Заказ мебели"
-    }
-}
-</script>
+{{--<!-- Shopping Action Structured Data -->--}}
+{{--<script type="application/ld+json">--}}
+{{--    {--}}
+{{--        "@context": "https://schema.org",--}}
+{{--        "@type": "Action",--}}
+{{--        "name": "Перейти к оформлению заказа",--}}
+{{--        "description": "Переход к оформлению заказа выбранных товаров мебели",--}}
+{{--        "target": {--}}
+{{--            "@type": "EntryPoint",--}}
+{{--            "urlTemplate": "{{ route('order.checkout') }}",--}}
+{{--        "actionPlatform": [--}}
+{{--            "http://schema.org/DesktopWebPlatform",--}}
+{{--            "http://schema.org/MobileWebPlatform"--}}
+{{--        ]--}}
+{{--    },--}}
+{{--    "result": {--}}
+{{--        "@type": "Order",--}}
+{{--        "name": "Заказ мебели"--}}
+{{--    }--}}
+{{--}--}}
+{{--</script>--}}
 
-<!-- Organization Structured Data -->
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "Emmy Furniture Munich",
-        "url": "{{ url('/') }}",
-    "logo": "{{ asset('img/web/logo-emmy.png') }}",
-    "description": "Магазин премиальной мебели в Мюнхене с удобной системой онлайн-заказов",
-    "contactPoint": {
-        "@type": "ContactPoint",
-        "contactType": "customer service",
-        "email": "emmy-web@mail.ru",
-        "availableLanguage": ["de", "ru", "en"]
-    },
-    "areaServed": {
-        "@type": "City",
-        "name": "Мюнхен"
-    },
-    "makesOffer": [
-        {
-            "@type": "Offer",
-            "itemOffered": {
-                "@type": "Service",
-                "name": "Бесплатная доставка",
-                "description": "Бесплатная доставка мебели по Мюнхену при заказе от 200€"
-            }
-        },
-        {
-            "@type": "Offer",
-            "itemOffered": {
-                "@type": "Service",
-                "name": "Сборка мебели",
-                "description": "Профессиональная сборка мебели на дому"
-            }
-        }
-    ]
-}
-</script>
+{{--<!-- Organization Structured Data -->--}}
+{{--<script type="application/ld+json">--}}
+{{--    {--}}
+{{--        "@context": "https://schema.org",--}}
+{{--        "@type": "Organization",--}}
+{{--        "name": "Emmy Furniture Munich",--}}
+{{--        "url": "{{ url('/') }}",--}}
+{{--    "logo": "{{ asset('img/web/logo-emmy.png') }}",--}}
+{{--    "description": "Магазин премиальной мебели в Мюнхене с удобной системой онлайн-заказов",--}}
+{{--    "contactPoint": {--}}
+{{--        "@type": "ContactPoint",--}}
+{{--        "contactType": "customer service",--}}
+{{--        "email": "emmy-web@mail.ru",--}}
+{{--        "availableLanguage": ["de", "ru", "en"]--}}
+{{--    },--}}
+{{--    "areaServed": {--}}
+{{--        "@type": "City",--}}
+{{--        "name": "Мюнхен"--}}
+{{--    },--}}
+{{--    "makesOffer": [--}}
+{{--        {--}}
+{{--            "@type": "Offer",--}}
+{{--            "itemOffered": {--}}
+{{--                "@type": "Service",--}}
+{{--                "name": "Бесплатная доставка",--}}
+{{--                "description": "Бесплатная доставка мебели по Мюнхену при заказе от 200€"--}}
+{{--            }--}}
+{{--        },--}}
+{{--        {--}}
+{{--            "@type": "Offer",--}}
+{{--            "itemOffered": {--}}
+{{--                "@type": "Service",--}}
+{{--                "name": "Сборка мебели",--}}
+{{--                "description": "Профессиональная сборка мебели на дому"--}}
+{{--            }--}}
+{{--        }--}}
+{{--    ]--}}
+{{--}--}}
+{{--</script>--}}

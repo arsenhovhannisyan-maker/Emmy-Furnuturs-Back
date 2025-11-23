@@ -29,71 +29,71 @@
     <p><strong>Ключевые слова:</strong> {{ $product->name }} купить мюнхен, мебель {{ $product->name }}, {{ $product->categories->name }} мюнхен, премиальная мебель, магазин мебели Emmy Furniture, доставка мебели в Мюнхене</p>
 </div>
 
-<!-- Structured Data for Product -->
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Product",
-        "name": "{{ $product->name }}",
-    "description": "{{ $product->description }}",
-    "category": "{{ $product->categories->name }}",
-    "url": "{{ url()->current() }}",
-    "image": [
-    @foreach([$product->photo1, $product->photo2, $product->photo3, $product->photo4] as $photo)
-        @if($photo)"{{ $photo->file_url }}"{{ !$loop->last ? ',' : '' }}@endif
-    @endforeach
-    ],
-    "brand": {
-        "@type": "Brand",
-        "name": "Emmy Furniture Munich"
-    },
-    "offers": {
-        "@type": "Offer",
-        "price": "{{ $product->min_price }}",
-        "priceCurrency": "RUB",
-        "availability": "https://schema.org/InStock",
-        "seller": {
-            "@type": "Organization",
-            "name": "Emmy Furniture Munich"
-        }
-    }@if($product->sizes->isNotEmpty()),
-    "additionalProperty": [
-    @foreach($product->sizes as $size)
-        {
-            "@type": "PropertyValue",
-            "name": "Размер",
-            "value": "{{ $size->size }}"
-        }{{ !$loop->last ? ',' : '' }}
-    @endforeach
-    ]
-    @endif
-    }
-</script>
+{{--<!-- Structured Data for Product -->--}}
+{{--<script type="application/ld+json">--}}
+{{--    {--}}
+{{--        "@context": "https://schema.org",--}}
+{{--        "@type": "Product",--}}
+{{--        "name": "{{ $product->name }}",--}}
+{{--    "description": "{{ $product->description }}",--}}
+{{--    "category": "{{ $product->categories->name }}",--}}
+{{--    "url": "{{ url()->current() }}",--}}
+{{--    "image": [--}}
+{{--    @foreach([$product->photo1, $product->photo2, $product->photo3, $product->photo4] as $photo)--}}
+{{--        @if($photo)"{{ $photo->file_url }}"{{ !$loop->last ? ',' : '' }}@endif--}}
+{{--    @endforeach--}}
+{{--    ],--}}
+{{--    "brand": {--}}
+{{--        "@type": "Brand",--}}
+{{--        "name": "Emmy Furniture Munich"--}}
+{{--    },--}}
+{{--    "offers": {--}}
+{{--        "@type": "Offer",--}}
+{{--        "price": "{{ $product->min_price }}",--}}
+{{--        "priceCurrency": "RUB",--}}
+{{--        "availability": "https://schema.org/InStock",--}}
+{{--        "seller": {--}}
+{{--            "@type": "Organization",--}}
+{{--            "name": "Emmy Furniture Munich"--}}
+{{--        }--}}
+{{--    }@if($product->sizes->isNotEmpty()),--}}
+{{--    "additionalProperty": [--}}
+{{--    @foreach($product->sizes as $size)--}}
+{{--        {--}}
+{{--            "@type": "PropertyValue",--}}
+{{--            "name": "Размер",--}}
+{{--            "value": "{{ $size->size }}"--}}
+{{--        }{{ !$loop->last ? ',' : '' }}--}}
+{{--    @endforeach--}}
+{{--    ]--}}
+{{--    @endif--}}
+{{--    }--}}
+{{--</script>--}}
 
-<!-- Breadcrumb Structured Data -->
-<script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-            {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Главная",
-                "item": "{{ route('web.home') }}"
-        },
-        {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "Магазин",
-            "item": "{{ route('web.shop') }}"
-        },
-        {
-            "@type": "ListItem",
-            "position": 3,
-            "name": "{{ $product->name }}",
-            "item": "{{ url()->current() }}"
-        }
-    ]
-}
-</script>
+{{--<!-- Breadcrumb Structured Data -->--}}
+{{--<script type="application/ld+json">--}}
+{{--    {--}}
+{{--        "@context": "https://schema.org",--}}
+{{--        "@type": "BreadcrumbList",--}}
+{{--        "itemListElement": [--}}
+{{--            {--}}
+{{--                "@type": "ListItem",--}}
+{{--                "position": 1,--}}
+{{--                "name": "Главная",--}}
+{{--                "item": "{{ route('web.home') }}"--}}
+{{--        },--}}
+{{--        {--}}
+{{--            "@type": "ListItem",--}}
+{{--            "position": 2,--}}
+{{--            "name": "Магазин",--}}
+{{--            "item": "{{ route('web.shop') }}"--}}
+{{--        },--}}
+{{--        {--}}
+{{--            "@type": "ListItem",--}}
+{{--            "position": 3,--}}
+{{--            "name": "{{ $product->name }}",--}}
+{{--            "item": "{{ url()->current() }}"--}}
+{{--        }--}}
+{{--    ]--}}
+{{--}--}}
+{{--</script>--}}

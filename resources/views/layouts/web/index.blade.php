@@ -64,7 +64,6 @@
     }
 
     .topbar-left p {
-        color: #cbd5e1;
         margin: 0;
         font-size: 23px;
         font-weight: 500;
