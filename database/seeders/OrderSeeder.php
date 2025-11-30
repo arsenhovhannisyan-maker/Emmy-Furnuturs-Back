@@ -6,6 +6,7 @@ use App\Models\Order\Enums\OrderStatus;
 use App\Models\User\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class OrderSeeder extends Seeder
 {
@@ -39,6 +40,7 @@ class OrderSeeder extends Seeder
                 'total' => round($total, 2),
                 'subtotal' => round($subtotal, 2),
                 'tax' => round($tax, 2),
+                'order_number' => strtoupper(Str::random(10)),
                 'shipping_cost' => round($shippingCost, 2),
                 'shipping_first_name' => $this->getRandomFirstName(),
                 'shipping_last_name' => $this->getRandomLastName(),
