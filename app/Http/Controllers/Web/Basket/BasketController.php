@@ -58,16 +58,27 @@ class BasketController extends BaseController
     }
 
     // Обновить количество товара
-    public function updateQuantity(Request $request)
+    public function updateQuantity(Request $request): RedirectResponse|JsonResponse
     {
         $request->validate([
             'item_id' => 'required|exists:basket_items,id',
-            'quantity' => 'required|integer|min:1'
+            'quantity' => 'required|integer|min:1|max:1000'
         ]);
 
-        $basketItem = BasketItem::findOrFail($request->item_id);
+        $basketItem = BasketItem::with('product')->findOrFail($request->item_id);
         $basketItem->quantity = $request->quantity;
         $basketItem->save();
+
+        if ($request->wantsJson() || $request->ajax()) {
+            $lineTotal = $basketItem->quantity * $basketItem->product->price;
+            $basket = Basket::with('items.product')->firstOrCreate(['user_id' => Auth::id()]);
+            $cartTotal = $basket->items->sum(fn($i) => $i->quantity * $i->product->price);
+            return response()->json([
+                'success' => true,
+                'line_total' => $lineTotal,
+                'cart_total' => $cartTotal,
+            ]);
+        }
 
         return redirect()->back()->with('success', 'Количество обновлено');
     }

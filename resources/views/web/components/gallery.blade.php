@@ -79,7 +79,7 @@
                             <article class="thumbnail-classic block-1">
                                 <div class="thumbnail-classic-figure">
                                     <img src="${productImage}" alt="${productName}" width="370" height="315"
-                                         onerror="this.src='images/grid-gallery/image-1.jpg'"/>
+                                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'370\' height=\'315\'%3E%3Crect fill=\'%23f0f0f0\' width=\'370\' height=\'315\'/%3E%3Ctext fill=\'%23999\' x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-family=\'sans-serif\' font-size=\'16\'%3ENo image%3C/text%3E%3C/svg%3E'"/>
                                 </div>
                                 <div class="thumbnail-classic-caption">
                                     <div>

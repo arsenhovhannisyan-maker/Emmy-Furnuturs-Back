@@ -44,7 +44,7 @@
             swiper: document.querySelectorAll('.swiper-container'),
             selectFilter: $('select'),
             slick: $('.slick-slider'),
-            stepper: $('input[type="number"]'),
+            stepper: $('input[type="number"]').not('.table-cart-stepper input'),
             search: $('.ch-search'),
             searchResults: $('.ch-search-results'),
             wow: $('.wow')

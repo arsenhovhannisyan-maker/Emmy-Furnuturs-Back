@@ -9,7 +9,7 @@
 
 <script>
     const productBaseUrl = "{{ url('/product') }}";
-    const cardUrl = "{{ url('/basket') }}";
+    const cardUrl = "{{ url('/dashboard/product') }}";
 </script>
 
 <script>

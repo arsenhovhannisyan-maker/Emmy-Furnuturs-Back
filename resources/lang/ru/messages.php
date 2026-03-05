@@ -222,8 +222,9 @@ return [
     'additional_info' => 'Дополнительная информация',
     'delivery_payment' => 'Доставка и оплата',
     'leave_review' => 'Оставить отзыв',
-    'please_select_size' => 'Пожалуйста, выберите размер',
-    'product_added_to_cart' => 'Товар добавлен в корзину!',
+    'please_select_size' => 'Пожалуйста, сперва выберите размер',
+    'ok' => 'ОК',
+    'product_added_to_cart' => 'Вы добавили продукт в корзину',
     // Social Media keys
     'url_copied' => 'Ссылка скопирована в буфер обмена',
     'copy_failed' => 'Не удалось скопировать ссылку',

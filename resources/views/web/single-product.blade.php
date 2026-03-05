@@ -284,6 +284,102 @@
         box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
     }
 
+    /* Modal "Выберите размер" */
+    .select-size-modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+    .select-size-modal-overlay.is-open {
+        display: flex;
+    }
+    .select-size-modal {
+        background: #fff;
+        border-radius: 12px;
+        padding: 28px 32px;
+        max-width: 400px;
+        width: 100%;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        text-align: center;
+    }
+    .select-size-modal p {
+        margin: 0 0 20px;
+        font-size: 17px;
+        color: #2c3e50;
+        line-height: 1.5;
+    }
+    .select-size-modal-close {
+        padding: 12px 28px;
+        font-size: 15px;
+        font-weight: 600;
+        border-radius: 8px;
+        border: none;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #fff;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .select-size-modal-close:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    /* Модальное окно "Товар добавлен в корзину" */
+    .added-to-cart-modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+    .added-to-cart-modal-overlay.is-open {
+        display: flex;
+    }
+    .added-to-cart-modal {
+        background: #fff;
+        border-radius: 12px;
+        padding: 28px 32px;
+        max-width: 420px;
+        width: 100%;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        text-align: center;
+    }
+    .added-to-cart-modal p {
+        margin: 0 0 20px;
+        font-size: 17px;
+        color: #2c3e50;
+        line-height: 1.5;
+    }
+    .added-to-cart-modal-close {
+        padding: 12px 28px;
+        font-size: 15px;
+        font-weight: 600;
+        border-radius: 8px;
+        border: none;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #fff;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .added-to-cart-modal-close:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
     /* Tabs */
     .tabs-custom {
         margin-top: 50px;
@@ -545,30 +641,41 @@
                 <div class="row row-30">
                     <div class="col-lg-6">
                         <div class="slick-vertical slick-product">
-                            <!-- Main Carousel -->
+                            <!-- Main Carousel (first size photos or default) -->
+                            @php
+                                $initialPhotos = $photosBySize[0] ?? [];
+                            @endphp
                             <div class="slick-slider carousel-parent" id="carousel-parent" data-items="1" data-swipe="true" data-child="#child-carousel" data-for="#child-carousel">
-                                @foreach([$product->photo1, $product->photo2, $product->photo3, $product->photo4] as $photo)
-                                    @if($photo)
-                                        <div class="item">
-                                            <div class="slick-product-figure">
-                                                <img src="{{ $photo->file_url }}" alt="" width="530" height="480"/>
-                                            </div>
+                                @forelse($initialPhotos as $photo)
+                                    <div class="item">
+                                        <div class="slick-product-figure">
+                                            <img src="{{ $photo['url'] }}" alt="" width="530" height="480"/>
                                         </div>
-                                    @endif
-                                @endforeach
+                                    </div>
+                                @empty
+                                    <div class="item">
+                                        <div class="slick-product-figure">
+                                            <img src="{{ asset('img/web/logo-emmy.png') }}" alt="" width="530" height="480"/>
+                                        </div>
+                                    </div>
+                                @endforelse
                             </div>
 
                             <!-- Thumbnails -->
                             <div class="slick-slider child-carousel slick-nav-1" id="child-carousel" data-arrows="true" data-items="3">
-                                @foreach([$product->photo1, $product->photo2, $product->photo3, $product->photo4] as $photo)
-                                    @if($photo)
-                                        <div class="item">
-                                            <div class="slick-product-figure">
-                                                <img src="{{ $photo->file_url }}" alt="" width="100" height="100" class="thumbnail"/>
-                                            </div>
+                                @forelse($initialPhotos as $photo)
+                                    <div class="item">
+                                        <div class="slick-product-figure">
+                                            <img src="{{ $photo['url'] }}" alt="" width="100" height="100" class="thumbnail"/>
                                         </div>
-                                    @endif
-                                @endforeach
+                                    </div>
+                                @empty
+                                    <div class="item">
+                                        <div class="slick-product-figure">
+                                            <img src="{{ asset('img/web/logo-emmy.png') }}" alt="" width="100" height="100" class="thumbnail"/>
+                                        </div>
+                                    </div>
+                                @endforelse
                             </div>
                         </div>
                     </div>
@@ -591,13 +698,6 @@
                                         @lang('messages.currency_rub')
                                     @endif
                                 </div>
-                                <div class="single-product-rating">
-                                    <span class="icon mdi mdi-star"></span>
-                                    <span class="icon mdi mdi-star"></span>
-                                    <span class="icon mdi mdi-star"></span>
-                                    <span class="icon mdi mdi-star"></span>
-                                    <span class="icon mdi mdi-star-half"></span>
-                                </div>
                             </div>
                             <p>{{ $product->description }}</p>
                             <hr class="hr-gray-100">
@@ -613,9 +713,10 @@
                                         <option value="">@lang('messages.choose_size')</option>
                                         @foreach($product->sizes as $size)
                                             <option value="{{ $size->id }}"
+                                                    data-size-index="{{ $loop->index }}"
                                                     data-price="{{ $size->price }}"
                                                     data-formatted-price="{{ $size->formatted_price ?? number_format($size->price, 0, '', ' ') }}">
-                                                {{ $size->size }} - {{ $size->formatted_price ?? number_format($size->price, 0, '', ' ') }} @lang('messages.currency_rub')
+                                                {{ $size->size }} — {{ $size->formatted_price ?? number_format($size->price, 0, '', ' ') }} @lang('messages.currency_rub')
                                             </option>
                                         @endforeach
                                     </select>
@@ -713,79 +814,156 @@
         <!--SEO-->
         @include('SEO.product-seo')
 
+        @if($product->sizes->isNotEmpty())
+        <!-- Модальное окно: выберите размер -->
+        <div class="select-size-modal-overlay" id="select-size-modal" role="dialog" aria-modal="true" aria-labelledby="select-size-modal-title">
+            <div class="select-size-modal">
+                <p id="select-size-modal-title">@lang('messages.please_select_size')</p>
+                <button type="button" class="select-size-modal-close" id="select-size-modal-close">@lang('messages.ok')</button>
+            </div>
+        </div>
+        @endif
+
+        <!-- Модальное окно: товар добавлен в корзину -->
+        <div class="added-to-cart-modal-overlay" id="added-to-cart-modal" role="dialog" aria-modal="true" aria-labelledby="added-to-cart-modal-title">
+            <div class="added-to-cart-modal">
+                <p id="added-to-cart-modal-title">@lang('messages.product_added_to_cart')</p>
+                <button type="button" class="added-to-cart-modal-close" id="added-to-cart-modal-close">@lang('messages.ok')</button>
+            </div>
+        </div>
+
     </div>
 </x-web-layout>
 
 <script>
+    window.productPhotosBySize = @json($photosBySize ?? []);
+
     document.addEventListener('DOMContentLoaded', function () {
-        // Initialize carousels
-        const mainCarousel = document.querySelector('#carousel-parent');
-        const thumbnails = document.querySelectorAll('.child-carousel .thumbnail');
-
-        if (!mainCarousel || thumbnails.length === 0) return;
-
-        if (typeof $ !== 'undefined' && !$(mainCarousel).hasClass('slick-initialized')) {
-            $(mainCarousel).slick({
-                slidesToShow: 1,
-                slidesToScroll: 1,
-                arrows: true,
-                fade: false,
-                asNavFor: '#child-carousel',
-            });
-
-            $('#child-carousel').slick({
-                slidesToShow: 3,
-                slidesToScroll: 1,
-                asNavFor: '#carousel-parent',
-                focusOnSelect: true,
-                arrows: true,
-                vertical: false,
-            });
-        }
-
-        // Highlight the first thumbnail safely
-        thumbnails[0].classList.add('slick-current');
-
-        // Add click events for thumbnails
-        thumbnails.forEach((thumb, index) => {
-            thumb.addEventListener('click', function () {
-                thumbnails.forEach(t => t.classList.remove('slick-current'));
-                thumb.classList.add('slick-current');
-
-                if (typeof $ !== 'undefined' && $(mainCarousel).hasClass('slick-initialized')) {
-                    $(mainCarousel).slick('slickGoTo', index);
-                } else {
-                    mainCarousel.querySelectorAll('.item').forEach((item, i) => {
-                        item.style.display = i === index ? 'block' : 'none';
-                    });
-                }
-            });
-        });
-
-        // Size selection handler
+        const mainCarouselEl = document.querySelector('#carousel-parent');
+        const childCarouselEl = document.getElementById('child-carousel');
         const sizeSelect = document.getElementById('size-select');
         const sizeIdHidden = document.getElementById('size-id-hidden');
         const priceDisplay = document.getElementById('price-display');
 
+        function initCarousels() {
+            if (!mainCarouselEl || !childCarouselEl) return;
+            const thumbnails = childCarouselEl.querySelectorAll('.thumbnail');
+            if (thumbnails.length === 0) return;
+
+            if (typeof $ !== 'undefined' && !$(mainCarouselEl).hasClass('slick-initialized')) {
+                $(mainCarouselEl).slick({
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    arrows: true,
+                    fade: false,
+                    asNavFor: '#child-carousel',
+                });
+                $('#child-carousel').slick({
+                    slidesToShow: Math.min(3, thumbnails.length),
+                    slidesToScroll: 1,
+                    asNavFor: '#carousel-parent',
+                    focusOnSelect: true,
+                    arrows: true,
+                    vertical: false,
+                });
+            }
+            thumbnails.forEach((t, i) => t.classList.toggle('slick-current', i === 0));
+        }
+
+        function switchPhotosBySize(sizeIndex) {
+            var photosBySize = window.productPhotosBySize;
+            if (!photosBySize || !mainCarouselEl || !childCarouselEl) return;
+
+            var photos = photosBySize[sizeIndex];
+            if (!photos || !photos.length) {
+                // Нет фото у этого размера — пробуем любое фото с других размеров
+                for (var i = 0; i < photosBySize.length; i++) {
+                    if (photosBySize[i] && photosBySize[i].length) {
+                        photos = photosBySize[i];
+                        break;
+                    }
+                }
+                if (!photos || !photos.length) return;
+            }
+
+            // Полностью сносим Slick, чтобы не осталось обёрток
+            if (typeof $ !== 'undefined') {
+                try {
+                    var $main = $(mainCarouselEl);
+                    var $child = $(childCarouselEl);
+                    if ($main.hasClass('slick-initialized')) { $main.slick('unslick'); }
+                    if ($child.hasClass('slick-initialized')) { $child.slick('unslick'); }
+                } catch (e) {}
+            }
+
+            var mainHtml = photos.map(function(p) {
+                return '<div class="item"><div class="slick-product-figure"><img src="' + p.url + '" alt="" width="530" height="480"/></div></div>';
+            }).join('');
+            var thumbHtml = photos.map(function(p) {
+                return '<div class="item"><div class="slick-product-figure"><img src="' + p.url + '" alt="" width="100" height="100" class="thumbnail"/></div></div>';
+            }).join('');
+
+            mainCarouselEl.innerHTML = mainHtml;
+            childCarouselEl.innerHTML = thumbHtml;
+
+            // Даём DOM обновиться, потом снова поднимаем карусель
+            setTimeout(function() {
+                initCarousels();
+            }, 50);
+        }
+
+        initCarousels();
+
+        // Синхронизация фото с выбранным размером (главное фото + превью)
+        function syncPhotosToSelectedSize() {
+            if (!sizeSelect || sizeSelect.value === '') return;
+            var opt = sizeSelect.options[sizeSelect.selectedIndex];
+            if (!opt) return;
+            var idx = opt.getAttribute('data-size-index');
+            if (idx === null || idx === '') return;
+            var sizeIndex = parseInt(idx, 10);
+            if (!isNaN(sizeIndex)) switchPhotosBySize(sizeIndex);
+        }
+
+        // Если размер один — выбрать его сразу
+        if (sizeSelect && sizeSelect.options.length === 2) {
+            sizeSelect.selectedIndex = 1;
+            sizeIdHidden.value = sizeSelect.value;
+            if (priceDisplay) {
+                var fp = sizeSelect.options[1].getAttribute('data-formatted-price');
+                if (fp) priceDisplay.innerHTML = fp + ' @lang('messages.currency_rub')';
+            }
+            syncPhotosToSelectedSize();
+        }
+
+        // После загрузки скриптов layout — подстроить фото под выбранный размер (напр. 1000x800)
+        setTimeout(function() {
+            if (sizeSelect && sizeSelect.value) syncPhotosToSelectedSize();
+        }, 250);
+
+        // При смене размера — сразу меняем главное фото и превью
         if (sizeSelect) {
             sizeSelect.addEventListener('change', function() {
-                const selectedOption = this.options[this.selectedIndex];
-                const sizeId = this.value;
-                const price = selectedOption.getAttribute('data-price');
-                const formattedPrice = selectedOption.getAttribute('data-formatted-price');
+                var selectedOption = this.options[this.selectedIndex];
+                var sizeId = this.value;
+                var sizeIndexRaw = selectedOption ? selectedOption.getAttribute('data-size-index') : null;
+                var price = selectedOption ? selectedOption.getAttribute('data-price') : null;
+                var formattedPrice = selectedOption ? selectedOption.getAttribute('data-formatted-price') : null;
 
-                // Update hidden field with size ID
-                sizeIdHidden.value = sizeId;
+                sizeIdHidden.value = sizeId || '';
 
-                // Update price display
+                if (sizeId && sizeIndexRaw !== null && sizeIndexRaw !== '') {
+                    var sizeIndex = parseInt(sizeIndexRaw, 10);
+                    if (!isNaN(sizeIndex)) {
+                        switchPhotosBySize(sizeIndex);
+                    }
+                }
+
                 if (sizeId && price && formattedPrice) {
                     priceDisplay.innerHTML = formattedPrice + ' @lang('messages.currency_rub')';
                     priceDisplay.classList.add('price-update');
-                    setTimeout(() => {
-                        priceDisplay.classList.remove('price-update');
-                    }, 500);
+                    setTimeout(function() { priceDisplay.classList.remove('price-update'); }, 500);
                 } else {
-                    // Reset to original price if no size selected
                     resetPriceDisplay();
                 }
             });
@@ -842,7 +1020,8 @@
 
             // Check if size is selected (if sizes exist)
             if (sizeSelect && sizeSelect.value === '') {
-                alert('@lang('messages.please_select_size')');
+                const modal = document.getElementById('select-size-modal');
+                if (modal) modal.classList.add('is-open');
                 return;
             }
 
@@ -857,10 +1036,43 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    alert(data.message || "@lang('messages.product_added_to_cart')");
+                    const modal = document.getElementById('added-to-cart-modal');
+                    const textEl = document.getElementById('added-to-cart-modal-title');
+                    if (textEl) textEl.textContent = data.message || "@lang('messages.product_added_to_cart')";
+                    if (modal) modal.classList.add('is-open');
                 })
                 .catch(error => console.error('Error:', error));
         });
+
+        // Закрытие модалки "Выберите размер"
+        const selectSizeModal = document.getElementById('select-size-modal');
+        const selectSizeModalClose = document.getElementById('select-size-modal-close');
+        if (selectSizeModal) {
+            function closeSelectSizeModal() {
+                selectSizeModal.classList.remove('is-open');
+            }
+            if (selectSizeModalClose) {
+                selectSizeModalClose.addEventListener('click', closeSelectSizeModal);
+            }
+            selectSizeModal.addEventListener('click', function(e) {
+                if (e.target === selectSizeModal) closeSelectSizeModal();
+            });
+        }
+
+        // Закрытие модалки "Товар добавлен в корзину"
+        const addedToCartModal = document.getElementById('added-to-cart-modal');
+        const addedToCartModalClose = document.getElementById('added-to-cart-modal-close');
+        if (addedToCartModal) {
+            function closeAddedToCartModal() {
+                addedToCartModal.classList.remove('is-open');
+            }
+            if (addedToCartModalClose) {
+                addedToCartModalClose.addEventListener('click', closeAddedToCartModal);
+            }
+            addedToCartModal.addEventListener('click', function(e) {
+                if (e.target === addedToCartModal) closeAddedToCartModal();
+            });
+        }
     });
 
     document.addEventListener('DOMContentLoaded', function() {

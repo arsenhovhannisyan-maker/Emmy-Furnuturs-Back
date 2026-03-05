@@ -43,20 +43,16 @@
                                     </a>
                                     <a class="table-cart-link" href="{{ route('dashboard.web.product', $item->product->id) }}">{{ $item->product->name }}</a>
                                 </td>
-                                <td>${{ number_format($item->product->price, 2) }}</td>
+                                <td>{{ number_format($item->product->price, 2) }} @lang('messages.currency_rub')</td>
                                 <td>
-                                    <div class="table-cart-stepper">
-                                        <form action="{{ route('basket.update') }}" method="POST" class="d-inline">
-                                            @csrf
-                                            <input type="hidden" name="item_id" value="{{ $item->id }}">
-                                            <div class="input-group" style="max-width: 150px;">
-                                                <input class="form-input form-control" type="number" name="quantity" value="{{ $item->quantity }}" min="1" max="1000" style="text-align: center;">
-                                                <button type="submit" class="button button-sm button-primary ms-2">@lang('messages.update')</button>
-                                            </div>
-                                        </form>
+                                    <div class="table-cart-stepper" data-item-id="{{ $item->id }}">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <button type="button" class="cart-qty-btn cart-qty-minus" aria-label="-">−</button>
+                                        <input class="form-input form-control cart-qty-input" type="number" name="quantity" value="{{ $item->quantity }}" min="1" max="1000" style="text-align: center;">
+                                        <button type="button" class="cart-qty-btn cart-qty-plus" aria-label="+">+</button>
                                     </div>
                                 </td>
-                                <td>${{ number_format($item->quantity * $item->product->price, 2) }}</td>
+                                <td class="cart-row-total" data-item-id="{{ $item->id }}">{{ number_format($item->quantity * $item->product->price, 2) }} @lang('messages.currency_rub')</td>
                                 <td>
                                     <button type="button" class="btn-delete" data-item-id="{{ $item->id }}" data-item-name="{{ $item->product->name }}">
                                         <span class="mdi mdi-trash-can-outline" aria-hidden="true"></span>
@@ -69,8 +65,8 @@
                                     <div class="empty-cart">
                                         <i class="mdi mdi-cart-off" style="font-size: 48px; color: #ccc; margin-bottom: 16px;"></i>
                                         <p class="text-muted">@lang('messages.cart_empty')</p>
-                                        <a href="{{ route('web.shop') }}" class="button button-primary button-zakaria">
-                                            @lang('messages.continue_shopping')
+                                        <a href="{{ route('web.products') }}" class="button button-primary button-zakaria">
+                                            Покупать товары
                                         </a>
                                     </div>
                                 </td>
@@ -87,7 +83,7 @@
                                 <div>
                                     <div class="group-md group-middle">
                                         <div class="heading-5 font-weight-medium text-gray-500">@lang('messages.total')</div>
-                                        <div class="heading-3 font-weight-normal">${{ number_format($total, 2) }}</div>
+                                        <div class="heading-3 font-weight-normal" id="cart-total-amount">{{ number_format($total, 2) }} @lang('messages.currency_rub')</div>
                                     </div>
                                 </div>
                                 <a class="button button-lg button-primary button-zakaria" href="{{ route('order.checkout') }}">@lang('messages.proceed_to_checkout')</a>
@@ -162,6 +158,38 @@
 
         .btn-delete .mdi {
             font-size: 18px;
+        }
+
+        /* Quantity stepper (- / +) */
+        .table-cart-stepper {
+            display: inline-flex;
+            align-items: center;
+            gap: 0;
+            max-width: 150px;
+        }
+        .cart-qty-btn {
+            width: 36px;
+            height: 36px;
+            border: 1px solid #e0e0e0;
+            background: #f8f9fa;
+            font-size: 18px;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+            transition: all 0.2s ease;
+        }
+        .cart-qty-btn:hover {
+            background: #e9ecef;
+            border-color: #dee2e6;
+        }
+        .cart-qty-input {
+            width: 56px;
+            height: 36px;
+            margin: 0 -1px;
+            border-radius: 0;
         }
 
         /* Empty Cart Styles */
@@ -389,21 +417,71 @@
                 }
             });
 
-            // Добавляем обработчик для форм обновления количества
-            document.querySelectorAll('form[action="{{ route("basket.update") }}"]').forEach(form => {
-                form.addEventListener('submit', function(e) {
-                    const quantityInput = this.querySelector('input[name="quantity"]');
-                    const quantity = parseInt(quantityInput.value);
+            // Обновление количества по +/- без перезагрузки
+            const updateUrl = "{{ route('basket.update') }}";
+            const currencyLabel = " @lang('messages.currency_rub')";
 
-                    if (quantity < 1) {
-                        e.preventDefault();
-                        quantityInput.value = 1;
-                    }
+            function sendQuantityUpdate(itemId, quantity) {
+                const formData = new FormData();
+                formData.append('_token', document.querySelector('input[name="_token"]').value);
+                formData.append('item_id', itemId);
+                formData.append('quantity', String(quantity));
 
-                    if (quantity > 1000) {
-                        e.preventDefault();
-                        quantityInput.value = 1000;
+                return fetch(updateUrl, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
                     }
+                }).then(r => r.json());
+            }
+
+            function updateCartDisplay(itemId, lineTotal, cartTotal) {
+                const rowTotalEl = document.querySelector('.cart-row-total[data-item-id="' + itemId + '"]');
+                if (rowTotalEl) {
+                    rowTotalEl.textContent = Number(lineTotal).toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + currencyLabel;
+                }
+                const cartTotalEl = document.getElementById('cart-total-amount');
+                if (cartTotalEl) {
+                    cartTotalEl.textContent = Number(cartTotal).toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + currencyLabel;
+                }
+            }
+
+            document.querySelectorAll('.table-cart-stepper').forEach(stepper => {
+                const itemId = stepper.getAttribute('data-item-id');
+                const input = stepper.querySelector('.cart-qty-input');
+                const minusBtn = stepper.querySelector('.cart-qty-minus');
+                const plusBtn = stepper.querySelector('.cart-qty-plus');
+
+                function applyQuantity(newQty) {
+                    newQty = Math.max(1, Math.min(1000, parseInt(newQty, 10) || 1));
+                    input.value = newQty;
+                    sendQuantityUpdate(itemId, newQty)
+                        .then(data => {
+                            if (data.success) {
+                                updateCartDisplay(itemId, data.line_total, data.cart_total);
+                            }
+                        })
+                        .catch(err => console.error(err));
+                }
+
+                minusBtn.addEventListener('click', function() {
+                    const q = parseInt(input.value, 10) || 1;
+                    if (q > 1) applyQuantity(q - 1);
+                });
+
+                plusBtn.addEventListener('click', function() {
+                    const q = parseInt(input.value, 10) || 1;
+                    if (q < 1000) applyQuantity(q + 1);
+                });
+
+                input.addEventListener('change', function() {
+                    let q = parseInt(this.value, 10);
+                    if (isNaN(q) || q < 1) q = 1;
+                    if (q > 1000) q = 1000;
+                    this.value = q;
+                    applyQuantity(q);
                 });
             });
         });

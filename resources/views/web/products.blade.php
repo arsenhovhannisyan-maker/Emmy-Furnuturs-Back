@@ -421,13 +421,14 @@
                                         <div class="ch-range-wrap">
                                             <div class="ch-range-title">@lang('messages.price'):</div>
                                             <div class="ch-range-form-wrap">
-                                                <span>$</span>
                                                 <input id="min_price" class="ch-range-input ch-range-input-value-1" type="text" name="min_price">
+                                                <span>руб.</span>
+                                        
                                             </div>
                                             <div class="ch-range-divider"></div>
                                             <div class="ch-range-form-wrap">
-                                                <span>$</span>
                                                 <input id="max_price" class="ch-range-input ch-range-input-value-2" type="text" name="max_price">
+                                                <span>руб.</span>
                                             </div>
                                         </div>
                                     </div>
@@ -545,9 +546,9 @@
                                                         </h4>
                                                         <div class="product-price-wrap">
                                                             @if($product->old_price && $product->old_price > $product->price)
-                                                                <div class="product-price product-price-old">${{ number_format($product->old_price, 2) }}</div>
+                                                                <div class="product-price product-price-old">{{ number_format($product->old_price, 2) }} @lang('messages.currency_rub')</div>
                                                             @endif
-                                                            <div class="product-price">${{ number_format($product->price, 2) }}</div>
+                                                            <div class="product-price">{{ number_format($product->price, 2) }} @lang('messages.currency_rub')</div>
                                                         </div>
                                                         <p class="product-modern-text">{{ Str::limit($product->description, 100) }}</p>
                                                         <form action="{{ route('basket.add') }}" method="POST">
@@ -579,9 +580,11 @@
                         </div>
 
                         @if(isset($products) && $products instanceof \Illuminate\Pagination\LengthAwarePaginator && $products->hasPages())
-                            <div class="mt-5">
+                            <div class="mt-5" id="products-pagination">
                                 {{ $products->links('vendor.pagination.bootstrap-5') }}
                             </div>
+                        @else
+                            <div class="mt-5" id="products-pagination"></div>
                         @endif
                     </div>
                 </div>
@@ -605,8 +608,12 @@
         const categoryAll = document.querySelector('#category-all');
         const categoryCheckboxes = document.querySelectorAll('.category-filter');
         const filterUrl = "{{ route('web.shop.filter') }}";
-        const productBaseUrl = "{{ url('/product') }}";
-        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
+        @php
+            $productRouteTemplate = preg_replace('#/\d+$#', '/__ID__', route('dashboard.web.product', ['id' => 1]));
+        @endphp
+        const productUrlTemplate = "{{ $productRouteTemplate }}";
+        const currencyLabel = " @lang('messages.currency_rub')";
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}';
 
         if (!filterButton || !productsContainer) return;
 
@@ -669,7 +676,7 @@
                 }
 
                 const data = await response.json();
-                renderProducts(data.products || []);
+                renderProducts(data.products || [], data.pagination, { total: data.total, from: data.from, to: data.to });
             } catch (err) {
                 console.error('Error fetching products:', err);
                 showError('@lang('messages.loading_error')');
@@ -681,8 +688,11 @@
         // Обработчик кнопки фильтра
         filterButton.addEventListener('click', applyFilters);
 
-        function renderProducts(products) {
+        function renderProducts(products, paginationHtml, meta) {
             productsContainer.innerHTML = '';
+
+            const paginationEl = document.getElementById('products-pagination');
+            if (paginationEl) paginationEl.innerHTML = paginationHtml || '';
 
             if (!Array.isArray(products) || products.length === 0) {
                 productsContainer.innerHTML = `
@@ -697,7 +707,13 @@
                 return;
             }
 
-            if (resultsText) {
+            if (resultsText && meta && meta.total != null) {
+                const start = meta.from != null ? meta.from : 1;
+                const end = meta.to != null ? meta.to : products.length;
+                const total = meta.total;
+                resultsText.textContent = '@lang('messages.showing_results', ['start' => '__START__', 'end' => '__END__', 'total' => '__TOTAL__'])'
+                    .replace('__START__', start).replace('__END__', end).replace('__TOTAL__', total);
+            } else if (resultsText) {
                 resultsText.textContent = `Showing ${products.length} product(s)`;
             }
 
@@ -720,12 +736,12 @@
                     : 0;
 
                 const oldPriceHtml = hasDiscount
-                    ? `<div class="product-price product-price-old">$${Number(product.old_price).toFixed(2)}</div>`
+                    ? `<div class="product-price product-price-old">${Number(product.old_price).toFixed(2)}${currencyLabel}</div>`
                     : '';
 
-                const priceHtml = `<div class="product-price">$${Number(product.price).toFixed(2)}</div>`;
+                const priceHtml = `<div class="product-price">${Number(product.price).toFixed(2)}${currencyLabel}</div>`;
                 const photoUrl = product.photo1?.file_url || '{{ asset("images/shop/product-placeholder.png") }}';
-                const productUrl = `${productBaseUrl}/${encodeURIComponent(product.id)}`;
+                const productUrl = productUrlTemplate.replace('__ID__', String(product.id));
 
                 const formHtml = `
                     <form action="{{ route('basket.add') }}" method="POST">

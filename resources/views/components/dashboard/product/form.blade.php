@@ -111,7 +111,7 @@
     <script>
 
         const categoriesUrl = "{{ route('dashboard.categories.list') }}";
-        const existingSizes = @json($sizes ?? []); // Pass existing sizes from controller
+        const existingSizes = @json($sizes ?? []); 
         let currentRowCount = 0;
         let availablePhotos = Array.from({length: 48}, (_, i) => i + 1);
 
@@ -119,20 +119,29 @@
             const sizesContainer = document.getElementById('sizes-container');
             const addSizeBtn = document.getElementById('add-size-row');
             const template = document.getElementById('size-row-template');
+            const allPhotoComponents = document.querySelector('.all-photo-components');
 
-            // Функция для вычисления стартового номера фото для строки
             function getStartPhotoForRow(rowIndex) {
                 return (rowIndex * 6) + 1;
             }
 
-            // Функция создания строки размера
+            function moveContainerToPool(container) {
+                if (!container || !allPhotoComponents) return;
+                const num = container.id.replace('photo-container-', '');
+                if (num && !availablePhotos.includes(parseInt(num, 10))) {
+                    availablePhotos.push(parseInt(num, 10));
+                    availablePhotos.sort((a, b) => a - b);
+                }
+                container.style.display = 'none';
+                allPhotoComponents.appendChild(container);
+            }
+
             function createSizeRow(rowIndex, sizeData = null) {
                 const startPhoto = getStartPhotoForRow(rowIndex);
                 let newRowHTML = template.innerHTML
                     .replace(/__index__/g, rowIndex)
                     .replace(/__start_photo__/g, startPhoto);
 
-                // Если есть данные существующего размера, подставляем их
                 if (sizeData) {
                     newRowHTML = newRowHTML
                         .replace(/__size_id__/g, sizeData.id || '')
@@ -150,7 +159,6 @@
                 return tempDiv.firstElementChild;
             }
 
-            // Добавление новой строки
             function addSizeRow(sizeData = null) {
                 if (currentRowCount >= 8) {
                     Swal.fire({
@@ -168,26 +176,21 @@
                 currentRowCount++;
             }
 
-            // Инициализация существующих размеров
             function initializeExistingSizes() {
                 if (existingSizes && existingSizes.length > 0) {
                     existingSizes.forEach((size, index) => {
                         addSizeRow(size);
                     });
                 } else {
-                    // Если нет существующих размеров, добавляем пустую строку
                     addSizeRow();
                 }
             }
 
-            // Добавление новой строки по кнопке
             addSizeBtn.addEventListener('click', function() {
                 addSizeRow();
             });
 
-            // Делегирование событий
             sizesContainer.addEventListener('click', function(e) {
-                // Удаление строки
                 if (e.target.closest('.remove-size-row')) {
                     const row = e.target.closest('.size-row');
                     hideAllPhotosInRow(row);
@@ -197,7 +200,6 @@
                     return;
                 }
 
-                // Добавление фото
                 if (e.target.closest('.add-photo-btn')) {
                     const row = e.target.closest('.size-row');
                     const photosRow = row.querySelector('.photos-row');
@@ -205,45 +207,32 @@
                     return;
                 }
 
-                // Удаление фото
                 if (e.target.closest('.remove-photo')) {
                     const photoItem = e.target.closest('.photo-item');
-                    const photoNumber = photoItem.dataset.photoNumber;
-                    hidePhotoComponent(photoNumber);
+                    const container = getContainerFromPhotoItem(photoItem);
+                    if (container) moveContainerToPool(container);
                     photoItem.remove();
+                    return;
                 }
             });
 
-            // Показать компонент фото
-            function showPhotoComponent(photoNumber) {
-                const container = document.getElementById('photo-container-' + photoNumber);
-                if (container) {
-                    container.style.display = 'block';
-                    const index = availablePhotos.indexOf(photoNumber);
-                    if (index > -1) {
-                        availablePhotos.splice(index, 1);
-                    }
-                }
+            function getContainerFromPhotoItem(photoItem) {
+                const wrap = photoItem.querySelector('.current-photo-container');
+                return wrap ? wrap.querySelector('.photo-component-container') : null;
             }
 
-            // Скрыть компонент фото
             function hidePhotoComponent(photoNumber) {
                 const container = document.getElementById('photo-container-' + photoNumber);
                 if (container) {
-                    container.style.display = 'none';
-                    if (!availablePhotos.includes(photoNumber)) {
-                        availablePhotos.push(photoNumber);
-                        availablePhotos.sort((a, b) => a - b);
-                    }
+                    moveContainerToPool(container);
                 }
             }
 
-            // Скрыть все фото в строке
             function hideAllPhotosInRow(row) {
                 const photoItems = row.querySelectorAll('.photo-item');
                 photoItems.forEach(item => {
-                    const photoNumber = item.dataset.photoNumber;
-                    hidePhotoComponent(photoNumber);
+                    const container = getContainerFromPhotoItem(item);
+                    if (container) moveContainerToPool(container);
                 });
             }
 
@@ -274,29 +263,14 @@
                     return;
                 }
 
-                if (!availablePhotos.includes(currentPhotoNumber)) {
-                    Swal.fire({
-                        icon: 'info',
-                        title: 'Фото уже используется',
-                        text: `Фото №${currentPhotoNumber} уже занято.`,
-                        confirmButtonColor: '#3085d6',
-                        confirmButtonText: 'Ок'
-                    });
-                    return;
-                }
-
                 const photoCol = document.createElement('div');
                 photoCol.className = 'photo-item d-inline-block mr-3 mb-3';
                 photoCol.dataset.photoNumber = currentPhotoNumber;
 
-                showPhotoComponent(currentPhotoNumber);
-
                 photoCol.innerHTML = `
                     <div class="form-group" style="min-width: 200px;">
                         <label class="form-label">Фото ${currentPhotoNumber}</label>
-                        <div class="current-photo-container">
-                            <!-- Компонент уже видим в основном контейнере -->
-                        </div>
+                        <div class="current-photo-container"></div>
                         <button type="button" class="btn btn-sm btn-danger mt-2 remove-photo">
                             <i class="fas fa-times"></i> Удалить
                         </button>
@@ -304,9 +278,19 @@
                 `;
 
                 photosRow.appendChild(photoCol);
+
+                var container = document.getElementById('photo-container-' + currentPhotoNumber);
+                if (container && allPhotoComponents) {
+                    var index = availablePhotos.indexOf(currentPhotoNumber);
+                    if (index > -1) availablePhotos.splice(index, 1);
+                    var target = photoCol.querySelector('.current-photo-container');
+                    if (target) {
+                        target.appendChild(container);
+                        container.style.display = 'block';
+                    }
+                }
             }
 
-            // Переиндексация всех строк после удаления
             function reindexAllRows() {
                 const allRows = document.querySelectorAll('.size-row');
                 currentRowCount = allRows.length;
@@ -316,7 +300,6 @@
                     const photosRow = row.querySelector('.photos-row');
                     photosRow.dataset.startPhoto = startPhoto;
 
-                    // Обновляем индексы в полях
                     const sizeInput = row.querySelector('input[name*="[size]"]');
                     const priceInput = row.querySelector('input[name*="[price]"]');
                     const idInput = row.querySelector('input[name*="[id]"]');
@@ -325,18 +308,19 @@
                     if (priceInput) priceInput.name = `sizes[${index}][price]`;
                     if (idInput) idInput.name = `sizes[${index}][id]`;
 
-                    // Обновляем номера фото
                     const photoItems = photosRow.querySelectorAll('.photo-item');
-                    photoItems.forEach((item, photoIndex) => {
-                        const currentPhotoNum = startPhoto + photoIndex;
-                        const label = item.querySelector('label');
-                        if (label) label.textContent = `Фото ${currentPhotoNum}`;
-                        item.dataset.photoNumber = currentPhotoNum;
+                    photoItems.forEach((item) => {
+                        const container = getContainerFromPhotoItem(item);
+                        const actualNum = container ? container.id.replace('photo-container-', '') : '';
+                        if (actualNum) {
+                            const label = item.querySelector('label');
+                            if (label) label.textContent = 'Фото ' + actualNum;
+                            item.dataset.photoNumber = actualNum;
+                        }
                     });
                 });
             }
 
-            // Инициализация существующих размеров при загрузке
             initializeExistingSizes();
         });
     </script>

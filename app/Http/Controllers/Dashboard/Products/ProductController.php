@@ -125,28 +125,53 @@ class ProductController extends BaseController
 
     public function getProduct(int $id): \Illuminate\View\View
     {
-        $product = $this->repository->find($id);
+        $product = $this->repository->find($id, ['sizes']);
         $featuredProducts = $this->repository->getFeaturedProducts($id);
+
+        // Порядок размеров как в форме: по id (первая строка формы = первый размер = фото 1–6)
+        $product->setRelation('sizes', $product->sizes->sortBy('id')->values());
 
         // Исправляем логику цен
         if ($product->sizes->isNotEmpty()) {
-            // Получаем минимальную и максимальную цены
             $minPrice = $product->sizes->min('price');
             $maxPrice = $product->sizes->max('price');
-
-            // Форматируем цены для отображения
             $product->min_price = number_format($minPrice, 0, '', ' ');
             $product->max_price = number_format($maxPrice, 0, '', ' ');
-
-            // Форматируем цены для каждого размера
             $product->sizes->each(function ($size) {
                 $size->formatted_price = number_format($size->price, 0, '', ' ');
             });
         }
 
+        // Фото по размерам: индекс 0 = фото 1–6, индекс 1 = фото 7–12, индекс 2 = 13–18 и т.д.
+        $filesByField = $product->files()->get()->keyBy('field_name');
+        $photosBySize = [];
+        if ($product->sizes->isNotEmpty()) {
+            foreach ($product->sizes as $s => $size) {
+                $photos = [];
+                for ($p = 1; $p <= 6; $p++) {
+                    $field = 'photo' . ($s * 6 + $p);
+                    $file = $filesByField->get($field);
+                    if ($file && $file->file_url) {
+                        $photos[] = ['url' => $file->file_url];
+                    }
+                }
+                $photosBySize[] = $photos;
+            }
+        } else {
+            $photos = [];
+            foreach (['photo1', 'photo2', 'photo3', 'photo4'] as $field) {
+                $file = $filesByField->get($field);
+                if ($file && $file->file_url) {
+                    $photos[] = ['url' => $file->file_url];
+                }
+            }
+            $photosBySize[] = $photos;
+        }
+
         return view('web.single-product', [
             'product' => $product,
             'featuredProducts' => $featuredProducts,
+            'photosBySize' => $photosBySize,
         ]);
     }
 }

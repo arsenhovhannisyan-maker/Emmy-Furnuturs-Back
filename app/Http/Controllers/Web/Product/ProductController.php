@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web\Product;
 use App\Contracts\Product\IProductRepository;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductFilterRequest;
+use App\Models\Categorie\Categorie;
 use App\Models\Product\Product;
 use App\Services\Product\ProductService;
 use Illuminate\Http\JsonResponse;
@@ -24,8 +25,10 @@ class ProductController extends Controller
     public function index(): View
     {
         $products = $this->repository->getPaginationProducts(6);
+        $categories = Categorie::withCount('products')->orderBy('name')->get();
+        $totalProducts = Product::count();
 
-        return view('web.products', compact('products'));
+        return view('web.products', compact('products', 'categories', 'totalProducts'));
     }
 
     public function getProductForCategories($categoryId): View
@@ -55,22 +58,26 @@ class ProductController extends Controller
 
         $categories = $request->validated('categories');
         if ($categories && is_string($categories)) {
-            $categories = explode(',', $categories);
+            $categories = array_map('intval', array_filter(explode(',', $categories)));
+        }
+        if (!is_array($categories)) {
+            $categories = [];
         }
 
         $products = Product::whereBetween('price', [$min, $max])
-            ->when($categories && !empty($categories), function($query) use ($categories) {
-                // Фильтруем по категориям
-                $query->whereHas('categories', function($q) use ($categories) {
-                    $q->whereIn('categories.id', $categories);
-                });
+            ->when(!empty($categories), function ($query) use ($categories) {
+                $query->whereIn('category_id', $categories);
             })
             ->with('photo1')
-            ->paginate(6, ['id', 'name', 'description', 'price', 'discount']);
+            ->orderByDesc('created_at')
+            ->paginate(6);
 
         return response()->json([
             'products' => $products->items(),
             'pagination' => (string) $products->links('vendor.pagination.bootstrap-5'),
+            'total' => $products->total(),
+            'from' => $products->firstItem(),
+            'to' => $products->lastItem(),
         ]);
     }
 

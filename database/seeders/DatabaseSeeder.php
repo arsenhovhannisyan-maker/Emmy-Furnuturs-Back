@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\User\User;
+use Database\Seeders\EmmyPhoto\CategorySeeder;
+use Database\Seeders\EmmyPhoto\ProductSeeder;
 use Database\Seeders\Menu\MenuSeeder;
 use Database\Seeders\RoleAndPermission\RoleAndPermissionSeeder;
 use Database\Seeders\User\AdminUserSeeder;
@@ -17,7 +19,11 @@ class DatabaseSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
         // Очищаем только основные таблицы, не трогаем order_items
-        DB::table('orders')->truncate(); // Очищаем orders
+        DB::table('orders')->truncate();
+
+        DB::table('product_sizes')->truncate();
+        DB::table('products')->truncate();
+        DB::table('categories')->truncate();
 
         DB::table('roles')->truncate();
         DB::table('permissions')->truncate();
@@ -34,6 +40,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             MenuSeeder::class,
             OrderSeeder::class,
+            CategorySeeder::class,
+            ProductSeeder::class,
         ]);
     }
 }

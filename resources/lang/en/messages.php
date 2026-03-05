@@ -215,8 +215,9 @@ return [
     'additional_info' => 'Additional information',
     'delivery_payment' => 'Delivery and payment',
     'leave_review' => 'Leave a Review',
-    'please_select_size' => 'Please select size',
-    'product_added_to_cart' => 'Product added to cart!',
+    'please_select_size' => 'Please select a size first',
+    'ok' => 'OK',
+    'product_added_to_cart' => 'You added the product to cart',
     // Social Media keys
     'url_copied' => 'URL copied to clipboard',
     'copy_failed' => 'Failed to copy URL',

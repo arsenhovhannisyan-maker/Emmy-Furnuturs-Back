@@ -19,6 +19,7 @@ class ProductFilterRequest extends FormRequest
         return [
             'min_price' => ['nullable', 'numeric', 'min:0'],
             'max_price' => ['nullable', 'numeric', 'gte:min_price'],
+            'categories' => ['nullable', 'string'], // ID категории или несколько через запятую
         ];
     }
 

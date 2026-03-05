@@ -2,7 +2,7 @@
     <!-- Swiper-->
     <section class="section swiper-container swiper-slider swiper-slider-4" data-loop="true" data-effect="fade">
         <div class="swiper-wrapper">
-            <div class="swiper-slide swiper-slide-1" data-slide-bg="{{ asset('img/img.png') }}">
+            <div class="swiper-slide swiper-slide-1" data-slide-bg="{{ asset('img/Carusel1.jpg') }}">
                 <div class="swiper-slide-caption section-md text-sm-left">
                     <div class="container">
                         <div class="row">
@@ -15,7 +15,7 @@
                     </div>
                 </div>
             </div>
-            <div class="swiper-slide swiper-slide-1" data-slide-bg="{{ asset('img/logo_aist.jpg') }}">
+            <div class="swiper-slide swiper-slide-1" data-slide-bg="{{ asset('img/Carusel2.jpg') }}">
                 <div class="swiper-slide-caption section-md text-sm-left">
                     <div class="container">
                         <div class="row">
