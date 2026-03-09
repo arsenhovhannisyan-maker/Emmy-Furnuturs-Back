@@ -106,4 +106,53 @@ class ProductController extends Controller
 
         return response()->json($formattedProducts);
     }
+
+    public function getProduct(int $id): View
+    {
+        $product = $this->repository->find($id, ['sizes']);
+        $featuredProducts = $this->repository->getFeaturedProducts($id);
+
+        $product->setRelation('sizes', $product->sizes->sortBy('id')->values());
+
+        if ($product->sizes->isNotEmpty()) {
+            $minPrice = $product->sizes->min('price');
+            $maxPrice = $product->sizes->max('price');
+            $product->min_price = number_format($minPrice, 0, '', ' ');
+            $product->max_price = number_format($maxPrice, 0, '', ' ');
+            $product->sizes->each(function ($size) {
+                $size->formatted_price = number_format($size->price, 0, '', ' ');
+            });
+        }
+
+        $filesByField = $product->files()->get()->keyBy('field_name');
+        $photosBySize = [];
+        if ($product->sizes->isNotEmpty()) {
+            foreach ($product->sizes as $s => $size) {
+                $photos = [];
+                for ($p = 1; $p <= 6; $p++) {
+                    $field = 'photo' . ($s * 6 + $p);
+                    $file = $filesByField->get($field);
+                    if ($file && $file->file_url) {
+                        $photos[] = ['url' => $file->file_url];
+                    }
+                }
+                $photosBySize[] = $photos;
+            }
+        } else {
+            $photos = [];
+            foreach (['photo1', 'photo2', 'photo3', 'photo4'] as $field) {
+                $file = $filesByField->get($field);
+                if ($file && $file->file_url) {
+                    $photos[] = ['url' => $file->file_url];
+                }
+            }
+            $photosBySize[] = $photos;
+        }
+
+        return view('web.single-product', [
+            'product' => $product,
+            'featuredProducts' => $featuredProducts,
+            'photosBySize' => $photosBySize,
+        ]);
+    }
 }

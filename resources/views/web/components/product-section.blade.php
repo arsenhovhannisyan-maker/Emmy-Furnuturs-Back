@@ -8,8 +8,8 @@
 </section>
 
 <script>
-    const productBaseUrl = "{{ url('/product') }}";
-    const cardUrl = "{{ url('/dashboard/product') }}";
+    const productBaseUrl = "{{ rtrim(route('web.product', ['id' => 1]), '1') }}";
+    const cardUrl = productBaseUrl;
 </script>
 
 <script>
@@ -41,7 +41,7 @@
         </div>
 
         <h5 class="product-title">
-          <a href="${productBaseUrl}/${product.id}">${product.name}</a>
+          <a href="${productBaseUrl}${product.id}">${product.name}</a>
         </h5>
 
         <div class="product-price-wrap">
@@ -56,12 +56,12 @@
       <div class="product-button-wrap">
         <div class="product-button">
           <a class="button button-gray-14 button-zakaria ch-navbar-basket fas ch-navbar-search-toggle fas fa-search fa-2x"
-             href="${productBaseUrl}/${product.id}"
+             href="${productBaseUrl}${product.id}"
              title="@lang('messages.view_details')"></a>
         </div>
         <div class="product-button">
           <a class="button button-primary-2 button-zakaria ch-navbar-basket fas fa-shopping-cart"
-             href="${cardUrl}/${product.id}"
+             href="${cardUrl}${product.id}"
              title="@lang('messages.add_to_cart')"></a>
         </div>
       </div>

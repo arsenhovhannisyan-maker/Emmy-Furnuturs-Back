@@ -29,12 +29,33 @@
                 </div>
             </div>
         </div>
-        <!-- Swiper Pagination-->
-        <div class="swiper-pagination"></div>
-        <!-- Swiper Navigation-->
         <div class="swiper-button-prev"></div>
         <div class="swiper-button-next"></div>
     </section>
+    <style>
+        .swiper-slider-4 .swiper-button-prev,
+        .swiper-slider-4 .swiper-button-next {
+            background: none !important;
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+            width: auto;
+            height: auto;
+            font-family: system-ui, -apple-system, Arial, sans-serif !important;
+        }
+        .swiper-slider-4 .swiper-button-prev:before,
+        .swiper-slider-4 .swiper-container-rtl .swiper-button-next:before {
+            display: none !important;
+        }
+        .swiper-slider-4 .swiper-button-next:before,
+        .swiper-slider-4 .swiper-container-rtl .swiper-button-prev:before {
+            display: none !important;
+        }   
+        .swiper-slider-4 .swiper-button-prev:focus,
+        .swiper-slider-4 .swiper-button-next:focus {
+            outline: none !important;
+        }
+    </style>
 
     <section class="section section-md text-md-left quote-about">
         <div class="container">

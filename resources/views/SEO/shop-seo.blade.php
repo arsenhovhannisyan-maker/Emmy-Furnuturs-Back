@@ -50,7 +50,7 @@
 {{--                        "@type": "Product",--}}
 {{--                        "name": "{{ $product->name }}",--}}
 {{--                        "description": "{{ Str::limit(strip_tags($product->description), 100) }}",--}}
-{{--                        "url": "{{ route('dashboard.web.product', $product->id) }}",--}}
+{{--                        "url": "{{ route('web.product', $product->id) }}",--}}
 {{--                        "image": "{{ $product->photo1->file_url ?? asset('images/shop/product-placeholder.png') }}",--}}
 {{--                        "offers": {--}}
 {{--                            "@type": "Offer",--}}

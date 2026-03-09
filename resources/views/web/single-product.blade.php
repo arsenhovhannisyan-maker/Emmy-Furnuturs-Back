@@ -1027,21 +1027,37 @@
 
             // Update hidden quantity field
             document.getElementById('quantity-hidden').value = quantityInput.value;
+            // Синхронизировать size_id из select в hidden (select может быть вне формы)
+            if (sizeSelect && sizeIdHidden) {
+                sizeIdHidden.value = sizeSelect.value || '';
+            }
 
             const formData = new FormData(addToCartForm);
 
             fetch("{{ route('basket.add') }}", {
                 method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
                 body: formData
             })
-                .then(response => response.json())
-                .then(data => {
+                .then(response => {
+                    return response.json().then(data => ({ ok: response.ok, status: response.status, data }));
+                })
+                .then(({ ok, data }) => {
                     const modal = document.getElementById('added-to-cart-modal');
                     const textEl = document.getElementById('added-to-cart-modal-title');
-                    if (textEl) textEl.textContent = data.message || "@lang('messages.product_added_to_cart')";
+                    if (textEl) textEl.textContent = (data && data.message) ? data.message : "@lang('messages.product_added_to_cart')";
                     if (modal) modal.classList.add('is-open');
                 })
-                .catch(error => console.error('Error:', error));
+                .catch(error => {
+                    console.error('Error:', error);
+                    const modal = document.getElementById('added-to-cart-modal');
+                    const textEl = document.getElementById('added-to-cart-modal-title');
+                    if (textEl) textEl.textContent = "@lang('messages.product_added_to_cart')";
+                    if (modal) modal.classList.add('is-open');
+                });
         });
 
         // Закрытие модалки "Выберите размер"

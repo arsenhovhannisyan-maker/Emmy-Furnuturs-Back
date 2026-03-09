@@ -15,7 +15,7 @@
                                 />
                             </div>
                             <h5 class="product-title">
-                                <a href="{{ route('dashboard.web.product', $product->id) }}">
+                                <a href="{{ route('web.product', $product->id) }}">
                                     {{ $product->name }}
                                 </a>
                             </h5>
@@ -38,7 +38,7 @@
                         <div class="product-button-wrap">
                             <div class="product-button">
                                 <a class="button button-gray-14 button-zakaria fl-bigmug-line-search74"
-                                   href="{{ route('dashboard.web.product', $product->id) }}"
+                                   href="{{ route('web.product', $product->id) }}"
                                    title="@lang('messages.view_details')">
                                 </a>
                             </div>

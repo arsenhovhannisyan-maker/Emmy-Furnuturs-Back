@@ -8,32 +8,35 @@ use Throwable;
 
 class Handler extends ExceptionHandler
 {
-    //    use ResponseApiFunctions;
-
-    /**
-     * A list of the exception types that are not reported.
-     */
     protected $dontReport = [
     ];
-
-    /**
-     * A list of the inputs that are never flashed for validation exceptions.
-     */
     protected $dontFlash = [
         'current_password',
         'password',
         'password_confirmation',
     ];
-
-    /**
-     * Register the exception handling callbacks for the application.
-     *
-     * @return void
-     */
     public function register()
     {
         $this->reportable(function (Throwable $e) {
         });
+    }
+
+    public function render($request, Throwable $e)
+    {
+        if ($e instanceof \Illuminate\Database\QueryException) {
+            $errorInfo = $e->errorInfo ?? [];
+            $code = $errorInfo[1] ?? $e->getCode();
+            $message = $e->getMessage();
+            if ($code == 1062 || (str_contains($message, 'Duplicate entry') && str_contains($message, 'users_email_unique'))) {
+                $userMessage = __('messages.email_already_registered');
+                if ($request->expectsJson()) {
+                    return response()->json(['message' => $userMessage, 'errors' => ['email' => [$userMessage]]], 422);
+                }
+                return redirect()->back()->withInput($request->except('password', 'password_confirmation'))->with('error', $userMessage);
+            }
+        }
+
+        return parent::render($request, $e);
     }
 
     /* public function render($request, Exception|Throwable $e): \Illuminate\Http\Response|JsonResponse|Response

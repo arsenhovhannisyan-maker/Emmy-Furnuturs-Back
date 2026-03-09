@@ -10,6 +10,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="robots" content="index, follow">
 
+    <!-- Open Graph / Facebook, VK, Telegram, WhatsApp - красивое превью при отправке ссылки -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="Emmy Furniture - Премиальная мебель в Мюнхене">
+    <meta property="og:description" content="Магазин премиальной мебели. Современная и классическая мебель для гостиной, спальни, столовой. Зеркала, шкафы, доставка по Мюнхену.">
+    <meta property="og:image" content="{{ url('/img/Carusel1.jpg') }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Emmy Furniture">
+    <meta property="og:locale" content="{{ app()->getLocale() === 'ru' ? 'ru_RU' : 'en_US' }}">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{ url()->current() }}">
+    <meta name="twitter:title" content="Emmy Furniture - Премиальная мебель в Мюнхене">
+    <meta name="twitter:description" content="Магазин премиальной мебели. Современная и классическая мебель для гостиной, спальни, столовой. Зеркала, шкафы, доставка по Мюнхену.">
+    <meta name="twitter:image" content="{{ url('/img/Carusel1.jpg') }}">
+
     <!-- Structured Data for Local Business -->
 {{--    <script type="application/ld+json">--}}
 {{--        {--}}

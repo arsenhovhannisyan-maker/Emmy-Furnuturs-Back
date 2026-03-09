@@ -82,7 +82,7 @@
                             @forelse($items as $item)
                                 <tr>
                                     <td>
-                                        <a class="table-cart-figure" href="{{ route('dashboard.web.product', $item->product->id) }}">
+                                        <a class="table-cart-figure" href="{{ route('web.product', $item->product->id) }}">
                                             <img src="{{ $item->product->photo1->file_url ?? 'images/shop/product-placeholder.png' }}" alt="" width="146" height="132"/>
                                         </a>
                                         <a class="table-cart-link" href="#">{{ $item->product->name }}</a>

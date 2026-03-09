@@ -534,7 +534,7 @@
                                         <article class="product-modern text-center text-sm-left">
                                             <div class="unit unit-spacing-0 flex-column flex-sm-row">
                                                 <div class="unit-left">
-                                                    <a class="product-modern-figure" href="{{ route('dashboard.web.product', $product->id) }}">
+                                                    <a class="product-modern-figure" href="{{ route('web.product', $product->id) }}">
                                                         <img src="{{ $product->photo1->file_url ?? asset('images/shop/product-placeholder.png') }}"
                                                              alt="{{ $product->name }}" width="328" height="330"/>
                                                     </a>
@@ -542,7 +542,7 @@
                                                 <div class="unit-body">
                                                     <div class="product-modern-body">
                                                         <h4 class="product-modern-title">
-                                                            <a href="{{ route('dashboard.web.product', $product->id) }}">{{ $product->name }}</a>
+                                                            <a href="{{ route('web.product', $product->id) }}">{{ $product->name }}</a>
                                                         </h4>
                                                         <div class="product-price-wrap">
                                                             @if($product->old_price && $product->old_price > $product->price)
@@ -609,7 +609,7 @@
         const categoryCheckboxes = document.querySelectorAll('.category-filter');
         const filterUrl = "{{ route('web.shop.filter') }}";
         @php
-            $productRouteTemplate = preg_replace('#/\d+$#', '/__ID__', route('dashboard.web.product', ['id' => 1]));
+            $productRouteTemplate = preg_replace('#/\d+$#', '/__ID__', route('web.product', ['id' => 1]));
         @endphp
         const productUrlTemplate = "{{ $productRouteTemplate }}";
         const currencyLabel = " @lang('messages.currency_rub')";

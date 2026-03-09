@@ -14,6 +14,12 @@ class BasketController extends BaseController
 {
     public function show()
     {
+        if (!Auth::check()) {
+            session()->put('url.intended', url()->current());
+            return redirect()->route('login')
+                ->with('error', __('messages.please_login_to_view_cart'));
+        }
+
         $basket = Basket::with('items.product')->firstOrCreate(['user_id' => Auth::id()]);
 
         return view('web.cart', [
@@ -26,7 +32,10 @@ class BasketController extends BaseController
     public function add(Request $request): RedirectResponse|JsonResponse
     {
         if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Пожалуйста, войдите, чтобы добавить товар в корзину.');
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json(['success' => false, 'message' => __('messages.please_login_to_view_cart')], 401);
+            }
+            return redirect()->route('login')->with('error', __('messages.please_login_to_view_cart'));
         }
         $request->validate([
             'product_id' => 'required|exists:products,id',
@@ -50,16 +59,21 @@ class BasketController extends BaseController
             ]);
         }
 
-        if ($request->ajax()) {
-            return response()->json(['success' => true, 'message' => 'Товар добавлен в корзину']);
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json(['success' => true, 'message' => __('messages.product_added_to_cart')]);
         }
 
-        return redirect()->back()->with('success', 'Товар добавлен в корзину');
+        return redirect()->back()->with('success', __('messages.product_added_to_cart'));
     }
 
-    // Обновить количество товара
     public function updateQuantity(Request $request): RedirectResponse|JsonResponse
     {
+        if (!Auth::check()) {
+            return $request->wantsJson() || $request->ajax()
+                ? response()->json(['success' => false, 'message' => __('messages.please_login')], 401)
+                : redirect()->route('login')->with('error', __('messages.please_login'));
+        }
+
         $request->validate([
             'item_id' => 'required|exists:basket_items,id',
             'quantity' => 'required|integer|min:1|max:1000'
@@ -83,9 +97,12 @@ class BasketController extends BaseController
         return redirect()->back()->with('success', 'Количество обновлено');
     }
 
-    // Удалить товар из корзины
     public function remove($id)
     {
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', __('messages.please_login'));
+        }
+
         $basketItem = BasketItem::findOrFail($id);
         $basketItem->delete();
 
@@ -94,9 +111,12 @@ class BasketController extends BaseController
 
     public function getData()
     {
+        if (!Auth::check()) {
+            return response()->json(['count' => 0, 'total' => 0, 'items' => []]);
+        }
+
         $user = Auth::user();
 
-        // Получаем товары корзины (пример)
         $basketItems = $user->basket?->items()->with('product')->get() ?? collect();
 
         $total = $basketItems->sum(fn($item) => $item->product->price * $item->quantity);

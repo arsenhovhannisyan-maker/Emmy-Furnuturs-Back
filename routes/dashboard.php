@@ -104,4 +104,4 @@ Route::controller(ProfileController::class)->as('profile.')->group(function () {
 
 
 
-Route::get('product/{id}', [ProductController::class, 'getProduct'])->name('web.product');
+// Route::get('product/{id}', [ProductController::class, 'getProduct'])->name('web.product');

@@ -5,13 +5,7 @@
         <div class="container-fluid isotope-wrap isotope-custom-2">
             <div class="isotope-filters">
                 <button class="isotope-filters-toggle button button-sm button-icon button-icon-right button-default-outline" data-custom-toggle=".isotope-filters-list" data-custom-toggle-disable-on-blur="true" data-custom-toggle-hide-on-blur="true"><span class="icon mdi mdi-chevron-down"></span>@lang('messages.filter')</button>
-                <div class="isotope-filters-list-wrap">
-                    <ul class="isotope-filters-list">
-                        <li><a class="active" href="#" data-isotope-filter="*">@lang('messages.view_all')</a></li>
-                        <li><a href="#" data-isotope-filter="Type 1">@lang('messages.furnitures')</a></li>
-                        <li><a href="#" data-isotope-filter="Type 2">@lang('messages.other_pastry')</a></li>
-                    </ul>
-                </div>
+                
             </div>
             <div class="row row-30 isotope gallery-custom" data-lightgallery="group" id="gallery-products" style="display: flex">
                 <!-- Products will be loaded here -->
@@ -26,7 +20,7 @@
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <script>
-        const BaseUrlProduct = "{{ url('/product') }}";
+        const BaseUrlProduct = "{{ rtrim(route('web.product', ['id' => 1]), '1') }}";
 
         document.addEventListener('DOMContentLoaded', async function () {
             let iso = null;
@@ -84,19 +78,21 @@
                                 <div class="thumbnail-classic-caption">
                                     <div>
                                         <h5 class="thumbnail-classic-title">
-                                            <a href="${BaseUrlProduct}/${productId}">${productName}</a>
+                                            <a href="${BaseUrlProduct}${productId}">${productName}</a>
                                         </h5>
                                         <div class="thumbnail-classic-price">${productPrice}</div>
                                         <div class="thumbnail-classic-button-wrap">
                                             <div class="thumbnail-classic-button">
-                                                <a class="button button-gray-6 button-zakaria fl-bigmug-line-search74"
-                                                     href="${BaseUrlProduct}/${productId}">
-                                                    <img src="${productImage}" alt="${productName}" width="370" height="315"/>
+                                                <a class="button button-gray-6 button-zakaria gallery-btn-view"
+                                                     href="${BaseUrlProduct}${productId}" title="@lang('messages.view')">
+                                                    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
                                                 </a>
                                             </div>
                                             <div class="thumbnail-classic-button">
-                                                <a class="button button-secondary-3 button-zakaria fl-bigmug-line-shopping202"
-                                                    href="/basket"></a>
+                                                <a class="button button-secondary-3 button-zakaria gallery-btn-cart"
+                                                    href="/basket" title="@lang('messages.cart_page')">
+                                                    <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -127,5 +123,13 @@
 <style>
     .gallery-positions{
         position: static !important;
+    }
+    .thumbnail-classic-button-wrap .gallery-btn-view i,
+    .thumbnail-classic-button-wrap .gallery-btn-cart i {
+        font-size: 1.1rem;
+        color: inherit;
+    }
+    .thumbnail-classic-button-wrap .gallery-btn-cart i {
+        color: #fff;
     }
 </style>

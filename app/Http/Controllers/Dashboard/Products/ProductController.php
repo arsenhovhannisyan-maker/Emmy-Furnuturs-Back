@@ -116,8 +116,6 @@ class ProductController extends BaseController
 
     public function destroy(Product $product): JsonResponse
     {
-        // If deleting other data except model use service
-        // $this->service->delete($product->id);
         $this->repository->destroy($product->id);
 
         return $this->sendOkDeleted();
@@ -128,10 +126,8 @@ class ProductController extends BaseController
         $product = $this->repository->find($id, ['sizes']);
         $featuredProducts = $this->repository->getFeaturedProducts($id);
 
-        // Порядок размеров как в форме: по id (первая строка формы = первый размер = фото 1–6)
         $product->setRelation('sizes', $product->sizes->sortBy('id')->values());
 
-        // Исправляем логику цен
         if ($product->sizes->isNotEmpty()) {
             $minPrice = $product->sizes->min('price');
             $maxPrice = $product->sizes->max('price');
@@ -142,7 +138,6 @@ class ProductController extends BaseController
             });
         }
 
-        // Фото по размерам: индекс 0 = фото 1–6, индекс 1 = фото 7–12, индекс 2 = 13–18 и т.д.
         $filesByField = $product->files()->get()->keyBy('field_name');
         $photosBySize = [];
         if ($product->sizes->isNotEmpty()) {
