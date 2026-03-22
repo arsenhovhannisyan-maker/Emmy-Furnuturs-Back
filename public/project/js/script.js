@@ -42,9 +42,9 @@
             chRange: $('.ch-range'),
             radioPanel: $('.radio-panel .radio-inline'),
             swiper: document.querySelectorAll('.swiper-container'),
-            selectFilter: $('select'),
+            selectFilter: $('select').not('[data-no-select2]'),
             slick: $('.slick-slider'),
-            stepper: $('input[type="number"]').not('.table-cart-stepper input'),
+            stepper: $('input[type="number"]').not('.table-cart-stepper input').not('.product-qty-picker__input'),
             search: $('.ch-search'),
             searchResults: $('.ch-search-results'),
             wow: $('.wow')

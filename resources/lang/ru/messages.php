@@ -267,4 +267,7 @@ return [
     'basket_empty' => 'Ваша корзина пуста',
     'basket_load_error' => 'Ошибка при загрузке корзины',
     'basket_error_message' => 'Ошибка загрузки корзины',
+    'close' => 'Закрыть',
+    'quantity_increase' => 'Увеличить количество',
+    'quantity_decrease' => 'Уменьшить количество',
 ];

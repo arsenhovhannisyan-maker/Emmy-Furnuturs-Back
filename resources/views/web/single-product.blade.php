@@ -1,5 +1,4 @@
 <style>
-    /* Main Carousel */
     .carousel-parent {
         margin-bottom: 20px;
         border-radius: 12px;
@@ -17,13 +16,13 @@
         height: 480px;
         object-fit: cover;
         transition: transform 0.5s ease;
+        cursor: zoom-in;
     }
 
     .carousel-parent img:hover {
         transform: scale(1.02);
     }
 
-    /* Thumbnail Carousel */
     .child-carousel {
         display: flex !important;
         justify-content: flex-start;
@@ -44,7 +43,7 @@
         width: 100px;
         height: 100px;
         object-fit: cover;
-        cursor: pointer;
+        cursor: zoom-in;
         border: 2px solid transparent;
         transition: all 0.3s ease;
         border-radius: 6px;
@@ -66,7 +65,6 @@
         gap: 12px;
     }
 
-    /* Arrow Styles */
     .slick-prev,
     .slick-next {
         font-size: 0 !important;
@@ -111,9 +109,22 @@
         content: "→" !important;
     }
 
-    /* Product Info Section */
     .single-product {
         padding: 20px;
+    }
+
+    .product-heading-block {
+        margin-bottom: 4px;
+    }
+
+    .product-page-title {
+        font-size: 28px;
+        font-weight: 600;
+        margin: 0 0 14px 0;
+        color: #2c3e50;
+        line-height: 1.35;
+        word-wrap: break-word;
+        overflow-wrap: anywhere;
     }
 
     .single-product h3 {
@@ -124,6 +135,66 @@
         line-height: 1.3;
     }
 
+    .size-selection.size-selection--below-title {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        margin: 0 0 18px 0;
+        padding: 14px 16px;
+    }
+
+    .size-selection__label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        font-size: 15px;
+        color: #334155;
+        line-height: 1.3;
+    }
+
+    .size-selection--below-title .size-select {
+        width: 100%;
+        max-width: 100%;
+        min-height: 46px;
+        box-sizing: border-box;
+    }
+
+    @media (max-width: 767px) {
+        .size-selection.size-selection--below-title {
+            padding: 12px 14px;
+            margin-bottom: 16px;
+        }
+
+        .size-selection.size-selection--below-title .size-selection__label {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .size-selection--below-title .size-select {
+            min-height: 48px;
+            padding: 14px 42px 14px 14px;
+            font-size: 16px;
+        }
+    }
+
+    @media (max-width: 575px) {
+        .product-page-title {
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        .size-selection.size-selection--below-title {
+            padding: 12px 12px;
+            margin-bottom: 14px;
+            border-radius: 10px;
+        }
+
+        .size-selection--below-title .size-select {
+            font-size: 16px;
+        }
+    }
+
     .group-md.group-middle {
         display: flex;
         align-items: center;
@@ -132,7 +203,6 @@
         gap: 15px;
     }
 
-    /* Price Display */
     .single-product-price {
         font-size: 26px;
         font-weight: 700;
@@ -159,7 +229,6 @@
         100% { transform: scale(1); }
     }
 
-    /* Rating */
     .single-product-rating {
         display: flex;
         gap: 2px;
@@ -170,7 +239,6 @@
         font-size: 18px;
     }
 
-    /* Description */
     .single-product p {
         font-size: 16px;
         line-height: 1.6;
@@ -185,7 +253,6 @@
         margin: 25px 0;
     }
 
-    /* List Description */
     .list.list-description {
         margin-bottom: 25px;
     }
@@ -210,9 +277,11 @@
         color: #666;
     }
 
-    /* Size Selection */
-    .size-selection {
+    .size-selection:not(.size-selection--below-title) {
         margin: 25px 0;
+    }
+
+    .size-selection {
         padding: 20px;
         background: #f8f9fa;
         border-radius: 12px;
@@ -226,6 +295,10 @@
         font-weight: 600;
         color: #333;
         font-size: 16px;
+    }
+
+    .size-selection.size-selection--below-title label.size-selection__label {
+        color: #334155;
     }
 
     .size-select {
@@ -255,7 +328,6 @@
         font-size: 15px;
     }
 
-    /* Quantity and Add to Cart */
     .group-xs.group-middle {
         display: flex;
         align-items: center;
@@ -284,7 +356,6 @@
         box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
     }
 
-    /* Modal "Выберите размер" */
     .select-size-modal-overlay {
         display: none;
         position: fixed;
@@ -332,7 +403,6 @@
         box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
     }
 
-    /* Модальное окно "Товар добавлен в корзину" */
     .added-to-cart-modal-overlay {
         display: none;
         position: fixed;
@@ -380,7 +450,6 @@
         box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
     }
 
-    /* Tabs */
     .tabs-custom {
         margin-top: 50px;
     }
@@ -419,13 +488,13 @@
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     }
 
-    /* Responsive Adjustments */
     @media (max-width: 991px) {
         .carousel-parent img {
             height: 400px;
         }
 
-        .single-product h3 {
+        .single-product h3,
+        .product-page-title {
             font-size: 24px;
         }
 
@@ -434,10 +503,8 @@
             align-items: stretch;
         }
 
-        .product-stepper {
+        .single-product .product-qty-picker {
             align-self: flex-start;
-            display: flex !important;
-            flex-direction: row !important;
         }
     }
 
@@ -455,7 +522,7 @@
             padding: 15px 0;
         }
 
-        .size-selection {
+        .size-selection:not(.size-selection--below-title) {
             padding: 15px;
         }
     }
@@ -470,7 +537,8 @@
             height: 60px;
         }
 
-        .single-product h3 {
+        .single-product h3,
+        .product-page-title {
             font-size: 22px;
         }
 
@@ -487,136 +555,204 @@
             margin-bottom: 5px;
         }
     }
-    .product-stepper {
-        display: flex !important;
-        flex-direction: row !important;
-        align-items: center !important;
-        justify-content: center !important;
+    .single-product .product-qty-picker {
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+        flex-wrap: nowrap;
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 200px;
+        min-height: 52px;
         border-radius: 12px;
         overflow: hidden;
-        background: white;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        border: 1px solid #e8e8e8;
-        transition: all 0.3s ease;
-        max-width: 160px;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 2px 12px rgba(15, 23, 42, 0.06);
+        transition: box-shadow 0.2s ease, border-color 0.2s ease;
     }
 
-    .product-stepper:hover {
-        box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
-        border-color: #d0d0d0;
+    .single-product .product-qty-picker:hover {
+        box-shadow: 0 4px 18px rgba(15, 23, 42, 0.1);
+        border-color: #d1d5db;
     }
 
-    .product-stepper button {
-        background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%) !important;
+    .single-product .product-qty-picker__input {
+        box-sizing: border-box;
+        flex: 1 1 0;
+        min-width: 0;
+        width: auto !important;
+        max-width: none !important;
+        min-height: 0 !important;
+        margin: 0;
+        padding: 8px 10px;
         border: none !important;
-        width: 44px !important;
-        height: 44px !important;
-        font-size: 18px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        color: #4a5568;
-        position: relative !important;
-        overflow: hidden;
-        flex-shrink: 0 !important;
-    }
-
-    .product-stepper button:before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-
-    .product-stepper button:hover {
-        color: white;
-    }
-
-    .product-stepper button:hover:before {
-        opacity: 1;
-    }
-
-    .product-stepper button span {
-        position: relative;
-        z-index: 1;
-    }
-
-    .product-stepper button:active {
-        transform: scale(0.95);
-    }
-
-    .product-stepper button:first-child {
-        border-right: 1px solid #e8e8e8 !important;
-        order: 1 !important;
-    }
-
-    .product-stepper input {
-        width: 70px !important;
-        padding: 12px 5px !important;
-        border: none !important;
-        text-align: center !important;
-        font-size: 18px;
+        border-radius: 0;
+        background: #ffffff !important;
+        color: #0f172a !important;
+        font-size: 20px;
         font-weight: 700;
-        color: #2d3748;
-        background: transparent !important;
-        transition: all 0.3s ease;
-        flex-shrink: 0 !important;
-        display: block !important;
-        order: 2 !important;
+        font-variant-numeric: tabular-nums;
+        line-height: 1.3;
+        text-align: center;
+        font-family: inherit;
+        letter-spacing: normal;
+        -webkit-appearance: none;
+        appearance: none;
+        box-shadow: none !important;
     }
 
-    .product-stepper button:last-child {
-        border-left: 1px solid #e8e8e8 !important;
-        order: 3 !important;
+    .single-product .product-qty-picker__input:focus {
+        outline: 2px solid rgba(102, 126, 234, 0.45);
+        outline-offset: -2px;
+        background: #f8fafc !important;
     }
 
-    .product-stepper input:focus {
-        outline: none;
-        background: rgba(102, 126, 234, 0.05);
+    .single-product .product-qty-picker__input::-webkit-outer-spin-button,
+    .single-product .product-qty-picker__input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
     }
 
-    /* Animation for value changes */
-    @keyframes pulse {
+    .single-product .product-qty-picker__controls {
+        display: flex;
+        flex-direction: column;
+        flex: 0 0 44px;
+        width: 44px;
+        min-height: 100%;
+        border-left: 1px solid #e5e7eb;
+        background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+    }
+
+    .single-product .product-qty-picker__btn {
+        box-sizing: border-box;
+        flex: 1 1 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 26px;
+        margin: 0;
+        padding: 0;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        color: #475569;
+        font-size: 15px;
+        line-height: 1;
+        transition: color 0.15s ease, background 0.15s ease;
+    }
+
+    .single-product .product-qty-picker__btn:hover {
+        color: #4f46e5;
+        background: rgba(79, 70, 229, 0.08);
+    }
+
+    .single-product .product-qty-picker__btn:active {
+        background: rgba(79, 70, 229, 0.14);
+    }
+
+    .single-product .product-qty-picker__btn--inc {
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .single-product .product-qty-picker__btn i {
+        pointer-events: none;
+    }
+
+    @keyframes sp-qty-pulse {
         0% { transform: scale(1); }
-        50% { transform: scale(1.05); }
+        50% { transform: scale(1.04); }
         100% { transform: scale(1); }
     }
 
-    .product-stepper input.value-changed {
-        animation: pulse 0.3s ease;
+    .single-product .product-qty-picker__input.value-changed {
+        animation: sp-qty-pulse 0.3s ease;
     }
 
-    /* Responsive adjustments */
     @media (max-width: 575px) {
-        .product-stepper {
-            max-width: 140px;
-            display: flex !important;
-            flex-direction: row !important;
+        .single-product .product-qty-picker {
+            max-width: 180px;
+            min-height: 48px;
         }
 
-        .product-stepper button {
-            width: 40px !important;
-            height: 40px !important;
+        .single-product .product-qty-picker__controls {
+            flex-basis: 40px;
+            width: 40px;
         }
 
-        .product-stepper input {
-            width: 60px !important;
-            font-size: 16px;
+        .single-product .product-qty-picker__input {
+            font-size: 18px;
+            padding: 6px 8px;
+        }
+    }
+
+    .product-image-modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 10050;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        background: rgba(0, 0, 0, 0.88);
+        backdrop-filter: blur(4px);
+    }
+
+    .product-image-modal-overlay.is-open {
+        display: flex;
+    }
+
+    .product-image-modal-inner {
+        position: relative;
+        max-width: min(96vw, 1400px);
+        max-height: 90vh;
+        margin: auto;
+    }
+
+    .product-image-modal-inner img {
+        display: block;
+        max-width: 100%;
+        max-height: 90vh;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        border-radius: 8px;
+        box-shadow: 0 12px 48px rgba(0, 0, 0, 0.45);
+    }
+
+    .product-image-modal-close {
+        position: absolute;
+        top: -12px;
+        right: -12px;
+        z-index: 2;
+        width: 44px;
+        height: 44px;
+        border: none;
+        border-radius: 50%;
+        background: #fff;
+        color: #333;
+        font-size: 26px;
+        line-height: 1;
+        cursor: pointer;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+        transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .product-image-modal-close:hover {
+        transform: scale(1.05);
+        background: #f3f4f6;
+    }
+
+    @media (max-width: 575px) {
+        .product-image-modal-close {
+            top: 8px;
+            right: 8px;
         }
     }
 </style>
 
 <x-web-layout>
     <div class="page">
-        <!--+breadcrumbs-->
         <section class="breadcrumbs-custom">
             <div class="parallax-container breadcrumbs_section">
                 <div class="breadcrumbs-custom-body parallax-content context-dark">
@@ -635,17 +771,15 @@
                 </div>
             </div>
         </section>
-        <!-- Single Product-->
         <section class="section section-md section-first bg-default">
             <div class="container">
                 <div class="row row-30">
                     <div class="col-lg-6">
                         <div class="slick-vertical slick-product">
-                            <!-- Main Carousel (first size photos or default) -->
                             @php
                                 $initialPhotos = $photosBySize[0] ?? [];
                             @endphp
-                            <div class="slick-slider carousel-parent" id="carousel-parent" data-items="1" data-swipe="true" data-child="#child-carousel" data-for="#child-carousel">
+                            <div class="carousel-parent" id="carousel-parent" data-items="1" data-swipe="true" data-child="#child-carousel" data-for="#child-carousel">
                                 @forelse($initialPhotos as $photo)
                                     <div class="item">
                                         <div class="slick-product-figure">
@@ -661,8 +795,7 @@
                                 @endforelse
                             </div>
 
-                            <!-- Thumbnails -->
-                            <div class="slick-slider child-carousel slick-nav-1" id="child-carousel" data-arrows="true" data-items="3">
+                            <div class="child-carousel slick-nav-1" id="child-carousel" data-arrows="true" data-items="3">
                                 @forelse($initialPhotos as $photo)
                                     <div class="item">
                                         <div class="slick-product-figure">
@@ -682,9 +815,26 @@
 
                     <div class="col-lg-6">
                         <div class="single-product">
-                            <h3 class="text-transform-none font-weight-medium">{{ $product->name }}</h3>
+                            <div class="product-heading-block">
+                                <h3 class="text-transform-none font-weight-medium product-page-title">{{ $product->name }}</h3>
+                                @if($product->sizes->isNotEmpty())
+                                    <div class="size-selection size-selection--below-title">
+                                        <label for="size-select" class="size-selection__label">@lang('messages.select_size'):</label>
+                                        <select id="size-select" class="size-select" name="size_id" data-no-select2>
+                                            <option value="">@lang('messages.choose_size')</option>
+                                            @foreach($product->sizes as $size)
+                                                <option value="{{ $size->id }}"
+                                                        data-size-index="{{ $loop->index }}"
+                                                        data-price="{{ $size->price }}"
+                                                        data-formatted-price="{{ $size->formatted_price ?? number_format($size->price, 0, '', ' ') }}">
+                                                    {{ $size->size }} — {{ $size->formatted_price ?? number_format($size->price, 0, '', ' ') }} @lang('messages.currency_rub')
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @endif
+                            </div>
                             <div class="group-md group-middle">
-                                <!-- Price Display -->
                                 <div class="single-product-price" id="price-display">
                                     @if($product->sizes->count() > 1)
                                         @lang('messages.price_from')
@@ -705,33 +855,17 @@
                                 <li><span>@lang('messages.categories'):</span><span>{{ $product->categories->name }}</span></li>
                             </ul>
 
-                            <!-- Size Selection -->
-                            @if($product->sizes->isNotEmpty())
-                                <div class="size-selection">
-                                    <label for="size-select" style="display: block; margin-bottom: 8px; font-weight: bold;">@lang('messages.select_size'):</label>
-                                    <select id="size-select" class="size-select" name="size_id">
-                                        <option value="">@lang('messages.choose_size')</option>
-                                        @foreach($product->sizes as $size)
-                                            <option value="{{ $size->id }}"
-                                                    data-size-index="{{ $loop->index }}"
-                                                    data-price="{{ $size->price }}"
-                                                    data-formatted-price="{{ $size->formatted_price ?? number_format($size->price, 0, '', ' ') }}">
-                                                {{ $size->size }} — {{ $size->formatted_price ?? number_format($size->price, 0, '', ' ') }} @lang('messages.currency_rub')
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            @endif
-
                             <div class="group-xs group-middle">
-                                <div class="product-stepper">
-                                    <button type="button" class="decrement-btn">
-                                        <span>-</span>
-                                    </button>
-                                    <input id="quantity-input" class="form-input" type="number" data-zeros="true" value="1" min="1" max="1000">
-                                    <button type="button" class="increment-btn">
-                                        <span>+</span>
-                                    </button>
+                                <div class="product-qty-picker" role="group" aria-label="@lang('messages.quantity')">
+                                    <input id="quantity-input" class="product-qty-picker__input" type="number" data-zeros="true" value="1" min="1" max="1000" inputmode="numeric" autocomplete="off">
+                                    <div class="product-qty-picker__controls">
+                                        <button type="button" class="product-qty-picker__btn product-qty-picker__btn--inc increment-btn" aria-label="@lang('messages.quantity_increase')">
+                                            <i class="fa-solid fa-plus" aria-hidden="true"></i>
+                                        </button>
+                                        <button type="button" class="product-qty-picker__btn decrement-btn" aria-label="@lang('messages.quantity_decrease')">
+                                            <i class="fa-solid fa-minus" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
                                 </div>
 
                                 <form action="{{ route('basket.add') }}" method="POST" class="d-inline-block ms-2" id="add-to-cart-form">
@@ -748,9 +882,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- Bootstrap tabs-->
                 <div class="tabs-custom tabs-horizontal tabs-line" id="tabs-1">
-                    <!-- Nav tabs-->
                     <div class="nav-tabs-wrap">
                         <ul class="nav nav-tabs nav-tabs-1">
                             <li class="nav-item" role="presentation"><a class="nav-link active" href="#tabs-1-1" data-toggle="tab">@lang('messages.reviews')</a></li>
@@ -758,7 +890,6 @@
                             <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-1-3" data-toggle="tab">@lang('messages.delivery_payment')</a></li>
                         </ul>
                     </div>
-                    <!-- Tab panes-->
                     <div class="tab-content tab-content-1">
                         <div class="tab-pane fade show active" id="tabs-1-1">
                             <div class="box-comment">
@@ -806,16 +937,12 @@
                 </div>
             </div>
         </section>
-        <!-- Related Products-->
         @include('web.components.featured-products', ['featuredProducts' => $featuredProducts])
-        <!-- Our brand-->
         @include('web.components.our-brand')
 
-        <!--SEO-->
         @include('SEO.product-seo')
 
         @if($product->sizes->isNotEmpty())
-        <!-- Модальное окно: выберите размер -->
         <div class="select-size-modal-overlay" id="select-size-modal" role="dialog" aria-modal="true" aria-labelledby="select-size-modal-title">
             <div class="select-size-modal">
                 <p id="select-size-modal-title">@lang('messages.please_select_size')</p>
@@ -824,11 +951,17 @@
         </div>
         @endif
 
-        <!-- Модальное окно: товар добавлен в корзину -->
         <div class="added-to-cart-modal-overlay" id="added-to-cart-modal" role="dialog" aria-modal="true" aria-labelledby="added-to-cart-modal-title">
             <div class="added-to-cart-modal">
                 <p id="added-to-cart-modal-title">@lang('messages.product_added_to_cart')</p>
                 <button type="button" class="added-to-cart-modal-close" id="added-to-cart-modal-close">@lang('messages.ok')</button>
+            </div>
+        </div>
+
+        <div class="product-image-modal-overlay" id="product-image-modal" role="dialog" aria-modal="true" aria-label="@lang('messages.single_product')">
+            <div class="product-image-modal-inner">
+                <button type="button" class="product-image-modal-close" id="product-image-modal-close" aria-label="@lang('messages.close')">&times;</button>
+                <img src="" alt="" id="product-image-modal-img" width="1200" height="800" decoding="async">
             </div>
         </div>
 
@@ -837,6 +970,7 @@
 
 <script>
     window.productPhotosBySize = @json($photosBySize ?? []);
+    window.productNameForGallery = @json($product->name);
 
     document.addEventListener('DOMContentLoaded', function () {
         const mainCarouselEl = document.querySelector('#carousel-parent');
@@ -876,7 +1010,6 @@
 
             var photos = photosBySize[sizeIndex];
             if (!photos || !photos.length) {
-                // Нет фото у этого размера — пробуем любое фото с других размеров
                 for (var i = 0; i < photosBySize.length; i++) {
                     if (photosBySize[i] && photosBySize[i].length) {
                         photos = photosBySize[i];
@@ -886,7 +1019,6 @@
                 if (!photos || !photos.length) return;
             }
 
-            // Полностью сносим Slick, чтобы не осталось обёрток
             if (typeof $ !== 'undefined') {
                 try {
                     var $main = $(mainCarouselEl);
@@ -906,7 +1038,6 @@
             mainCarouselEl.innerHTML = mainHtml;
             childCarouselEl.innerHTML = thumbHtml;
 
-            // Даём DOM обновиться, потом снова поднимаем карусель
             setTimeout(function() {
                 initCarousels();
             }, 50);
@@ -914,7 +1045,6 @@
 
         initCarousels();
 
-        // Синхронизация фото с выбранным размером (главное фото + превью)
         function syncPhotosToSelectedSize() {
             if (!sizeSelect || sizeSelect.value === '') return;
             var opt = sizeSelect.options[sizeSelect.selectedIndex];
@@ -925,51 +1055,55 @@
             if (!isNaN(sizeIndex)) switchPhotosBySize(sizeIndex);
         }
 
-        // Если размер один — выбрать его сразу
         if (sizeSelect && sizeSelect.options.length === 2) {
             sizeSelect.selectedIndex = 1;
             sizeIdHidden.value = sizeSelect.value;
             if (priceDisplay) {
                 var fp = sizeSelect.options[1].getAttribute('data-formatted-price');
-                if (fp) priceDisplay.innerHTML = fp + ' @lang('messages.currency_rub')';
+                if (fp) {
+                    priceDisplay.innerHTML = '<span class="default-price">' + fp + '</span> @lang('messages.currency_rub')';
+                }
             }
             syncPhotosToSelectedSize();
         }
 
-        // После загрузки скриптов layout — подстроить фото под выбранный размер (напр. 1000x800)
         setTimeout(function() {
             if (sizeSelect && sizeSelect.value) syncPhotosToSelectedSize();
         }, 250);
 
-        // При смене размера — сразу меняем главное фото и превью
-        if (sizeSelect) {
-            sizeSelect.addEventListener('change', function() {
-                var selectedOption = this.options[this.selectedIndex];
-                var sizeId = this.value;
-                var sizeIndexRaw = selectedOption ? selectedOption.getAttribute('data-size-index') : null;
-                var price = selectedOption ? selectedOption.getAttribute('data-price') : null;
-                var formattedPrice = selectedOption ? selectedOption.getAttribute('data-formatted-price') : null;
+        function handleSizeChange() {
+            if (!sizeSelect || !priceDisplay) return;
+            var selectedOption = sizeSelect.options[sizeSelect.selectedIndex];
+            var sizeId = sizeSelect.value;
+            var sizeIndexRaw = selectedOption ? selectedOption.getAttribute('data-size-index') : null;
+            var formattedPrice = selectedOption ? selectedOption.getAttribute('data-formatted-price') : null;
 
-                sizeIdHidden.value = sizeId || '';
+            sizeIdHidden.value = sizeId || '';
 
-                if (sizeId && sizeIndexRaw !== null && sizeIndexRaw !== '') {
-                    var sizeIndex = parseInt(sizeIndexRaw, 10);
-                    if (!isNaN(sizeIndex)) {
-                        switchPhotosBySize(sizeIndex);
-                    }
+            if (sizeId && sizeIndexRaw !== null && sizeIndexRaw !== '') {
+                var sizeIndex = parseInt(sizeIndexRaw, 10);
+                if (!isNaN(sizeIndex)) {
+                    switchPhotosBySize(sizeIndex);
                 }
+            }
 
-                if (sizeId && price && formattedPrice) {
-                    priceDisplay.innerHTML = formattedPrice + ' @lang('messages.currency_rub')';
-                    priceDisplay.classList.add('price-update');
-                    setTimeout(function() { priceDisplay.classList.remove('price-update'); }, 500);
-                } else {
-                    resetPriceDisplay();
-                }
-            });
+            if (sizeId && formattedPrice) {
+                priceDisplay.innerHTML = '<span class="default-price">' + formattedPrice + '</span> @lang('messages.currency_rub')';
+                priceDisplay.classList.add('price-update');
+                setTimeout(function() { priceDisplay.classList.remove('price-update'); }, 500);
+            } else {
+                resetPriceDisplay();
+            }
         }
 
-        // Function to reset price to original state
+        if (sizeSelect) {
+            if (typeof jQuery !== 'undefined') {
+                jQuery(sizeSelect).on('change.productSize select2:select', handleSizeChange);
+            } else {
+                sizeSelect.addEventListener('change', handleSizeChange);
+            }
+        }
+
         function resetPriceDisplay() {
             @if($product->sizes->count() > 1)
                 priceDisplay.innerHTML = '@lang('messages.price_from') <span class="default-price">{{ $product->min_price }}</span> @lang('messages.currency_rub')';
@@ -980,54 +1114,64 @@
             @endif
         }
 
-        // Quantity stepper functionality
         const quantityInput = document.getElementById('quantity-input');
-        const decrementBtn = document.querySelector('.decrement-btn');
-        const incrementBtn = document.querySelector('.increment-btn');
-
-        if (decrementBtn && incrementBtn) {
-            decrementBtn.addEventListener('click', function() {
-                if (quantityInput.value > 1) {
-                    quantityInput.value = parseInt(quantityInput.value) - 1;
-                    updateHiddenQuantity();
-                }
-            });
-
-            incrementBtn.addEventListener('click', function() {
-                if (quantityInput.value < 1000) {
-                    quantityInput.value = parseInt(quantityInput.value) + 1;
-                    updateHiddenQuantity();
-                }
-            });
-
-            quantityInput.addEventListener('change', function() {
-                if (this.value < 1) this.value = 1;
-                if (this.value > 1000) this.value = 1000;
-                updateHiddenQuantity();
-            });
-        }
+        const decrementBtn = document.querySelector('.product-qty-picker .decrement-btn');
+        const incrementBtn = document.querySelector('.product-qty-picker .increment-btn');
 
         function updateHiddenQuantity() {
-            document.getElementById('quantity-hidden').value = quantityInput.value;
+            if (!quantityInput) return;
+            var hidden = document.getElementById('quantity-hidden');
+            if (hidden) hidden.value = quantityInput.value;
         }
 
-        // Add to cart handler
+        function pulseQuantityField() {
+            if (!quantityInput) return;
+            quantityInput.classList.add('value-changed');
+            setTimeout(function() { quantityInput.classList.remove('value-changed'); }, 300);
+        }
+
+        function clampQuantity() {
+            if (!quantityInput) return;
+            var v = parseInt(quantityInput.value, 10);
+            if (isNaN(v) || v < 1) quantityInput.value = 1;
+            else if (v > 1000) quantityInput.value = 1000;
+            updateHiddenQuantity();
+        }
+
+        if (quantityInput && decrementBtn && incrementBtn) {
+            incrementBtn.addEventListener('click', function() {
+                var v = parseInt(quantityInput.value, 10) || 1;
+                if (v < 1000) {
+                    quantityInput.value = v + 1;
+                    pulseQuantityField();
+                    updateHiddenQuantity();
+                }
+            });
+            decrementBtn.addEventListener('click', function() {
+                var v = parseInt(quantityInput.value, 10) || 1;
+                if (v > 1) {
+                    quantityInput.value = v - 1;
+                    pulseQuantityField();
+                    updateHiddenQuantity();
+                }
+            });
+            quantityInput.addEventListener('change', clampQuantity);
+            quantityInput.addEventListener('input', function() { updateHiddenQuantity(); });
+        }
+
         const addToCartBtn = document.getElementById('add-to-cart');
         const addToCartForm = document.getElementById('add-to-cart-form');
 
         addToCartBtn.addEventListener('click', function(e) {
             e.preventDefault();
 
-            // Check if size is selected (if sizes exist)
             if (sizeSelect && sizeSelect.value === '') {
                 const modal = document.getElementById('select-size-modal');
                 if (modal) modal.classList.add('is-open');
                 return;
             }
 
-            // Update hidden quantity field
             document.getElementById('quantity-hidden').value = quantityInput.value;
-            // Синхронизировать size_id из select в hidden (select может быть вне формы)
             if (sizeSelect && sizeIdHidden) {
                 sizeIdHidden.value = sizeSelect.value || '';
             }
@@ -1060,7 +1204,6 @@
                 });
         });
 
-        // Закрытие модалки "Выберите размер"
         const selectSizeModal = document.getElementById('select-size-modal');
         const selectSizeModalClose = document.getElementById('select-size-modal-close');
         if (selectSizeModal) {
@@ -1075,7 +1218,6 @@
             });
         }
 
-        // Закрытие модалки "Товар добавлен в корзину"
         const addedToCartModal = document.getElementById('added-to-cart-modal');
         const addedToCartModalClose = document.getElementById('added-to-cart-modal-close');
         if (addedToCartModal) {
@@ -1089,39 +1231,52 @@
                 if (e.target === addedToCartModal) closeAddedToCartModal();
             });
         }
-    });
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const quantityInput = document.getElementById('quantity-input');
-        const decrementBtn = document.querySelector('.decrement-btn');
-        const incrementBtn = document.querySelector('.increment-btn');
+        var productImageModal = document.getElementById('product-image-modal');
+        var productImageModalImg = document.getElementById('product-image-modal-img');
+        var productImageModalCloseBtn = document.getElementById('product-image-modal-close');
+        var productGalleryRoot = document.querySelector('.slick-vertical.slick-product');
 
-        function updateQuantity(value) {
-            quantityInput.value = value;
-            quantityInput.classList.add('value-changed');
-            setTimeout(() => {
-                quantityInput.classList.remove('value-changed');
-            }, 300);
+        function openProductImageModal(src) {
+            if (!productImageModal || !productImageModalImg || !src) return;
+            productImageModalImg.src = src;
+            productImageModalImg.alt = window.productNameForGallery || '';
+            productImageModal.classList.add('is-open');
+            document.body.style.overflow = 'hidden';
         }
 
-        if (decrementBtn && incrementBtn) {
-            decrementBtn.addEventListener('click', function() {
-                if (quantityInput.value > 1) {
-                    updateQuantity(parseInt(quantityInput.value) - 1);
-                }
-            });
+        function closeProductImageModal() {
+            if (!productImageModal || !productImageModalImg) return;
+            productImageModal.classList.remove('is-open');
+            productImageModalImg.removeAttribute('src');
+            document.body.style.overflow = '';
+        }
 
-            incrementBtn.addEventListener('click', function() {
-                if (quantityInput.value < 1000) {
-                    updateQuantity(parseInt(quantityInput.value) + 1);
-                }
-            });
-
-            quantityInput.addEventListener('change', function() {
-                if (this.value < 1) this.value = 1;
-                if (this.value > 1000) this.value = 1000;
-                updateQuantity(this.value);
+        if (productGalleryRoot) {
+            productGalleryRoot.addEventListener('click', function (e) {
+                var img = e.target.closest('img');
+                if (!img) return;
+                if (!img.closest('#carousel-parent') && !img.closest('#child-carousel')) return;
+                e.preventDefault();
+                openProductImageModal(img.currentSrc || img.src);
             });
         }
+
+        if (productImageModalCloseBtn) {
+            productImageModalCloseBtn.addEventListener('click', closeProductImageModal);
+        }
+
+        if (productImageModal) {
+            productImageModal.addEventListener('click', function (e) {
+                if (e.target === productImageModal) closeProductImageModal();
+            });
+        }
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key !== 'Escape') return;
+            if (productImageModal && productImageModal.classList.contains('is-open')) {
+                closeProductImageModal();
+            }
+        });
     });
 </script>

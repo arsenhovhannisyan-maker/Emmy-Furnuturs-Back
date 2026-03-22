@@ -260,4 +260,7 @@ return [
     'basket_empty' => 'Your basket is empty',
     'basket_load_error' => 'Basket load error',
     'basket_error_message' => 'Error loading basket',
+    'close' => 'Close',
+    'quantity_increase' => 'Increase quantity',
+    'quantity_decrease' => 'Decrease quantity',
 ];
