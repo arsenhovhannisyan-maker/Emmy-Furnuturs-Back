@@ -92,7 +92,8 @@ Route::get('/products', [ProductController::class, 'index'])->name('web.products
 Route::get('/products/{id}', [ProductController::class, 'getProduct'])->name('web.product')->whereNumber('id');
 Route::get('/product/{categoryId}', [ProductController::class, 'getProductForCategories'])->name('web.products.category');
 Route::get('/products/get-eight', [ProductController::class, 'getEightProducts'])->name('web.getEightProducts');
-Route::get('/shop/filter', [ProductController::class, 'filter'])->name('web.shop.filter');
+Route::get('/shop/products', [ProductController::class, 'browse'])->name('web.shop.products');
+Route::get('/shop/filter', [ProductController::class, 'browse'])->name('web.shop.filter');
 Route::get('/search-products', [ProductController::class, 'search'])->name('products.search');
 
 // Корзина

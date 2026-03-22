@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Web\Product;
 
 use App\Contracts\Product\IProductRepository;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ProductFilterRequest;
+use App\Http\Requests\ShopProductsBrowseRequest;
 use App\Models\Categorie\Categorie;
 use App\Models\Product\Product;
 use App\Services\Product\ProductService;
@@ -51,26 +51,14 @@ class ProductController extends Controller
         return response()->json($products);
     }
 
-    public function filter(ProductFilterRequest $request): JsonResponse
+    public function browse(ShopProductsBrowseRequest $request): JsonResponse
     {
-        $min = $request->validated('min_price') ?? 0;
-        $max = $request->validated('max_price') ?? 999999;
+        $min = (float) $request->validated('min_price');
+        $max = (float) $request->validated('max_price');
+        $categoryIds = $request->validated('category_ids') ?? [];
+        $perPage = (int) ($request->validated('per_page') ?? 6);
 
-        $categories = $request->validated('categories');
-        if ($categories && is_string($categories)) {
-            $categories = array_map('intval', array_filter(explode(',', $categories)));
-        }
-        if (!is_array($categories)) {
-            $categories = [];
-        }
-
-        $products = Product::whereBetween('price', [$min, $max])
-            ->when(!empty($categories), function ($query) use ($categories) {
-                $query->whereIn('category_id', $categories);
-            })
-            ->with('photo1')
-            ->orderByDesc('created_at')
-            ->paginate(6);
+        $products = $this->repository->browseForShop($min, $max, $categoryIds, $perPage);
 
         return response()->json([
             'products' => $products->items(),

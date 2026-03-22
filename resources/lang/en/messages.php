@@ -25,6 +25,7 @@ return [
     'logo_alt' => 'Emmy Logo',
     'footer_description' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. It has been the industry\'s standard dummy text ever since the 1500s.',
     'categories' => 'Categories',
+    'all_categories' => 'All categories',
     'navigation' => 'Navigation',
     'address' => '272B St#4, 1st Floor<br>DC Office, Washington, USA',
     'phone_number' => '+01-23-4226789',
@@ -263,4 +264,6 @@ return [
     'close' => 'Close',
     'quantity_increase' => 'Increase quantity',
     'quantity_decrease' => 'Decrease quantity',
+    'products_view_grid' => 'Grid',
+    'products_view_list' => 'List',
 ];

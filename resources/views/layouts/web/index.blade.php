@@ -455,12 +455,12 @@
 {{--                            </div>                            <span class="separator pl-15 pr-15"> </span>--}}
                             <!-- Account Dropdown -->
                             <div class="single-dropdown">
-                                <div class="dropdown show">
+                                <div class="dropdown">
                                     <a class="btn btn-secondary dropdown-toggle account-button" href="#" role="button"
-                                       id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                       id="webAccountDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                         @lang('messages.my_account')
                                     </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="webAccountDropdown">
                                         @guest
                                             <a class="dropdown-item" href="{{ route('register') }}">@lang('messages.register')</a>
                                             <a class="dropdown-item" href="{{ route('login') }}">@lang('messages.login')</a>
@@ -483,7 +483,7 @@
 
         <!-- Navigation Menu -->
         <div class="ch-navbar-wrap">
-            <nav class="ch-navbar ch-navbar-classic">
+            <nav class="ch-navbar ch-navbar-classic ch-navbar-static">
                 <!-- Your existing navbar structure -->
                 <div class="ch-navbar-main-outer">
                     <div class="ch-navbar-main">
@@ -548,6 +548,7 @@
 
 <script src="{{ asset('js/web/js/header.js') }}"></script>
 <script src="{{ asset('js/web/js/core.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{{ asset('js/web/js/script.js') }}"></script>
 </body>
 </html>

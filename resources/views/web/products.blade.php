@@ -235,10 +235,7 @@
     }
 
     .list-shop-filter li {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 8px 0;
+        padding: 0;
         border-bottom: 1px solid #f8f9fa;
     }
 
@@ -246,9 +243,32 @@
         border-bottom: none;
     }
 
-    .list-shop-filter-number {
-        color: #95a5a6;
-        font-size: 14px;
+    .list-shop-filter__label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        margin: 0;
+        padding: 10px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+    }
+
+    .list-shop-filter__label:hover {
+        background: #f0f7ff;
+    }
+
+    .list-shop-filter__label:has(.category-filter:checked) {
+        background: #e3f2fd;
+        box-shadow: inset 0 0 0 2px #50becf;
+        color: #0d6efd;
+        font-weight: 600;
+    }
+
+    .list-shop-filter__text {
+        flex: 1;
+        line-height: 1.4;
     }
 
     /* Search Form */
@@ -295,6 +315,56 @@
     .product-view-link:hover {
         color: #007bff;
         background: #e3f2fd;
+    }
+
+    button.product-view-link {
+        border: none;
+        cursor: pointer;
+        line-height: 1;
+    }
+
+    #products-container.products-layout--grid .product-modern .unit {
+        flex-direction: column !important;
+    }
+
+    #products-container.products-layout--grid .product-modern .unit-left {
+        width: 100% !important;
+        max-width: none !important;
+    }
+
+    #products-container.products-layout--grid .product-modern-figure {
+        border-radius: 12px 12px 0 0 !important;
+    }
+
+    #products-container.products-layout--grid .product-modern-figure img {
+        height: 200px;
+    }
+
+    #products-container.products-layout--grid .product-modern-body {
+        text-align: center;
+    }
+
+    #products-container.products-layout--grid .product-modern-title {
+        font-size: 17px;
+    }
+
+    #products-container.products-layout--grid .product-modern-text {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        min-height: 0;
+        margin-bottom: 12px;
+    }
+
+    #products-container.products-layout--grid .product-modern form {
+        width: 100%;
+    }
+
+    @media (min-width: 576px) {
+        #products-container.products-layout--grid .product-modern-body {
+            text-align: left;
+        }
     }
 
     /* Responsive Adjustments */
@@ -405,7 +475,7 @@
                                      data-min="0"
                                      data-max="50000"
                                      data-min-diff="100"
-                                     data-start="[66, 235]"
+                                     data-start="[10005, 50000]"
                                      data-step="1"
                                      data-tooltip="false"
                                      data-input=".ch-range-input-value-1"
@@ -439,13 +509,12 @@
                                 <h6 class="aside-title">@lang('messages.categories')</h6>
                                 <ul class="list-shop-filter" id="categories-filter">
                                     <!-- Все категории -->
-                                    <li>
-                                        <label class="checkbox-inline">
+                                    <li class="list-shop-filter__item">
+                                        <label class="list-shop-filter__label checkbox-inline">
                                             <input type="checkbox" name="categories[]" value="all" id="category-all"
                                                    checked class="category-filter">
-                                            @lang('messages.all_categories')
+                                            <span class="list-shop-filter__text">@lang('messages.all_categories')</span>
                                         </label>
-                                        <span class="list-shop-filter-number">({{ $totalProducts ?? 0 }})</span>
                                     </li>
 
                                     <!-- Динамические категории -->
@@ -454,27 +523,23 @@
                                             @php
                                                 $categoryId = '';
                                                 $categoryName = 'Unnamed Category';
-                                                $productsCount = 0;
 
                                                 if (is_array($category)) {
                                                     $categoryId = $category['id'] ?? '';
                                                     $categoryName = $category['name'] ?? 'Unnamed Category';
-                                                    $productsCount = $category['products_count'] ?? 0;
                                                 } elseif (is_object($category)) {
                                                     $categoryId = $category->id ?? '';
                                                     $categoryName = $category->name ?? 'Unnamed Category';
-                                                    $productsCount = $category->products_count ?? 0;
                                                 }
                                             @endphp
 
                                             @if(!empty($categoryId))
-                                                <li>
-                                                    <label class="checkbox-inline">
+                                                <li class="list-shop-filter__item">
+                                                    <label class="list-shop-filter__label checkbox-inline">
                                                         <input type="checkbox" name="categories[]" value="{{ $categoryId }}"
-                                                               class="category-filter" data-count="{{ $productsCount }}">
-                                                        {{ $categoryName }}
+                                                               id="category-{{ $categoryId }}" class="category-filter">
+                                                        <span class="list-shop-filter__text">{{ $categoryName }}</span>
                                                     </label>
-                                                    <span class="list-shop-filter-number">({{ $productsCount }})</span>
                                                 </li>
                                             @endif
                                         @endforeach
@@ -518,18 +583,18 @@
                             </p>
                             <div>
                                 <div class="group-sm group-middle">
-                                    <div class="product-view-toggle">
-                                        <a class="mdi mdi-apps product-view-link product-view-grid" href="grid-shop.html"></a>
-                                        <a class="mdi mdi-format-list-bulleted product-view-link product-view-list active" href="shop-list.html"></a>
+                                    <div class="product-view-toggle" role="group" aria-label="{{ __('messages.products_view_grid') }} / {{ __('messages.products_view_list') }}">
+                                        <button type="button" class="mdi mdi-apps product-view-link product-view-grid" title="{{ __('messages.products_view_grid') }}" aria-pressed="false"></button>
+                                        <button type="button" class="mdi mdi-format-list-bulleted product-view-link product-view-list active" title="{{ __('messages.products_view_list') }}" aria-pressed="true"></button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div id="products-container" class="row row-30 row-md-50 row-lg-60">
+                        <div id="products-container" class="row row-30 row-md-50 row-lg-60 products-layout products-layout--list">
                             @if(isset($products) && $products->count() > 0)
                                 @foreach($products as $product)
-                                    <div class="col-12">
+                                    <div class="product-col col-12">
                                         <!-- Product-->
                                         <article class="product-modern text-center text-sm-left">
                                             <div class="unit unit-spacing-0 flex-column flex-sm-row">
@@ -607,15 +672,74 @@
         const resultsText = document.querySelector('#results-text');
         const categoryAll = document.querySelector('#category-all');
         const categoryCheckboxes = document.querySelectorAll('.category-filter');
-        const filterUrl = "{{ route('web.shop.filter') }}";
+        const browseUrl = "{{ route('web.shop.products') }}";
         @php
             $productRouteTemplate = preg_replace('#/\d+$#', '/__ID__', route('web.product', ['id' => 1]));
         @endphp
         const productUrlTemplate = "{{ $productRouteTemplate }}";
         const currencyLabel = " @lang('messages.currency_rub')";
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}';
+        const layoutStorageKey = 'shopProductsView';
 
-        if (!filterButton || !productsContainer) return;
+        if (!productsContainer) return;
+
+        let currentView = sessionStorage.getItem(layoutStorageKey) === 'grid' ? 'grid' : 'list';
+
+        function getProductColClass() {
+            return currentView === 'grid'
+                ? 'product-col col-12 col-sm-6 col-lg-4'
+                : 'product-col col-12';
+        }
+
+        function applyLayoutToContainer() {
+            productsContainer.classList.remove('products-layout--list', 'products-layout--grid');
+            productsContainer.classList.add('products-layout', currentView === 'grid' ? 'products-layout--grid' : 'products-layout--list');
+            productsContainer.querySelectorAll('.product-col').forEach(function (col) {
+                col.className = getProductColClass();
+            });
+        }
+
+        function setViewToggleUI() {
+            const gridBtn = document.querySelector('.product-view-grid');
+            const listBtn = document.querySelector('.product-view-list');
+            if (!gridBtn || !listBtn) return;
+            if (currentView === 'grid') {
+                gridBtn.classList.add('active');
+                listBtn.classList.remove('active');
+                gridBtn.setAttribute('aria-pressed', 'true');
+                listBtn.setAttribute('aria-pressed', 'false');
+            } else {
+                listBtn.classList.add('active');
+                gridBtn.classList.remove('active');
+                listBtn.setAttribute('aria-pressed', 'true');
+                gridBtn.setAttribute('aria-pressed', 'false');
+            }
+        }
+
+        (function initLayoutToggle() {
+            const gridBtn = document.querySelector('.product-view-grid');
+            const listBtn = document.querySelector('.product-view-list');
+            setViewToggleUI();
+            applyLayoutToContainer();
+            if (gridBtn) {
+                gridBtn.addEventListener('click', function () {
+                    if (currentView === 'grid') return;
+                    currentView = 'grid';
+                    sessionStorage.setItem(layoutStorageKey, 'grid');
+                    setViewToggleUI();
+                    applyLayoutToContainer();
+                });
+            }
+            if (listBtn) {
+                listBtn.addEventListener('click', function () {
+                    if (currentView === 'list') return;
+                    currentView = 'list';
+                    sessionStorage.setItem(layoutStorageKey, 'list');
+                    setViewToggleUI();
+                    applyLayoutToContainer();
+                });
+            }
+        })();
 
         // Обработчик изменения категорий
         if (categoryCheckboxes.length > 0) {
@@ -630,36 +754,36 @@
             const isAllCategory = clickedCheckbox.id === 'category-all';
 
             if (isAllCategory && clickedCheckbox.checked) {
-                // Если выбрали "Все", снимаем выбор с остальных
                 document.querySelectorAll('.category-filter:not(#category-all)').forEach(cb => {
                     cb.checked = false;
                 });
-            } else if (!isAllCategory && clickedCheckbox.checked) {
-                // Если выбрали конкретную категорию, снимаем "Все"
+            } else if (!isAllCategory && clickedCheckbox.checked && categoryAll) {
                 categoryAll.checked = false;
             }
 
-            // Автоматически применяем фильтры при изменении категорий
             applyFilters();
         }
 
-        // Основная функция применения фильтров
-        async function applyFilters() {
+        function buildBrowseQueryUrl(page) {
             const min = minInput?.value?.trim() || '0';
             const max = maxInput?.value?.trim() || '999999';
-
-            // Получаем выбранные категории
             const selectedCategories = Array.from(document.querySelectorAll('.category-filter:checked'))
                 .filter(cb => cb.value !== 'all')
                 .map(cb => cb.value);
 
-            // Формируем URL с параметрами
-            let url = `${filterUrl}?min_price=${encodeURIComponent(min)}&max_price=${encodeURIComponent(max)}`;
-
+            const params = new URLSearchParams();
+            params.set('min_price', min);
+            params.set('max_price', max);
             if (selectedCategories.length > 0) {
-                url += `&categories=${encodeURIComponent(selectedCategories.join(','))}`;
+                params.set('category_ids', selectedCategories.join(','));
             }
+            if (page && page > 1) {
+                params.set('page', String(page));
+            }
+            return `${browseUrl}?${params.toString()}`;
+        }
 
+        async function fetchBrowse(url) {
             productsContainer.classList.add('loading');
             productsContainer.innerHTML = '<div class="col-12 text-center"><p>@lang('messages.loading')</p></div>';
 
@@ -685,8 +809,23 @@
             }
         }
 
-        // Обработчик кнопки фильтра
-        filterButton.addEventListener('click', applyFilters);
+        async function applyFilters() {
+            await fetchBrowse(buildBrowseQueryUrl(1));
+        }
+
+        if (filterButton) {
+            filterButton.addEventListener('click', applyFilters);
+        }
+
+        const productsPaginationEl = document.getElementById('products-pagination');
+        if (productsPaginationEl) {
+            productsPaginationEl.addEventListener('click', function (e) {
+                const anchor = e.target.closest('a.page-link');
+                if (!anchor || !anchor.getAttribute('href')) return;
+                e.preventDefault();
+                fetchBrowse(anchor.href);
+            });
+        }
 
         function renderProducts(products, paginationHtml, meta) {
             productsContainer.innerHTML = '';
@@ -757,7 +896,7 @@
                     : '';
 
                 const productHtml = `
-                    <div class="col-12">
+                    <div class="${getProductColClass()}">
                         <article class="product-modern text-center text-sm-left">
                             <div class="unit unit-spacing-0 flex-column flex-sm-row">
                                 <div class="unit-left">

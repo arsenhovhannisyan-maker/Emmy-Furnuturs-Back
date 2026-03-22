@@ -25,6 +25,7 @@ return [
     'logo_alt' => 'Логотип Emmy',
     'footer_description' => 'Lorem Ipsum - это текст-рыба, часто используемый в печати и вэб-дизайне. Lorem Ipsum является стандартной рыбой для текстов на латинице с начала XVI века.',
     'categories' => 'Категории',
+    'all_categories' => 'Все категории',
     'navigation' => 'Навигация',
     'address' => '272B St#4, 1st Floor<br>DC Office, Washington, USA',
     'phone_number' => '+01-23-4226789',
@@ -270,4 +271,6 @@ return [
     'close' => 'Закрыть',
     'quantity_increase' => 'Увеличить количество',
     'quantity_decrease' => 'Уменьшить количество',
+    'products_view_grid' => 'Сетка',
+    'products_view_list' => 'Список',
 ];

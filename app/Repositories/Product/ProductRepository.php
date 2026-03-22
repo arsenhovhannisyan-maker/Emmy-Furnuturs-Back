@@ -23,6 +23,19 @@ class ProductRepository extends BaseRepository implements IProductRepository
             ->paginate($perPage);
     }
 
+    public function browseForShop(float $minPrice, float $maxPrice, array $categoryIds, int $perPage = 6): LengthAwarePaginator
+    {
+        return $this->model->query()
+            ->whereBetween('price', [$minPrice, $maxPrice])
+            ->when($categoryIds !== [], function ($query) use ($categoryIds) {
+                $query->whereIn('category_id', $categoryIds);
+            })
+            ->with(['photo1'])
+            ->orderByDesc('created_at')
+            ->paginate($perPage)
+            ->withQueryString();
+    }
+
     public function getEightWithPhoto(): Collection
     {
         return $this->model
@@ -44,13 +57,32 @@ class ProductRepository extends BaseRepository implements IProductRepository
     {
         $product = $this->model->findOrFail($productId);
 
-        return $this->model
+        $with = ['photo1', 'sizes'];
+
+        $fromCategory = $this->model->query()
             ->where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
-            ->where('discount', '>', 0)
-            ->with(['photo1'])
-            ->latest()
+            ->with($with)
+            ->orderByDesc('discount')
+            ->orderByDesc('created_at')
             ->take(4)
             ->get();
+
+        if ($fromCategory->count() >= 4) {
+            return $fromCategory;
+        }
+
+        $needed = 4 - $fromCategory->count();
+        $excludeIds = $fromCategory->pluck('id')->push($product->id)->all();
+
+        $more = $this->model->query()
+            ->whereNotIn('id', $excludeIds)
+            ->with($with)
+            ->orderByDesc('discount')
+            ->orderByDesc('created_at')
+            ->take($needed)
+            ->get();
+
+        return $fromCategory->concat($more)->values();
     }
 }
