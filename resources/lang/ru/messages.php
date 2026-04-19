@@ -1,6 +1,6 @@
 <?php
 return [
-    'welcome' => 'Добро пожаловать в интернет-магазин Emmy Furniture!',
+    'welcome' => 'Добро пожаловать в интернет-магазин Emmy!',
     'language' => 'Язык',
     'currency' => 'Валюта',
     'my_account' => 'Мой аккаунт',
@@ -62,8 +62,8 @@ return [
 
     'made_with_love_desc' => 'За счет работы без посредников предлагаем конкурентные цены и делаем спецпредложения',
 
-    'what_we_offer_desc_1' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus nibh dolor, gravida faucibus dolor consectetur, pulvinar rhoncus risus. Fusce vel rutrum mi. Suspendisse pretium tellus eu ipsum pellentesque convallis.',
-    'what_we_offer_desc_2' => 'Lorem Ipsum - это текст-рыба, часто используемый в печати и вэб-дизайне. Lorem Ipsum является стандартной рыбой для текстов на латинице с начала XVI века.',
+    'what_we_offer_desc_1' => 'Мебельная фабрика Emmy специализируется на производстве мебели для ванных комнат. Наши изделия полностью соответствуют всем требованиям надежности, экологичности и долговечности. Мы используем только качественные материалы и оригинальную фурнитуру, что позволяет гарантировать не только красивый внешний вид и эргономичность, но и долгий срок службы.',
+    'what_we_offer_desc_2' => 'Наша мебель не боится повышенной влажности, невосприимчива к воздействию пара и устойчива к возникновению грибков и плесени.',
     'feature_1' => 'Sed egestas urna eget ipsum condimentum',
     'feature_2' => 'Vivamus dapibus massa non orci tincidunt',
     'feature_3' => 'Maecenas lacinia blandit ligula, at tristique mi sagittis sit',
@@ -177,6 +177,14 @@ return [
 4.3. Обезличенные данные Пользователей, собираемые с помощью сервисов интернет-статистики, служат для сбора информации о действиях Пользователей на сайте, улучшения качества сайта и его содержания.',
     // Shop page keys
     'shop_list' => 'Список магазина',
+    'seo_default_site_title' => 'Emmy Furniture — премиальный магазин мебели в Москве',
+    'seo_default_site_description' => 'Премиальный магазин мебели для ванной комнаты: зеркала, зеркальные шкафы, тумбы и коллекции Emmy. Доставка по Москве и области.',
+    'seo_default_og_title' => 'Emmy Furniture — премиальный магазин мебели в Москве',
+    'seo_default_og_description' => 'Премиальная мебель для ванной комнаты: зеркала, шкафы и функциональные решения в современном стиле. Emmy Furniture, Москва.',
+    'seo_default_keywords' => 'премиальный магазин мебели, мебель для ванной москва, зеркала для ванной, зеркальные шкафы, тумбы для ванной, премиальная мебель, Emmy Furniture',
+    'seo_brand_suffix' => 'Emmy Furniture',
+    'seo_twitter_share_text' => 'Откройте премиальную мебель для ванной от Emmy Furniture',
+    'seo_shop_catalog_description' => 'Каталог Emmy Furniture: премиальная мебель для ванной, зеркала и шкафы. Удобный фильтр по категориям и цене, доставка по Москве.',
     'filter_by_price' => 'Фильтр по цене',
     'all' => 'Все',
     'furnitures' => 'Мебель',

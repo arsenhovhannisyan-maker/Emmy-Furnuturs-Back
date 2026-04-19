@@ -20,7 +20,7 @@
             <!-- Twitter -->
             <li itemprop="instrument" itemscope itemtype="https://schema.org/ChooseAction">
                 <a class="icon fab fa-twitter"
-                   href="https://twitter.com/intent/tweet?url={{ url()->current() }}&text=Посмотрите%20качественную%20мебель%20от%20Emmy%20Furniture%20Munich"
+                   href="https://twitter.com/intent/tweet?url={{ rawurlencode(url()->current()) }}&text={{ rawurlencode(__('messages.seo_twitter_share_text')) }}"
                    target="_blank"
                    rel="noopener noreferrer"
                    onclick="trackSocialShare('twitter')"

@@ -751,7 +751,19 @@
     }
 </style>
 
-<x-web-layout>
+@php
+    $seoProductImage = null;
+    if ($product->photo1?->file_url) {
+        $u = $product->photo1->file_url;
+        $seoProductImage = \Illuminate\Support\Str::startsWith($u, ['http://', 'https://']) ? $u : url($u);
+    }
+@endphp
+<x-web-layout
+    :seo-title="$product->name . ' | ' . __('messages.seo_brand_suffix')"
+    :seo-description="Str::limit(strip_tags((string) ($product->description ?? '')), 160)"
+    :seo-image="$seoProductImage"
+    seo-type="product"
+>
     <div class="page">
         <section class="breadcrumbs-custom">
             <div class="parallax-container breadcrumbs_section">

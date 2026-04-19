@@ -1,9 +1,9 @@
 <!-- Social Sharing SEO Content - Hidden from users, visible for search engines -->
 <div style="position: absolute; left: -9999px; top: -9999px;">
-    <h1>Поделиться в социальных сетях - Emmy Furniture Munich</h1>
-    <h2>Расскажите друзьям о качественной мебели из Мюнхена</h2>
+    <h1>Поделиться в социальных сетях - Emmy Furniture</h1>
+    <h2>Расскажите друзьям о качественной мебели из Москвы</h2>
 
-    <p>Понравилась наша мебель? Поделитесь информацией с друзьями и знакомыми в социальных сетях! Расскажите о качественной мебели от <strong>Emmy Furniture Munich</strong> и помогите другим найти идеальную мебель для их дома.</p>
+    <p>Понравилась наша мебель? Поделитесь информацией с друзьями и знакомыми в социальных сетях! Расскажите о качественной мебели от <strong>Emmy Furniture</strong> и помогите другим найти идеальную мебель для их дома.</p>
 
     <h3>Почему стоит поделиться?</h3>
     <ul>
@@ -21,18 +21,18 @@
         <li><strong>Pinterest</strong> - Сохраните вдохновляющие идеи для интерьера</li>
     </ul>
 
-    <h3>Что можно рассказать о Emmy Furniture Munich?</h3>
+    <h3>Что можно рассказать о Emmy Furniture?</h3>
     <p>При публикации вы можете упомянуть:</p>
     <ul>
         <li>Качество материалов и сборки мебели</li>
         <li>Широкий выбор стилей и моделей</li>
         <li>Профессиональный сервис и консультации</li>
-        <li>Бесплатную доставку по Мюнхену</li>
+        <li>Бесплатную доставку по Москве</li>
         <li>Гарантию на всю продукцию</li>
         <li>Индивидуальный подход к каждому клиенту</li>
     </ul>
 
-    <p><strong>Ключевые слова:</strong> поделиться в соцсетях, социальные кнопки, мебель мюнхен, Emmy Furniture, Facebook, Twitter, Instagram, Pinterest, социальный шаринг</p>
+    <p><strong>Ключевые слова:</strong> поделиться в соцсетях, социальные кнопки, мебель москва, Emmy Furniture, Facebook, Twitter, Instagram, Pinterest, социальный шаринг</p>
 </div>
 
 {{--<!-- Structured Data for Social Sharing -->--}}
@@ -40,13 +40,13 @@
 {{--    {--}}
 {{--        "@context": "https://schema.org",--}}
 {{--        "@type": "WebPage",--}}
-{{--        "name": "Поделиться в социальных сетях - Emmy Furniture Munich",--}}
+{{--        "name": "Поделиться в социальных сетях - Emmy Furniture",--}}
 {{--        "description": "Кнопки для sharing контента о мебели в социальных сетях",--}}
 {{--        "url": "{{ url()->current() }}",--}}
 {{--    "mainEntity": {--}}
 {{--        "@type": "ShareAction",--}}
 {{--        "name": "Поделиться мебелью Emmy Furniture",--}}
-{{--        "description": "Sharing информации о качественной мебели из Мюнхена",--}}
+{{--        "description": "Sharing информации о качественной мебели из Москвы",--}}
 {{--        "instrument": [--}}
 {{--            {--}}
 {{--                "@type": "ChooseAction",--}}
@@ -60,7 +60,7 @@
 {{--                    {--}}
 {{--                        "@type": "Action",--}}
 {{--                        "name": "Поделиться в Twitter",--}}
-{{--                        "url": "https://twitter.com/intent/tweet?url={{ url()->current() }}&text=Посмотрите%20качественную%20мебель%20от%20Emmy%20Furniture%20Munich"--}}
+{{--                        "url": "https://twitter.com/intent/tweet?url={{ url()->current() }}&text=..."--}}
 {{--                    },--}}
 {{--                    {--}}
 {{--                        "@type": "Action",--}}
@@ -77,8 +77,8 @@
 {{--        ],--}}
 {{--        "object": {--}}
 {{--            "@type": "Product",--}}
-{{--            "name": "Мебель Emmy Furniture Munich",--}}
-{{--            "description": "Качественная мебель для дома и офиса в Мюнхене"--}}
+{{--            "name": "Мебель Emmy Furniture",--}}
+{{--            "description": "Качественная мебель для дома и офиса в Москве"--}}
 {{--        }--}}
 {{--    }--}}
 {{--}--}}
@@ -89,7 +89,7 @@
 {{--    {--}}
 {{--        "@context": "https://schema.org",--}}
 {{--        "@type": "Organization",--}}
-{{--        "name": "Emmy Furniture Munich",--}}
+{{--        "name": "Emmy Furniture",--}}
 {{--        "url": "{{ url('/') }}",--}}
 {{--    "logo": "{{ asset('img/web/logo-emmy.png') }}",--}}
 {{--    "sameAs": [--}}

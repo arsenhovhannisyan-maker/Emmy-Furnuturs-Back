@@ -440,7 +440,10 @@
     }
 </style>
 
-<x-web-layout>
+<x-web-layout
+    :seo-title="__('messages.shop_list') . ' | ' . __('messages.seo_brand_suffix')"
+    :seo-description="__('messages.seo_shop_catalog_description')"
+>
     <div class="page">
         <!--+breadcrumbs-->
         <section class="breadcrumbs-custom">

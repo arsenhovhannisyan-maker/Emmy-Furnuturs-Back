@@ -2,45 +2,65 @@
 <html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="utf-8">
-    <title>Emmy Furniture Munich - Премиальная мебель в Мюнхене | Магазин мебели</title>
+    @php
+        $defaultSiteTitle = __('messages.seo_default_site_title');
+        $defaultSiteDescription = __('messages.seo_default_site_description');
+        $defaultOgTitle = __('messages.seo_default_og_title');
+        $defaultOgDescription = __('messages.seo_default_og_description');
+        $defaultOgImage = url('/img/Carusel1.jpg');
+        $resolvedTitle = $seoTitle ?? $defaultSiteTitle;
+        $resolvedDescription = $seoDescription ?? $defaultSiteDescription;
+        $resolvedOgTitle = $seoTitle ?? $defaultOgTitle;
+        $resolvedOgDescription = $seoDescription ?? $defaultOgDescription;
+        $rawOgImage = $seoImage ?? null;
+        $resolvedOgImage = $rawOgImage
+            ? (\Illuminate\Support\Str::startsWith($rawOgImage, ['http://', 'https://']) ? $rawOgImage : url($rawOgImage))
+            : $defaultOgImage;
+        $resolvedOgType = $seoType ?? 'website';
+        $useDefaultOgImage = ($resolvedOgImage === $defaultOgImage);
+    @endphp
+    <title>{{ $resolvedTitle }}</title>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-    <meta name="description" content="Emmy Furniture Munich - магазин премиальной мебели в Мюнхене. Современная и классическая мебель для гостиной, спальни, столовой. Доставка по Мюнхену.">
-    <meta name="keywords" content="мебель мюнхен, купить мебель мюнхен, современная мебель, мебель для гостиной, мебель для спальни, обеденный стол, офисная мебель, диван мюнхен, шкаф, мебельный магазин">
+    <meta name="description" content="{{ $resolvedDescription }}">
+    <meta name="keywords" content="{{ __('messages.seo_default_keywords') }}">
     <meta name="author" content="Emmy Furniture">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ url()->current() }}">
 
-    <!-- Open Graph / Facebook, VK, Telegram, WhatsApp - красивое превью при отправке ссылки -->
-    <meta property="og:type" content="website">
+    <!-- Open Graph / Facebook, VK, Telegram, WhatsApp - превью при отправке ссылки -->
+    <meta property="og:type" content="{{ $resolvedOgType }}">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:title" content="Emmy Furniture - Премиальная мебель в Мюнхене">
-    <meta property="og:description" content="Магазин премиальной мебели. Современная и классическая мебель для гостиной, спальни, столовой. Зеркала, шкафы, доставка по Мюнхену.">
-    <meta property="og:image" content="{{ url('/img/Carusel1.jpg') }}">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
+    <meta property="og:title" content="{{ $resolvedOgTitle }}">
+    <meta property="og:description" content="{{ $resolvedOgDescription }}">
+    <meta property="og:image" content="{{ $resolvedOgImage }}">
+    @if($useDefaultOgImage)
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+    @endif
     <meta property="og:site_name" content="Emmy Furniture">
     <meta property="og:locale" content="{{ app()->getLocale() === 'ru' ? 'ru_RU' : 'en_US' }}">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="{{ url()->current() }}">
-    <meta name="twitter:title" content="Emmy Furniture - Премиальная мебель в Мюнхене">
-    <meta name="twitter:description" content="Магазин премиальной мебели. Современная и классическая мебель для гостиной, спальни, столовой. Зеркала, шкафы, доставка по Мюнхену.">
-    <meta name="twitter:image" content="{{ url('/img/Carusel1.jpg') }}">
+    <meta name="twitter:title" content="{{ $resolvedOgTitle }}">
+    <meta name="twitter:description" content="{{ $resolvedOgDescription }}">
+    <meta name="twitter:image" content="{{ $resolvedOgImage }}">
 
     <!-- Structured Data for Local Business -->
 {{--    <script type="application/ld+json">--}}
 {{--        {--}}
 {{--            "@context": "https://schema.org",--}}
 {{--            "@type": "FurnitureStore",--}}
-{{--            "name": "Emmy Furniture Munich",--}}
-{{--            "description": "Премиальный магазин мебели в Мюнхене. Современная и классическая мебель для дома и офиса",--}}
+{{--            "name": "Emmy Furniture",--}}
+{{--            "description": "Премиальный магазин мебели в Москве. Современная и классическая мебель для ванной комнаты",--}}
 {{--            "url": "{{ url('/') }}",--}}
 {{--        "telephone": "+49-89-XXXX-XXXX",--}}
 {{--        "address": {--}}
 {{--            "@type": "PostalAddress",--}}
 {{--            "streetAddress": "Ваш адрес",--}}
-{{--            "addressLocality": "Мюнхен",--}}
+{{--            "addressLocality": "Москва",--}}
 {{--            "postalCode": "80331",--}}
 {{--            "addressCountry": "DE"--}}
 {{--        },--}}
@@ -54,7 +74,7 @@
 {{--            "Sa 10:00-16:00"--}}
 {{--        ],--}}
 {{--        "priceRange": "€€",--}}
-{{--        "areaServed": "Мюнхен и прилегающие районы",--}}
+{{--        "areaServed": "Москва и область",--}}
 {{--        "sameAs": [--}}
 {{--            "https://www.facebook.com/emmyfurnituremunich",--}}
 {{--            "https://www.instagram.com/emmyfurnituremunich"--}}
@@ -490,7 +510,7 @@
                         <div class="ch-navbar-panel">
                             <button class="ch-navbar-toggle" data-ch-navbar-toggle=".ch-navbar-nav-wrap"><span></span></button>
                             <div class="ch-navbar-brand">
-                                <a href="{{ route('web.home') }}"> <img class="logo-default" src="{{ asset('img/web/logo-emmy.png') }}" alt="Emmy Furniture Munich - магазин премиальной мебели" title="Магазин мебели в Мюнхене" /></a>
+                                <a href="{{ route('web.home') }}"> <img class="logo-default" src="{{ asset('img/web/logo-emmy.png') }}" alt="{{ __('messages.seo_default_og_title') }}" title="{{ __('messages.seo_default_site_title') }}" /></a>
                             </div>
                         </div>
                         <div class="ch-navbar-nav-wrap">

@@ -2,5 +2,5 @@
 
 return [
     'home.title' => '',
-    'home.description' => 'Munich Ventures',
+    'home.description' => 'Emmy Furniture Moscow',
 ];
