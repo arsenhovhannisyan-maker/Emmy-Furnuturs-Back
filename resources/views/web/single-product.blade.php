@@ -761,6 +761,7 @@
 <x-web-layout
     :seo-title="$product->name . ' | ' . __('messages.seo_brand_suffix')"
     :seo-description="Str::limit(strip_tags((string) ($product->description ?? '')), 160)"
+    :seo-keywords="$product->name . ', ' . ($product->categories->name ?? '') . ', ' . __('messages.seo_product_keywords')"
     :seo-image="$seoProductImage"
     seo-type="product"
 >

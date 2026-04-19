@@ -10,6 +10,7 @@ class WebLayout extends Component
     public function __construct(
         public ?string $seoTitle = null,
         public ?string $seoDescription = null,
+        public ?string $seoKeywords = null,
         public ?string $seoImage = null,
         public ?string $seoType = null,
     ) {}
@@ -19,6 +20,7 @@ class WebLayout extends Component
         return view('layouts.web.index', [
             'seoTitle' => $this->seoTitle,
             'seoDescription' => $this->seoDescription,
+            'seoKeywords' => $this->seoKeywords,
             'seoImage' => $this->seoImage,
             'seoType' => $this->seoType,
         ]);

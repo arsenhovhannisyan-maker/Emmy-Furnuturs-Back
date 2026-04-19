@@ -16,14 +16,17 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        $hasEmmyPhotoSource = CategorySeeder::resolveBasePath() !== null;
+
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
-        // Очищаем только основные таблицы, не трогаем order_items
         DB::table('orders')->truncate();
 
-        DB::table('product_sizes')->truncate();
-        DB::table('products')->truncate();
-        DB::table('categories')->truncate();
+        if ($hasEmmyPhotoSource) {
+            DB::table('product_sizes')->truncate();
+            DB::table('products')->truncate();
+            DB::table('categories')->truncate();
+        }
 
         DB::table('roles')->truncate();
         DB::table('permissions')->truncate();
@@ -34,14 +37,21 @@ class DatabaseSeeder extends Seeder
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        $this->call([
+        $seeders = [
             RoleAndPermissionSeeder::class,
             AdminUserSeeder::class,
             UserSeeder::class,
             MenuSeeder::class,
             OrderSeeder::class,
-            CategorySeeder::class,
-            ProductSeeder::class,
-        ]);
+        ];
+
+        if ($hasEmmyPhotoSource) {
+            $seeders[] = CategorySeeder::class;
+            $seeders[] = ProductSeeder::class;
+        } else {
+            $this->command?->line('Пропуск CategorySeeder/ProductSeeder: источник Emmy Photo не найден.');
+        }
+
+        $this->call($seeders);
     }
 }

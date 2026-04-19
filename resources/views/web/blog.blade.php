@@ -1,4 +1,4 @@
-<x-web-layout>
+<x-web-layout :seo-keywords="__('messages.seo_blog_keywords')">
     <div class="page">
         <!--+breadcrumbs-->
         <section class="breadcrumbs-custom">

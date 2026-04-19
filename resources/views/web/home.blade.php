@@ -1,4 +1,4 @@
-<x-web-layout>
+<x-web-layout :seo-keywords="__('messages.seo_home_keywords')">
     <!-- Swiper-->
     <section class="section swiper-container swiper-slider swiper-slider-4" data-loop="true" data-effect="fade">
         <div class="swiper-wrapper">

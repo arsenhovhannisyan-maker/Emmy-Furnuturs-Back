@@ -14,9 +14,9 @@ class ProductSeeder extends Seeder
 {
     public function run(): void
     {
-        $basePath = base_path('Emmy photo');
-        if (!File::isDirectory($basePath)) {
-            $this->command->warn('Папка "Emmy photo" не найдена. Сначала запустите CategorySeeder.');
+        $basePath = CategorySeeder::resolveBasePath();
+        if (!$basePath) {
+            $this->command?->line('Источник Emmy Photo не найден. ProductSeeder пропущен.');
             return;
         }
 

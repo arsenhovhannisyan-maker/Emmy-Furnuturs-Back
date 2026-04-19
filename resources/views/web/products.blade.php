@@ -443,6 +443,7 @@
 <x-web-layout
     :seo-title="__('messages.shop_list') . ' | ' . __('messages.seo_brand_suffix')"
     :seo-description="__('messages.seo_shop_catalog_description')"
+    :seo-keywords="__('messages.seo_shop_keywords')"
 >
     <div class="page">
         <!--+breadcrumbs-->

@@ -7,9 +7,11 @@
         $defaultSiteDescription = __('messages.seo_default_site_description');
         $defaultOgTitle = __('messages.seo_default_og_title');
         $defaultOgDescription = __('messages.seo_default_og_description');
+        $defaultKeywords = __('messages.seo_default_keywords');
         $defaultOgImage = url('/img/Carusel1.jpg');
         $resolvedTitle = $seoTitle ?? $defaultSiteTitle;
         $resolvedDescription = $seoDescription ?? $defaultSiteDescription;
+        $resolvedKeywords = $seoKeywords ?? $defaultKeywords;
         $resolvedOgTitle = $seoTitle ?? $defaultOgTitle;
         $resolvedOgDescription = $seoDescription ?? $defaultOgDescription;
         $rawOgImage = $seoImage ?? null;
@@ -22,7 +24,7 @@
     <title>{{ $resolvedTitle }}</title>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="description" content="{{ $resolvedDescription }}">
-    <meta name="keywords" content="{{ __('messages.seo_default_keywords') }}">
+    <meta name="keywords" content="{{ $resolvedKeywords }}">
     <meta name="author" content="Emmy Furniture">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="robots" content="index, follow">
