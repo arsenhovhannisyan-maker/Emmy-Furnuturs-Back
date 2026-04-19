@@ -5,6 +5,7 @@ namespace Database\Seeders\EmmyPhoto;
 use App\Models\Categorie\Categorie;
 use App\Models\Product\Product;
 use App\Models\ProductSize\ProductSize;
+use Database\Seeders\DemoCatalogSeeder;
 use Database\Seeders\EmmyPhotoParser;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
@@ -16,7 +17,9 @@ class ProductSeeder extends Seeder
     {
         $basePath = CategorySeeder::resolveBasePath();
         if (!$basePath) {
-            $this->command?->line('Источник Emmy Photo не найден. ProductSeeder пропущен.');
+            $this->command?->info('Источник Emmy Photo не найден — загружается демо-каталог без фотографий.');
+            $this->call(DemoCatalogSeeder::class);
+
             return;
         }
 

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User\User;
+use Database\Seeders\DemoCatalogSeeder;
 use Database\Seeders\EmmyPhoto\CategorySeeder;
 use Database\Seeders\EmmyPhoto\ProductSeeder;
 use Database\Seeders\Menu\MenuSeeder;
@@ -49,7 +50,8 @@ class DatabaseSeeder extends Seeder
             $seeders[] = CategorySeeder::class;
             $seeders[] = ProductSeeder::class;
         } else {
-            $this->command?->line('Пропуск CategorySeeder/ProductSeeder: источник Emmy Photo не найден.');
+            $this->command?->line('Источник Emmy Photo не найден — демо-каталог без фотографий (DemoCatalogSeeder).');
+            $seeders[] = DemoCatalogSeeder::class;
         }
 
         $this->call($seeders);
