@@ -411,16 +411,6 @@
         }
     }
 
-    /* Breadcrumbs Section */
-    .breadcrumbs_section {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-
-    .breadcrumbs-custom-title {
-        color: white;
-        font-weight: 600;
-    }
-
     .breadcrumbs-custom-path {
         color: #7f8c8d;
     }

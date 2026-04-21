@@ -45,7 +45,10 @@
                                         <span class="icon mdi mdi-map-marker"></span>
                                     </div>
                                     <div class="contact-content">
-                                        <span class="contact-text">272B Støk, 1st Floor<br>DC Office, Washington, USA</span>
+                                        <span class="contact-text">
+                                            <strong>@lang('messages.footer_store_address_label')</strong><br>
+                                            {!! __('messages.footer_store_address') !!}
+                                        </span>
                                     </div>
                                 </div>
                             </li>
@@ -55,7 +58,8 @@
                                         <span class="icon mdi mdi-phone"></span>
                                     </div>
                                     <div class="contact-content">
-                                        <a href="tel:+01-23-4226789" class="contact-link">+01-23-4226789</a>
+                                        <span class="contact-text"><strong>@lang('messages.footer_phone_label')</strong></span><br>
+                                        <a href="tel:+79268206574" class="contact-link">+7 (926) 820-65-74</a>
                                     </div>
                                 </div>
                             </li>
@@ -65,7 +69,34 @@
                                         <span class="icon mdi mdi-email-outline"></span>
                                     </div>
                                     <div class="contact-content">
-                                        <a href="mailto:hello@example.com" class="contact-link">hello@example.com</a>
+                                        <span class="contact-text"><strong>@lang('messages.footer_email_label')</strong></span><br>
+                                        <a href="mailto:mebelemmy@mail.ru" class="contact-link">mebelemmy@mail.ru</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="contact-item">
+                                    <div class="contact-icon">
+                                        <span class="icon mdi mdi-warehouse"></span>
+                                    </div>
+                                    <div class="contact-content">
+                                        <span class="contact-text">
+                                            <strong>@lang('messages.footer_warehouse_address_label')</strong><br>
+                                            {!! __('messages.footer_warehouse_address') !!}
+                                        </span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="contact-item">
+                                    <div class="contact-icon">
+                                        <span class="icon mdi mdi-clock-outline"></span>
+                                    </div>
+                                    <div class="contact-content">
+                                        <span class="contact-text">
+                                            <strong>@lang('messages.footer_working_hours_label')</strong><br>
+                                            {!! __('messages.footer_working_hours') !!}
+                                        </span>
                                     </div>
                                 </div>
                             </li>
@@ -79,7 +110,7 @@
                                 </a>
                             </div>
                             <p class="footer-text-small">
-                                Lorem ipsum is simply dummy text of the printing and typesetting industry. It has been the industry's standard dummy text ever since the 1500s.
+                                @lang('messages.footer_description')
                             </p>
                         </div>
                     </div>

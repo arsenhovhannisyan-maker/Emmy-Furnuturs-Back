@@ -5,100 +5,235 @@ namespace Database\Seeders\EmmyPhoto;
 use App\Models\Categorie\Categorie;
 use App\Models\Product\Product;
 use App\Models\ProductSize\ProductSize;
-use Database\Seeders\DemoCatalogSeeder;
 use Database\Seeders\EmmyPhotoParser;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
 
 class ProductSeeder extends Seeder
 {
+    public static function getJsonPath(): string
+    {
+        return database_path('seeders/EmmyPhoto/products.json');
+    }
+
     public function run(): void
     {
-        $basePath = CategorySeeder::resolveBasePath();
-        if (!$basePath) {
-            $this->command?->info('Источник Emmy Photo не найден — загружается демо-каталог без фотографий.');
-            $this->call(DemoCatalogSeeder::class);
+        $products = self::loadProductsFromJson();
+        $source = 'JSON';
 
+        if ($products === []) {
+            $basePath = CategorySeeder::resolveBasePath();
+            if ($basePath) {
+                $products = self::loadProductsFromDirectory($basePath);
+                if ($products !== []) {
+                    self::saveProductsToJson($products);
+                    $source = 'папки Emmy Photo (сохранено в JSON)';
+                }
+            }
+        }
+
+        if ($products === []) {
+            $this->command?->line('Продукты не найдены: нет данных ни в JSON, ни в папке Emmy Photo.');
             return;
         }
 
-        $categories = Categorie::all()->keyBy('name');
         $usedSkus = [];
-        $productIndex = 0;
         $created = 0;
 
-        foreach (File::directories($basePath) as $categoryDir) {
-            $categoryName = basename($categoryDir);
-            $category = $categories->get($categoryName);
-            if (!$category) {
+        foreach ($products as $item) {
+            $categoryName = trim((string) ($item['category'] ?? ''));
+            $name = trim((string) ($item['name'] ?? ''));
+            $description = trim((string) ($item['description'] ?? ''));
+            $sizes = self::normalizeSizeRows($item['sizes'] ?? []);
+
+            if ($categoryName === '' || $name === '' || $sizes === []) {
                 continue;
             }
 
-            $productDirs = File::directories($categoryDir);
-            foreach ($productDirs as $productDir) {
-                $folderName = basename($productDir);
-                $txtPath = $productDir . DIRECTORY_SEPARATOR . 'Text Document.txt';
+            $category = Categorie::firstOrCreate(
+                ['name' => $categoryName],
+                ['description' => 'Категория: ' . $categoryName]
+            );
 
-                if (!File::exists($txtPath)) {
-                    $this->command->warn("Нет Text Document.txt: {$categoryName}/{$folderName}");
+            $baseSku = self::buildSkuFromName($name);
+            $sku = $baseSku;
+            $suffix = 1;
+            while (isset($usedSkus[$sku])) {
+                $sku = $baseSku . '_' . $suffix;
+                $suffix++;
+            }
+            $usedSkus[$sku] = true;
+
+            $product = Product::updateOrCreate(
+                ['SKU' => $sku],
+                [
+                    'name' => $name,
+                    'description' => $description !== '' ? $description : $name,
+                    'price' => (float) $sizes[0]['price'],
+                    'category_id' => $category->id,
+                    'quantity' => 1000,
+                    'discount' => 0,
+                ]
+            );
+
+            ProductSize::where('product_id', $product->id)->delete();
+            foreach ($sizes as $row) {
+                ProductSize::create([
+                    'product_id' => $product->id,
+                    'size' => $row['size'],
+                    'price' => $row['price'],
+                    'image' => $row['image'] ?? null,
+                    'image_shema' => $row['image_shema'] ?? null,
+                ]);
+            }
+
+            $created++;
+        }
+
+        $this->command?->info("Создано продуктов: {$created} (источник: {$source}).");
+    }
+
+    private static function loadProductsFromJson(): array
+    {
+        $path = self::getJsonPath();
+        if (!File::exists($path)) {
+            return [];
+        }
+
+        $decoded = json_decode(File::get($path), true);
+        if (!is_array($decoded)) {
+            return [];
+        }
+
+        $products = [];
+        foreach ($decoded as $item) {
+            if (!is_array($item)) {
+                continue;
+            }
+
+            $sizes = self::normalizeSizeRows($item['sizes'] ?? []);
+            $name = trim((string) ($item['name'] ?? ''));
+            $category = trim((string) ($item['category'] ?? ''));
+
+            if ($name === '' || $category === '' || $sizes === []) {
+                continue;
+            }
+
+            $products[] = [
+                'category' => $category,
+                'name' => $name,
+                'description' => trim((string) ($item['description'] ?? '')),
+                'sizes' => $sizes,
+            ];
+        }
+
+        return $products;
+    }
+
+    private static function saveProductsToJson(array $products): void
+    {
+        $path = self::getJsonPath();
+        $dir = dirname($path);
+
+        if (!File::isDirectory($dir)) {
+            File::makeDirectory($dir, 0755, true);
+        }
+
+        File::put(
+            $path,
+            json_encode(array_values($products), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
+        );
+    }
+
+    private static function loadProductsFromDirectory(string $basePath): array
+    {
+        $products = [];
+
+        foreach (File::directories($basePath) as $categoryDir) {
+            $categoryName = basename($categoryDir);
+
+            $iterator = new \RecursiveIteratorIterator(
+                new \RecursiveDirectoryIterator($categoryDir, \FilesystemIterator::SKIP_DOTS)
+            );
+
+            foreach ($iterator as $file) {
+                if (!$file->isFile() || strtolower($file->getFilename()) !== 'text document.txt') {
                     continue;
                 }
 
+                $productDir = $file->getPath();
+                $folderName = basename($productDir);
+                $txtPath = $file->getPathname();
                 $content = File::get($txtPath);
                 $data = EmmyPhotoParser::parse($content, $folderName);
+                $sizes = self::normalizeSizeRows($data['sizes'] ?? []);
 
-                $sku = EmmyPhotoParser::resolveSku($data['sku'], (int) $category->id, $productIndex);
-                $originalSku = $sku;
-                $suffix = 0;
-                while (isset($usedSkus[$sku])) {
-                    $suffix++;
-                    $sku = Str::limit($originalSku, 45) . '-' . $suffix;
-                }
-                $usedSkus[$sku] = true;
-
-                $prices = $data['sizes'];
-                $firstPrice = 0.0;
-                if ($prices !== []) {
-                    $firstPrice = (float) $prices[0]['price'];
-                }
-                if ($firstPrice <= 0) {
-                    $firstPrice = 1.0;
+                if ($sizes === []) {
+                    // Для пустых/нестандартных TXT не теряем товар полностью.
+                    $sizes = [[
+                        'size' => 'Стандарт',
+                        'price' => 1.0,
+                        'image' => null,
+                        'image_shema' => null,
+                    ]];
                 }
 
-                $product = Product::create([
-                    'name' => $data['name'],
-                    'description' => $data['description'],
-                    'price' => $firstPrice,
-                    'category_id' => $category->id,
-                    'quantity' => 0,
-                    'SKU' => $sku,
-                    'discount' => null,
-                ]);
-
-                $imageFiles = self::getImageFilesInFolder($productDir);
-                foreach ($data['sizes'] as $row) {
-                    $images = self::findImagesForSize($row['size'], $imageFiles);
-                    ProductSize::create([
-                        'product_id' => $product->id,
-                        'size' => $row['size'],
-                        'price' => $row['price'],
-                        'image' => $images['image'],
-                        'image_shema' => $images['image_shema'],
-                    ]);
+                $images = self::getImageFilesInFolder($productDir);
+                foreach ($sizes as &$row) {
+                    $match = self::findImagesForSize($row['size'], $images);
+                    $row['image'] = $row['image'] ?? $match['image'];
+                    $row['image_shema'] = $row['image_shema'] ?? $match['image_shema'];
                 }
+                unset($row);
 
-                $created++;
-                $productIndex++;
+                $products[] = [
+                    'category' => $categoryName,
+                    'name' => $folderName,
+                    'description' => trim((string) ($data['description'] ?? '')),
+                    'sizes' => $sizes,
+                ];
             }
         }
 
-        $this->command->info("Создано продуктов: {$created}");
+        return $products;
     }
 
-    /**
-     * Список изображений в папке продукта (jpg, jpeg, png).
-     */
+    private static function normalizeSizeRows(array $rows): array
+    {
+        $normalized = [];
+        foreach ($rows as $row) {
+            if (!is_array($row)) {
+                continue;
+            }
+
+            $size = trim((string) ($row['size'] ?? ''));
+            $price = (float) ($row['price'] ?? 0);
+            if ($size === '' || $price <= 0) {
+                continue;
+            }
+
+            $normalized[] = [
+                'size' => $size,
+                'price' => $price,
+                'image' => isset($row['image']) && is_string($row['image']) ? $row['image'] : null,
+                'image_shema' => isset($row['image_shema']) && is_string($row['image_shema']) ? $row['image_shema'] : null,
+            ];
+        }
+
+        return $normalized;
+    }
+
+    private static function buildSkuFromName(string $name): string
+    {
+        $sku = trim($name);
+        $sku = preg_replace('/\s+/u', '_', $sku) ?? '';
+        $sku = preg_replace('/[^\pL\pN_]+/u', '_', $sku) ?? '';
+        $sku = preg_replace('/_+/u', '_', $sku) ?? '';
+        $sku = trim($sku, '_');
+
+        return $sku !== '' ? $sku : 'product';
+    }
+
     private static function getImageFilesInFolder(string $productDir): array
     {
         $files = [];

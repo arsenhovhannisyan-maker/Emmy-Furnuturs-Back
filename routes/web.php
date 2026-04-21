@@ -12,6 +12,7 @@ use App\Http\Controllers\Dashboard\PartnerController;
 use App\Http\Controllers\Web\Basket\BasketController;
 use App\Http\Controllers\Web\Product\ProductController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -63,6 +64,25 @@ Route::get('/', function () {
 });
 
 // Public pages
+Route::get('/banner/{filename}', function (string $filename) {
+    $safeFilename = basename($filename);
+    if ($safeFilename === '' || $safeFilename !== $filename) {
+        abort(404);
+    }
+
+    $path = base_path('banner' . DIRECTORY_SEPARATOR . $safeFilename);
+    if (!File::isFile($path)) {
+        abort(404);
+    }
+
+    $extension = strtolower(pathinfo($safeFilename, PATHINFO_EXTENSION));
+    if (!in_array($extension, ['jpg', 'jpeg', 'png', 'webp', 'gif'], true)) {
+        abort(404);
+    }
+
+    return response()->file($path);
+})->where('filename', '[^/]+')->name('web.banner.image');
+
 Route::view('/home', 'web.home')->name('web.home');
 Route::view('/team', 'web.team')->name('web.team');
 Route::view('/what-we-offer', 'web.shop')->name('web.what-we-offer');

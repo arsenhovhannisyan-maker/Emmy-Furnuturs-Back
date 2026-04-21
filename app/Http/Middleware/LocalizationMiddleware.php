@@ -15,7 +15,7 @@ class LocalizationMiddleware
             $locale = $request->cookie('locale');
             App::setLocale($locale);
         } else {
-            App::setLocale('ru');
+            App::setLocale(config('app.locale'));
         }
 
         return $next($request);

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 
 @section('content')
     <style>
@@ -99,8 +99,8 @@
     <div class="login-container">
         <div class="login-card">
             <div class="login-header">
-                <h2>Welcome Back</h2>
-                <p>Login to continue to your account</p>
+                <h2>@lang('messages.auth_login_title')</h2>
+                <p>@lang('messages.auth_login_subtitle')</p>
             </div>
 
             @if (session('error'))
@@ -114,7 +114,7 @@
                 @csrf
 
                 <div class="mb-3">
-                    <label for="email" class="form-label">E-Mail Address</label>
+                    <label for="email" class="form-label">@lang('messages.email')</label>
                     <input id="email" type="email"
                            class="form-control @error('email') is-invalid @enderror"
                            name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
@@ -124,7 +124,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
+                    <label for="password" class="form-label">@lang('messages.auth_password')</label>
                     <input id="password" type="password"
                            class="form-control @error('password') is-invalid @enderror"
                            name="password" required autocomplete="current-password">
@@ -138,7 +138,7 @@
                         <input class="form-check-input" type="checkbox" name="remember" id="remember"
                             {{ old('remember') ? 'checked' : '' }}>
                         <label class="form-check-label remember-me" for="remember">
-                            Remember Me
+                            @lang('messages.auth_remember_me')
                         </label>
                     </div>
 
@@ -152,12 +152,12 @@
                     --}}
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100">Login</button>
+                <button type="submit" class="btn btn-primary w-100">@lang('messages.login')</button>
             </form>
 
             <div class="footer-text">
-                Don’t have an account?
-                <a href="{{ route('register') }}">Register</a>
+                @lang('messages.auth_no_account')
+                <a href="{{ route('register') }}">@lang('messages.register')</a>
             </div>
         </div>
     </div>

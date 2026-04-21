@@ -1,33 +1,48 @@
 <x-web-layout :seo-keywords="__('messages.seo_home_keywords')">
+    @php
+        $bannerDirectory = base_path('banner');
+        $carouselImages = [];
+
+        if (\Illuminate\Support\Facades\File::isDirectory($bannerDirectory)) {
+            $bannerFiles = \Illuminate\Support\Facades\File::files($bannerDirectory);
+            usort($bannerFiles, function ($a, $b) {
+                return strcmp($a->getFilename(), $b->getFilename());
+            });
+
+            foreach ($bannerFiles as $file) {
+                $extension = strtolower($file->getExtension());
+                if (in_array($extension, ['jpg', 'jpeg', 'png', 'webp', 'gif'], true)) {
+                    $carouselImages[] = route('web.banner.image', ['filename' => $file->getFilename()]);
+                }
+            }
+        }
+
+        if ($carouselImages === []) {
+            $carouselImages = [
+                asset('img/Carusel1.jpg'),
+                asset('img/Carusel2.jpg'),
+            ];
+        }
+    @endphp
+
     <!-- Swiper-->
     <section class="section swiper-container swiper-slider swiper-slider-4" data-loop="true" data-effect="fade">
         <div class="swiper-wrapper">
-            <div class="swiper-slide swiper-slide-1" data-slide-bg="{{ asset('img/Carusel1.jpg') }}">
-                <div class="swiper-slide-caption section-md text-sm-left">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-sm-8 col-md-7">
-                                <h1 class="swiper-title-1" data-caption-animate="fadeInLeft" data-caption-delay="100">@lang('messages.slider_title_1')</h1>
-                                <h6 class="swiper-title-2 text-width-medium" data-caption-animate="fadeInLeft" data-caption-delay="250">@lang('messages.slider_description_1')</h6>
-                                <div class="button-wrap" data-caption-animate="fadeInLeft" data-caption-delay="400"><a class="button button-sm button-primary button-zakaria" href="{{ route('web.shop') }}">@lang('messages.shop_now')</a></div>
+            @foreach($carouselImages as $imageUrl)
+                <div class="swiper-slide swiper-slide-1" data-slide-bg="{{ $imageUrl }}">
+                    <div class="swiper-slide-caption section-md text-sm-left">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm-8 col-md-7">
+                                    <h1 class="swiper-title-1" data-caption-animate="fadeInLeft" data-caption-delay="100">@lang($loop->odd ? 'messages.slider_title_1' : 'messages.slider_title_2')</h1>
+                                    <h6 class="swiper-title-2 text-width-medium" data-caption-animate="fadeInLeft" data-caption-delay="250">@lang($loop->odd ? 'messages.slider_description_1' : 'messages.slider_description_2')</h6>
+                                    <div class="button-wrap" data-caption-animate="fadeInLeft" data-caption-delay="400"><a class="button button-sm button-primary button-zakaria" href="{{ route('web.shop') }}">@lang('messages.shop_now')</a></div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="swiper-slide swiper-slide-1" data-slide-bg="{{ asset('img/Carusel2.jpg') }}">
-                <div class="swiper-slide-caption section-md text-sm-left">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-sm-8 col-md-7">
-                                <h1 class="swiper-title-1" data-caption-animate="fadeInLeft" data-caption-delay="100">@lang('messages.slider_title_2')</h1>
-                                <h6 class="swiper-title-2 text-width-medium" data-caption-animate="fadeInRight" data-caption-delay="250">@lang('messages.slider_description_2')</h6>
-                                <div class="button-wrap" data-caption-animate="fadeInUp" data-caption-delay="400"><a class="button button-sm button-primary button-zakaria" href="{{ route('web.shop') }}">@lang('messages.shop_now')</a></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
         <div class="swiper-button-prev"></div>
         <div class="swiper-button-next"></div>

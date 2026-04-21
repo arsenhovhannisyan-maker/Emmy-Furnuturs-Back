@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 
 @section('content')
     <style>
@@ -94,8 +94,8 @@
     <div class="register-container">
         <div class="register-card">
             <div class="register-header">
-                <h2>Create an Account</h2>
-                <p>Join us and start your experience today</p>
+                <h2>@lang('messages.auth_register_title')</h2>
+                <p>@lang('messages.auth_register_subtitle')</p>
             </div>
 
             @if (session('error'))
@@ -109,7 +109,7 @@
                 @csrf
 
                 <div class="mb-3">
-                    <label for="first_name" class="form-label">First Name</label>
+                    <label for="first_name" class="form-label">@lang('messages.first_name')</label>
                     <input id="first_name" type="text"
                            class="form-control @error('first_name') is-invalid @enderror"
                            name="first_name" value="{{ old('first_name') }}" required autocomplete="given-name" autofocus>
@@ -119,7 +119,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="last_name" class="form-label">Last Name</label>
+                    <label for="last_name" class="form-label">@lang('messages.last_name')</label>
                     <input id="last_name" type="text"
                            class="form-control @error('last_name') is-invalid @enderror"
                            name="last_name" value="{{ old('last_name') }}" required autocomplete="family-name">
@@ -129,7 +129,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="email" class="form-label">E-Mail Address</label>
+                    <label for="email" class="form-label">@lang('messages.email')</label>
                     <input id="email" type="email"
                            class="form-control @error('email') is-invalid @enderror"
                            name="email" value="{{ old('email') }}" required autocomplete="email">
@@ -139,7 +139,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
+                    <label for="password" class="form-label">@lang('messages.auth_password')</label>
                     <input id="password" type="password"
                            class="form-control @error('password') is-invalid @enderror"
                            name="password" required autocomplete="new-password">
@@ -149,18 +149,18 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="password-confirm" class="form-label">Confirm Password</label>
+                    <label for="password-confirm" class="form-label">@lang('messages.auth_confirm_password')</label>
                     <input id="password-confirm" type="password"
                            class="form-control"
                            name="password_confirmation" required autocomplete="new-password">
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100">Register</button>
+                <button type="submit" class="btn btn-primary w-100">@lang('messages.register')</button>
             </form>
 
             <div class="footer-text">
-                Already have an account?
-                <a href="{{ route('login') }}">Login</a>
+                @lang('messages.auth_have_account')
+                <a href="{{ route('login') }}">@lang('messages.login')</a>
             </div>
         </div>
     </div>

@@ -12,12 +12,15 @@ use Database\Seeders\User\AdminUserSeeder;
 use Database\Seeders\User\UserSeeder;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        $hasEmmyPhotoSource = CategorySeeder::resolveBasePath() !== null;
+        $hasEmmyPhotoSource = CategorySeeder::resolveBasePath() !== null
+            || File::exists(CategorySeeder::getJsonPath())
+            || File::exists(ProductSeeder::getJsonPath());
 
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 

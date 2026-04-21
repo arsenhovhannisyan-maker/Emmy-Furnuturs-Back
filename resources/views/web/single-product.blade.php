@@ -920,7 +920,7 @@
                                                 <time datetime="2019-11-30">Nov 30, 2019</time>
                                             </div>
                                         </div>
-                                        <p class="box-comment-text">Lorem ipsum dolor sit amet, has mutat labores nostrum ei. Duo te blandit erroribus, ut sea ipsum nonumy, mel no ignota accusamus gloriatur. Id has habeo regione, explicari hendrerit reprimique cum te.</p>
+                                        <p class="box-comment-text">Качественная мебель, аккуратная сборка и приятный дизайн. Отдельно порадовала консультация по подбору размера и быстрая доставка.</p>
                                     </div>
                                 </div>
                             </div>
@@ -931,7 +931,7 @@
                                 <div class="unit unit-spacing-md flex-column flex-sm-row align-items-sm-center">
                                     <div class="unit-left"><span class="icon icon-80 mdi mdi-information-outline"></span></div>
                                     <div class="unit-body">
-                                        <p>Lorem ipsum dolor sit amet, has mutat labores nostrum ei. Duo te blandit erroribus, ut sea ipsum nonumy, mel no ignota accusamus gloriatur. Id has habeo regione, explicari hendrerit reprimique cum teLorem ipsum dolor sit amet, has mutat labores nostrum ei. Duo te blandit erroribus, ut sea ipsum nonumy, mel no ignota accusamus gloriatur. Id has habeo regione, explicari hendrerit reprimique cum te</p>
+                                        <p>Изделие выполнено из качественных и долговечных материалов. Конструкция рассчитана на эксплуатацию во влажной среде, устойчива к пару и сохраняет внешний вид при ежедневном использовании.</p>
                                     </div>
                                 </div>
                             </div>
@@ -941,7 +941,7 @@
                                 <div class="unit unit-spacing-md flex-column flex-sm-row align-items-sm-center">
                                     <div class="unit-left"><span class="icon icon-80 mdi mdi-truck-delivery"></span></div>
                                     <div class="unit-body">
-                                        <p>Lorem ipsum dolor sit amet, has mutat labores nostrum ei. Duo te blandit erroribus, ut sea ipsum nonumy, mel no ignota accusamus gloriatur. Id has habeo regione, explicari hendrerit reprimique cum teLorem ipsum dolor sit amet, has mutat labores nostrum ei. Duo te blandit erroribus, ut sea ipsum nonumy, mel no ignota accusamus gloriatur. Id has habeo regione, explicari hendrerit reprimique cum te</p>
+                                        <p>Доставка по Москве и области выполняется по согласованию. По запросу доступны поставки в регионы России и Белоруссии. Для оптовых заказов и индивидуальных условий свяжитесь с менеджером.</p>
                                     </div>
                                 </div>
                             </div>
