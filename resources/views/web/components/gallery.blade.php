@@ -64,7 +64,7 @@
                 products.forEach((product, index) => {
                     const productImage = product.photo1 ? product.photo1.file_url : '/images/no-image.png';
                     const productName = product.name || 'Product';
-                    const productPrice = product.price ? '$' + parseFloat(product.price).toFixed(2) : '$0.00';
+                    const productPrice = product.price ? parseFloat(product.price).toFixed(2) + ' руб.' : '$0.00 руб.';
                     const productId = product.id;
                     const filterType = index % 2 === 0 ? 'Type 1' : 'Type 2';
 

@@ -57,8 +57,15 @@
                         <a class="button button-sm button-primary button-zakaria" href="{{route('web.shop')}}">@lang('messages.shop_now')</a>
                     </div>
                     <div class="col-md-11 col-lg-6 col-xl-7">
-                        <div class="slick-slider-1 inset-xl-left-35">
-                            <!-- Slick Carousel-->
+                        <div class="inset-xl-left-35 about-us-video">
+                            <video
+                                class="w-100"
+                                style="max-height: 480px; border-radius: 6px; object-fit: contain; background: #1a1a1a;"
+                                src="{{ asset('emmy.mp4') }}"
+                                controls
+                                playsinline
+                                preload="metadata"
+                            ></video>
                         </div>
                     </div>
                 </div>
