@@ -898,35 +898,12 @@
                 <div class="tabs-custom tabs-horizontal tabs-line" id="tabs-1">
                     <div class="nav-tabs-wrap">
                         <ul class="nav nav-tabs nav-tabs-1">
-                            <li class="nav-item" role="presentation"><a class="nav-link active" href="#tabs-1-1" data-toggle="tab">@lang('messages.reviews')</a></li>
-                            <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-1-2" data-toggle="tab">@lang('messages.additional_info')</a></li>
-                            <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-1-3" data-toggle="tab">@lang('messages.delivery_payment')</a></li>
+                            <li class="nav-item" role="presentation"><a class="nav-link active" href="#tabs-1-2" data-toggle="tab" role="tab" aria-selected="true">@lang('messages.additional_info')</a></li>
+                            <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-1-3" data-toggle="tab" role="tab" aria-selected="false">@lang('messages.delivery_payment')</a></li>
                         </ul>
                     </div>
                     <div class="tab-content tab-content-1">
-                        <div class="tab-pane fade show active" id="tabs-1-1">
-                            <div class="box-comment">
-                                <div class="unit flex-column flex-sm-row unit-spacing-md">
-                                    <div class="unit-left"><a class="box-comment-figure" href="#"><img src="" alt="" width="119" height="119"/></a></div>
-                                    <div class="unit-body">
-                                        <div class="group-sm group-justify">
-                                            <div>
-                                                <div class="group-xs group-middle">
-                                                    <h5 class="box-comment-author"><a href="#">Jane Doe</a></h5>
-                                                    <div class="box-rating"><span class="icon mdi mdi-star"></span><span class="icon mdi mdi-star"></span><span class="icon mdi mdi-star"></span><span class="icon mdi mdi-star"></span><span class="icon mdi mdi-star-half"></span></div>
-                                                </div>
-                                            </div>
-                                            <div class="box-comment-time">
-                                                <time datetime="2019-11-30">Nov 30, 2019</time>
-                                            </div>
-                                        </div>
-                                        <p class="box-comment-text">Качественная мебель, аккуратная сборка и приятный дизайн. Отдельно порадовала консультация по подбору размера и быстрая доставка.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <h4 class="text-transform-none font-weight-medium">@lang('messages.leave_review')</h4>
-                        </div>
-                        <div class="tab-pane fade" id="tabs-1-2">
+                        <div class="tab-pane fade show active" id="tabs-1-2" role="tabpanel">
                             <div class="single-product-info">
                                 <div class="unit unit-spacing-md flex-column flex-sm-row align-items-sm-center">
                                     <div class="unit-left"><span class="icon icon-80 mdi mdi-information-outline"></span></div>
@@ -936,7 +913,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="tabs-1-3">
+                        <div class="tab-pane fade" id="tabs-1-3" role="tabpanel">
                             <div class="single-product-info">
                                 <div class="unit unit-spacing-md flex-column flex-sm-row align-items-sm-center">
                                     <div class="unit-left"><span class="icon icon-80 mdi mdi-truck-delivery"></span></div>

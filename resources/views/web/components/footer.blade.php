@@ -126,11 +126,11 @@
             <div class="row align-items-center justify-content-between">
                 <div class="col-md-6 text-md-start">
                     <p class="copyright-text mb-0">
-                        © 2024 All rights reserved.
+                        © 2026 Все права защищены.
                         <a href="https://netframe.am/" target="_blank" rel="noopener noreferrer">
                             NetFrame
-                        </a>. All rights reserved.
-                        <a href="{{ route('web.privacy.policy') }}">Privacy Policy</a>
+                        </a>. Все права защищены.
+                        <a href="{{ route('web.privacy.policy') }}">Политика конфиденциальности</a>
                     </p>
                 </div>
                 <div class="col-md-6 text-md-end mt-3 mt-md-0">

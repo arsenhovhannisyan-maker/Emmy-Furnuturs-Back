@@ -2,7 +2,6 @@
     <div class="container">
         <h2 class="text-transform-capitalize wow fadeScale">@lang('messages.our_products')</h2>
         <div id="products-container" class="row row-lg row-30 row-lg-30">
-            <!-- JS вставит сюда продукты -->
         </div>
     </div>
 </section>
@@ -27,6 +26,13 @@
 
             data.forEach((product, index) => {
                 const delay = (index * 0.1).toFixed(1);
+                const discount = Number(product.discount) || 0;
+                const basePrice = Number(product.price) || 0;
+                const hasDiscount = discount > 0;
+                const finalPrice = hasDiscount ? Math.max(0, basePrice - discount) : basePrice;
+                const oldPriceRow = hasDiscount
+                    ? `<div class="product-price product-price-old">${basePrice} руб.</div>`
+                    : '';
                 const html = `
   <div class="col-sm-6 col-md-4 col-lg-3">
     <article class="product wow fadeInRight" data-wow-delay=".${delay}s">
@@ -45,11 +51,8 @@
         </h5>
 
         <div class="product-price-wrap">
-          ${product.old_price
-                    ? `<div class="product-price product-price-old">$${product.old_price}</div>`
-                    : ''
-                }
-          <div class="product-price">$${product.price}</div>
+          ${oldPriceRow}
+          <div class="product-price">${finalPrice} руб.</div>
         </div>
       </div>
 
