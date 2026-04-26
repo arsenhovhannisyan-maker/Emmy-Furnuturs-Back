@@ -93,7 +93,7 @@
                 @foreach(LaravelLocalization::getSupportedLocales() as $localCode => $langItem)
                     @if(LaravelLocalization::getCurrentLocale() != $localCode)
                         <a class="dropdown-item"
-                           href="{{ LaravelLocalization::getLocalizedURL($localCode, null, [], true) }}">
+                           href="{{ route('language.switch', ['locale' => $localCode]) }}">
                             <img src="{{langIconPath($localCode)}}" alt="" width="20px" height="20px">
                             <span class="navi-text">{{__($localCode)}}</span>
                         </a>

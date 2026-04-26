@@ -5,7 +5,7 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 if (!function_exists('currentLanguageCode')) {
     function currentLanguageCode(): string
     {
-        return LaravelLocalization::getCurrentLocale();
+        return app()->getLocale() ?: config('app.locale', 'ru');
     }
 }
 

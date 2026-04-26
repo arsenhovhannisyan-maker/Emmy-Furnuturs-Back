@@ -7,7 +7,7 @@ return [
     'supportedLocales' => [
         'en' => ['name' => 'English',                'script' => 'Latn', 'native' => 'English', 'regional' => 'en_GB'],
         'de' => ['name' => 'German',                 'script' => 'Latn', 'native' => 'Deutsch', 'regional' => 'de_DE'],
-        //        'ru'          => ['name' => 'Russian',                'script' => 'Cyrl', 'native' => 'русский', 'regional' => 'ru_RU'],
+        'ru' => ['name' => 'Russian',                 'script' => 'Cyrl', 'native' => 'русский', 'regional' => 'ru_RU'],
 
         // 'ace'         => ['name' => 'Achinese',               'script' => 'Latn', 'native' => 'Aceh', 'regional' => ''],
         // 'af'          => ['name' => 'Afrikaans',              'script' => 'Latn', 'native' => 'Afrikaans', 'regional' => 'af_ZA'],
@@ -309,7 +309,7 @@ return [
     // again if the session expires.
     //
     // If false, system will take app.php locale attribute
-    'useAcceptLanguageHeader' => true,
+    'useAcceptLanguageHeader' => false,
 
     // If `hideDefaultLocaleInURL` is true, then a url without locale
     // is identical with the same url with default locale.

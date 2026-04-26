@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 if (!function_exists('urlWithLng')) {
     function urlWithLng(string $url): string
     {
-        return url(currentLanguageCode() . '/' . ltrim($url, '/'));
+        return url(ltrim($url, '/'));
     }
 }
 

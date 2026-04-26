@@ -8,7 +8,6 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
-use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -39,23 +38,16 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/api.php'));*/
 
-            Route::prefix(LaravelLocalization::setLocale())
-                ->middleware([
+            Route::middleware([
                     'web',
-                    'localeSessionRedirect',
-                    'localizationRedirect',
-                    'localeViewPath',
                 ])
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
 
-            Route::prefix(LaravelLocalization::setLocale() . '/dashboard')
+            Route::prefix('dashboard')
                 ->as('dashboard.')
                 ->middleware([
                     'web',
-                    'localeSessionRedirect',
-                    'localizationRedirect',
-                    'localeViewPath',
                     'auth',
                     'role:' . Role::getRolesFormatted(),
                 ])

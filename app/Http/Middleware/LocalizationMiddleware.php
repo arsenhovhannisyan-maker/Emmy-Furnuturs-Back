@@ -11,12 +11,9 @@ class LocalizationMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->hasCookie('locale')) {
-            $locale = $request->cookie('locale');
-            App::setLocale($locale);
-        } else {
-            App::setLocale(config('app.locale'));
-        }
+        // Принудительно используем язык приложения по умолчанию (ru),
+        // чтобы переводы и языковые файлы всегда брались из resources/lang/ru.
+        App::setLocale(config('app.locale'));
 
         return $next($request);
     }
