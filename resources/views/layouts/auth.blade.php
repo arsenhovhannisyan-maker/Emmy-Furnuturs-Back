@@ -7,7 +7,7 @@
 
     <title>{{ $title ?? __('messages.login') }}</title>
 
-    <link rel="icon" href="{{ asset('img/web/logo-emmy.png') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('img/web/tab-photo.png') }}?v={{ @filemtime(public_path('img/web/tab-photo.png')) }}" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">

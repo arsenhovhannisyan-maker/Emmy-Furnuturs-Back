@@ -85,7 +85,7 @@
 {{--    </script>--}}
 
     <!-- Favicon -->
-    <link rel="icon" href="{{ asset('img/web/logo-emmy.png') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('img/web/tab-photo.png') }}?v={{ @filemtime(public_path('img/web/tab-photo.png')) }}" type="image/png">
 
     <!-- CSS Styles -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
