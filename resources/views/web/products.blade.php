@@ -504,7 +504,7 @@
                                 <ul class="list-shop-filter" id="categories-filter">
                                     <!-- Все категории -->
                                     <li class="list-shop-filter__item">
-                                        <label class="list-shop-filter__label checkbox-inline">
+                                        <label class="list-shop-filter__label">
                                             <input type="checkbox" name="categories[]" value="all" id="category-all"
                                                    checked class="category-filter">
                                             <span class="list-shop-filter__text">@lang('messages.all_categories')</span>
@@ -529,7 +529,7 @@
 
                                             @if(!empty($categoryId))
                                                 <li class="list-shop-filter__item">
-                                                    <label class="list-shop-filter__label checkbox-inline">
+                                                    <label class="list-shop-filter__label">
                                                         <input type="checkbox" name="categories[]" value="{{ $categoryId }}"
                                                                id="category-{{ $categoryId }}" class="category-filter">
                                                         <span class="list-shop-filter__text">{{ $categoryName }}</span>
@@ -542,15 +542,6 @@
                                     @endif
                                 </ul>
 
-                                <!-- Поиск -->
-                                <form class="ch-search form-search form-custom" id="shop-search-form" method="GET">
-                                    <div class="form-wrap">
-                                        <input class="form-input" id="search-form" type="text" name="search"
-                                               autocomplete="off" placeholder="@lang('messages.search_placeholder')">
-{{--                                        <label class="form-label" for="search-form">@lang('messages.search_in_shop')</label>--}}
-                                        <button class="button-search fl-bigmug-line-search74" type="submit"></button>
-                                    </div>
-                                </form>
                             </div>                        </div>
                     </div>
 
