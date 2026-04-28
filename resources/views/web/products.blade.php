@@ -469,7 +469,7 @@
                                      data-min="0"
                                      data-max="50000"
                                      data-min-diff="100"
-                                     data-start="[10005, 50000]"
+                                     data-start="[0, 50000]"
                                      data-step="1"
                                      data-tooltip="false"
                                      data-input=".ch-range-input-value-1"
@@ -749,9 +749,33 @@
             applyFilters();
         }
 
+        function normalizePriceInput(value, fallback) {
+            if (value === null || value === undefined || value === '') {
+                return fallback;
+            }
+
+            const normalized = String(value)
+                .replace(/[^\d.,]/g, '')
+                .replace(',', '.');
+            const parsed = Number.parseFloat(normalized);
+
+            if (!Number.isFinite(parsed) || parsed < 0) {
+                return fallback;
+            }
+
+            return String(Math.floor(parsed));
+        }
+
         function buildBrowseQueryUrl(page) {
-            const min = minInput?.value?.trim() || '0';
-            const max = maxInput?.value?.trim() || '999999';
+            let min = normalizePriceInput(minInput?.value, '0');
+            let max = normalizePriceInput(maxInput?.value, '999999');
+            if (Number(min) > Number(max)) {
+                [min, max] = [max, min];
+            }
+
+            if (minInput) minInput.value = min;
+            if (maxInput) maxInput.value = max;
+
             const selectedCategories = Array.from(document.querySelectorAll('.category-filter:checked'))
                 .filter(cb => cb.value !== 'all')
                 .map(cb => cb.value);
