@@ -23,14 +23,41 @@ class ShopProductsBrowseRequest extends FormRequest
             $categoryIds = [];
         }
 
-        $min = $this->input('min_price');
-        $max = $this->input('max_price');
+        $min = $this->parsePrice($this->input('min_price'), 0);
+        $max = $this->parsePrice($this->input('max_price'), 999999);
+
+        if ($max < $min) {
+            [$min, $max] = [$max, $min];
+        }
 
         $this->merge([
-            'min_price' => ($min === '' || $min === null) ? 0 : $min,
-            'max_price' => ($max === '' || $max === null) ? 999999 : $max,
+            'min_price' => $min,
+            'max_price' => $max,
             'category_ids' => $categoryIds,
         ]);
+    }
+
+    private function parsePrice(mixed $value, float $default): float
+    {
+        if ($value === null || $value === '') {
+            return $default;
+        }
+
+        if (is_numeric($value)) {
+            return max(0, (float) $value);
+        }
+
+        $normalized = preg_replace('/[^\d,.\-]/u', '', (string) $value);
+        if ($normalized === null || $normalized === '') {
+            return $default;
+        }
+
+        $normalized = str_replace(',', '.', $normalized);
+        if (!is_numeric($normalized)) {
+            return $default;
+        }
+
+        return max(0, (float) $normalized);
     }
 
     public function rules(): array
