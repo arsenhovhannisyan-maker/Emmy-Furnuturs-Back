@@ -20453,10 +20453,14 @@ body:not(.lg-from-hash) .lg-outer.lg-start-zoom .lg-item.lg-complete .lg-object 
 
 .call_section {
 	position: relative;
+	clear: both;
+	z-index: 2;
 	text-align: center;
+	background-color: #2b2b2b;
 	background-size: cover;
 	background-attachment: fixed;
 	background-repeat: no-repeat;
+	isolation: isolate;
 }
 
 .call_section:before {

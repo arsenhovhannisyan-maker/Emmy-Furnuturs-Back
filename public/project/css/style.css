@@ -20364,10 +20364,13 @@ body:not(.lg-from-hash) .lg-outer.lg-start-zoom .lg-item.lg-complete .lg-object 
 .call_section {
 	background-image: url(../images/bg/parallex.jpg);
 	position: relative;
+	clear: both;
+	z-index: 2;
 	text-align: center;
 	background-size: cover;
 	background-attachment: fixed;
 	background-repeat: no-repeat;
+	isolation: isolate;
 }
 
 .call_section:before {

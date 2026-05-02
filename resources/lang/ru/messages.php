@@ -293,7 +293,7 @@ return [
     'search_placeholder' => 'Поиск продуктов...',
     'search_error' => 'Ошибка загрузки результатов',
     // Gallery component keys
-    'filter' => 'Фильтр',
+    'filter' => 'Показать',
     'view_all' => 'Все',
     'gallery_load_error' => 'Ошибка загрузки галереи',
     'gallery_error_message' => 'Ошибка загрузки продуктов. Пожалуйста, попробуйте позже.',
