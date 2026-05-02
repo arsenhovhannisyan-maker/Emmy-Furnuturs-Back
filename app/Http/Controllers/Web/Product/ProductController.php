@@ -27,8 +27,10 @@ class ProductController extends Controller
         $products = $this->repository->getPaginationProducts(6);
         $categories = Categorie::withCount('products')->orderBy('name')->get();
         $totalProducts = Product::count();
+        $dbMaxPrice = (int) ceil((float) (Product::query()->max('price') ?? 0));
+        $priceMax = max(50000, $dbMaxPrice);
 
-        return view('web.products', compact('products', 'categories', 'totalProducts'));
+        return view('web.products', compact('products', 'categories', 'totalProducts', 'priceMax'));
     }
 
     public function getProductForCategories($categoryId): View

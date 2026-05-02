@@ -43,21 +43,25 @@ class ShopProductsBrowseRequest extends FormRequest
             return $default;
         }
 
-        if (is_numeric($value)) {
-            return max(0, (float) $value);
+        if (is_int($value) || is_float($value)) {
+            return max(0, (float) floor((float) $value));
         }
 
-        $normalized = preg_replace('/[^\d,.\-]/u', '', (string) $value);
-        if ($normalized === null || $normalized === '') {
+        $raw = (string) $value;
+        $raw = str_replace(["\u{00A0}", ' '], '', $raw);
+        $raw = trim($raw);
+        if ($raw === '') {
             return $default;
         }
 
-        $normalized = str_replace(',', '.', $normalized);
-        if (!is_numeric($normalized)) {
+        // Для фильтра цены работаем в целых рублях:
+        // 50 000 / 50,000 / 50.000 -> 50000.
+        $digitsOnly = preg_replace('/\D+/u', '', $raw);
+        if ($digitsOnly === null || $digitsOnly === '') {
             return $default;
         }
 
-        return max(0, (float) $normalized);
+        return max(0, (float) $digitsOnly);
     }
 
     public function rules(): array

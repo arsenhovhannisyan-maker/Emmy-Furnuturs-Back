@@ -464,12 +464,24 @@
                         <div class="aside row row-30 row-md-50 justify-content-md-between">
                             <div class="aside-item col-12">
                                 <h6 class="aside-title">@lang('messages.filter_by_price')</h6>
+                                @php
+                                    $rangeMax = isset($priceMax) ? (int) $priceMax : 50000;
+                                    $rawMinPrice = request()->query('min_price', 0);
+                                    $rawMaxPrice = request()->query('max_price', $rangeMax);
+                                    $selectedMinPrice = (int) preg_replace('/\D+/u', '', (string) $rawMinPrice);
+                                    $selectedMaxPrice = (int) preg_replace('/\D+/u', '', (string) $rawMaxPrice);
+                                    $selectedMinPrice = max(0, min($selectedMinPrice, $rangeMax));
+                                    $selectedMaxPrice = max(0, min($selectedMaxPrice, $rangeMax));
+                                    if ($selectedMinPrice > $selectedMaxPrice) {
+                                        [$selectedMinPrice, $selectedMaxPrice] = [$selectedMaxPrice, $selectedMinPrice];
+                                    }
+                                @endphp
                                 <!-- RD Range-->
                                 <div class="ch-range"
                                      data-min="0"
-                                     data-max="50000"
+                                     data-max="{{ $rangeMax }}"
                                      data-min-diff="100"
-                                     data-start="[0, 50000]"
+                                     data-start="[{{ $selectedMinPrice }}, {{ $selectedMaxPrice }}]"
                                      data-step="1"
                                      data-tooltip="false"
                                      data-input=".ch-range-input-value-1"
@@ -485,13 +497,13 @@
                                         <div class="ch-range-wrap">
                                             <div class="ch-range-title">@lang('messages.price'):</div>
                                             <div class="ch-range-form-wrap">
-                                                <input id="min_price" class="ch-range-input ch-range-input-value-1" type="text" name="min_price">
+                                                <input id="min_price" class="ch-range-input ch-range-input-value-1" type="text" name="min_price" value="{{ $selectedMinPrice }}" autocomplete="off">
                                                 <span>руб.</span>
                                         
                                             </div>
                                             <div class="ch-range-divider"></div>
                                             <div class="ch-range-form-wrap">
-                                                <input id="max_price" class="ch-range-input ch-range-input-value-2" type="text" name="max_price">
+                                                <input id="max_price" class="ch-range-input ch-range-input-value-2" type="text" name="max_price" value="{{ $selectedMaxPrice }}" autocomplete="off">
                                                 <span>руб.</span>
                                             </div>
                                         </div>
@@ -653,18 +665,18 @@
         const filterButton = document.querySelector('#filter-btn');
         const minInput = document.querySelector('#min_price');
         const maxInput = document.querySelector('#max_price');
+        const rangeElement = document.querySelector('.ch-range');
         const productsContainer = document.querySelector('#products-container');
         const resultsText = document.querySelector('#results-text');
         const categoryAll = document.querySelector('#category-all');
         const categoryCheckboxes = document.querySelectorAll('.category-filter');
         const browseUrl = "{{ route('web.shop.products') }}";
-        @php
-            $productRouteTemplate = preg_replace('#/\d+$#', '/__ID__', route('web.product', ['id' => 1]));
-        @endphp
-        const productUrlTemplate = "{{ $productRouteTemplate }}";
+        const productUrlTemplate = "{{ route('web.product', ['id' => '__ID__']) }}";
         const currencyLabel = " @lang('messages.currency_rub')";
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}';
         const layoutStorageKey = 'shopProductsView';
+        const priceMinBound = Number(rangeElement?.dataset.min ?? '0') || 0;
+        const priceMaxBound = Number(rangeElement?.dataset.max ?? '50000') || 50000;
 
         if (!productsContainer) return;
 
@@ -754,27 +766,32 @@
                 return fallback;
             }
 
-            const normalized = String(value)
-                .replace(/[^\d.,]/g, '')
-                .replace(',', '.');
-            const parsed = Number.parseFloat(normalized);
-
-            if (!Number.isFinite(parsed) || parsed < 0) {
+            const digitsOnly = String(value).replace(/\D+/g, '');
+            if (!digitsOnly) {
                 return fallback;
             }
 
-            return String(Math.floor(parsed));
+            return String(Number.parseInt(digitsOnly, 10));
+        }
+
+        function clampPrice(value) {
+            const numeric = Number.parseInt(String(value), 10);
+            if (!Number.isFinite(numeric)) {
+                return priceMinBound;
+            }
+
+            return Math.min(priceMaxBound, Math.max(priceMinBound, numeric));
         }
 
         function buildBrowseQueryUrl(page) {
-            let min = normalizePriceInput(minInput?.value, '0');
-            let max = normalizePriceInput(maxInput?.value, '999999');
+            let min = clampPrice(normalizePriceInput(minInput?.value, String(priceMinBound)));
+            let max = clampPrice(normalizePriceInput(maxInput?.value, String(priceMaxBound)));
             if (Number(min) > Number(max)) {
                 [min, max] = [max, min];
             }
 
-            if (minInput) minInput.value = min;
-            if (maxInput) maxInput.value = max;
+            if (minInput) minInput.value = String(min);
+            if (maxInput) maxInput.value = String(max);
 
             const selectedCategories = Array.from(document.querySelectorAll('.category-filter:checked'))
                 .filter(cb => cb.value !== 'all')
@@ -790,6 +807,13 @@
                 params.set('page', String(page));
             }
             return `${browseUrl}?${params.toString()}`;
+        }
+
+        if (minInput) {
+            minInput.value = String(clampPrice(normalizePriceInput(minInput.value, String(priceMinBound))));
+        }
+        if (maxInput) {
+            maxInput.value = String(clampPrice(normalizePriceInput(maxInput.value, String(priceMaxBound))));
         }
 
         async function fetchBrowse(url) {
