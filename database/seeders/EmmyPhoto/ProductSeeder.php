@@ -18,6 +18,8 @@ class ProductSeeder extends Seeder
 
     public function run(): void
     {
+        $this->call(CategorySeeder::class);
+
         $products = self::loadProductsFromJson();
         $source = 'JSON';
 
@@ -39,23 +41,32 @@ class ProductSeeder extends Seeder
 
         $usedSkus = [];
         $created = 0;
+        $categoryMap = self::buildCategoryMap();
 
         foreach ($products as $item) {
             $categoryName = trim((string) ($item['category'] ?? ''));
-            $name = trim((string) ($item['name'] ?? ''));
+            $rawName = trim((string) ($item['name'] ?? ''));
+            $name = self::normalizeProductName($rawName);
             $description = trim((string) ($item['description'] ?? ''));
             $sizes = self::normalizeSizeRows($item['sizes'] ?? []);
 
-            if ($categoryName === '' || $name === '' || $sizes === []) {
+            if ($categoryName === '' || $rawName === '' || $name === '' || $sizes === []) {
                 continue;
             }
 
-            $category = Categorie::firstOrCreate(
-                ['name' => $categoryName],
-                ['description' => 'Категория: ' . $categoryName]
-            );
+            $categoryId = self::resolveCategoryId($categoryName, $name, $categoryMap);
+            if ($categoryId === null) {
+                $fallbackCategory = Categorie::firstOrCreate(
+                    ['name' => $categoryName],
+                    ['description' => 'Категория: ' . $categoryName]
+                );
+                $categoryId = (int) $fallbackCategory->id;
+                $categoryMap[self::normalizeCategoryName($categoryName)] = $categoryId;
+            }
 
-            $baseSku = self::buildSkuFromName($name);
+            // SKU должен быть стабильным между сидами (по исходному имени),
+            // чтобы updateOrCreate обновлял товар, а не создавал дубли.
+            $baseSku = self::buildSkuFromName($rawName);
             $sku = $baseSku;
             $suffix = 1;
             while (isset($usedSkus[$sku])) {
@@ -70,7 +81,7 @@ class ProductSeeder extends Seeder
                     'name' => $name,
                     'description' => $description !== '' ? $description : $name,
                     'price' => (float) $sizes[0]['price'],
-                    'category_id' => $category->id,
+                    'category_id' => $categoryId,
                     'quantity' => 1000,
                     'discount' => 0,
                 ]
@@ -169,7 +180,6 @@ class ProductSeeder extends Seeder
                 $sizes = self::normalizeSizeRows($data['sizes'] ?? []);
 
                 if ($sizes === []) {
-                    // Для пустых/нестандартных TXT не теряем товар полностью.
                     $sizes = [[
                         'size' => 'Стандарт',
                         'price' => 1.0,
@@ -249,9 +259,7 @@ class ProductSeeder extends Seeder
         return $files;
     }
 
-    /**
-     * Из размера "500х800" извлекаем числа для поиска в имени файла (50, 500, 80, 800 — см и мм).
-     */
+   
     private static function getSizeKeys(string $size): array
     {
         if (preg_match_all('/\d+/u', $size, $m)) {
@@ -260,7 +268,7 @@ class ProductSeeder extends Seeder
             foreach ($nums as $n) {
                 $keys[] = (string) $n;
                 if ($n >= 10) {
-                    $keys[] = (string) (int) ($n / 10); // 500 -> 50
+                    $keys[] = (string) (int) ($n / 10);
                 }
             }
             return array_unique($keys);
@@ -268,11 +276,6 @@ class ProductSeeder extends Seeder
         return [];
     }
 
-    /**
-     * Подбираем фото для размера: основное (avrora_60.jpg) и схема (avrora_60_shema.jpg).
-     * Например: 500х800 -> image=avrora_50_shema.jpg (если нет без shema), image_shema=avrora_50_shema.jpg
-     *            600х800 -> image=avrora_60.jpg, image_shema=avrora_60_shema.jpg
-     */
     private static function findImagesForSize(string $size, array $imageFiles): array
     {
         $result = ['image' => null, 'image_shema' => null];
@@ -298,5 +301,87 @@ class ProductSeeder extends Seeder
         $result['image_shema'] = $withShema[0] ?? null;
         $result['image'] = $withoutShema[0] ?? $result['image_shema'];
         return $result;
+    }
+
+    private static function buildCategoryMap(): array
+    {
+        $map = [];
+        foreach (Categorie::query()->get(['id', 'name']) as $category) {
+            $map[self::normalizeCategoryName((string) $category->name)] = (int) $category->id;
+        }
+
+        return $map;
+    }
+
+    private static function normalizeCategoryName(string $value): string
+    {
+        $value = mb_strtolower(trim($value));
+        $value = preg_replace('/\s+/u', ' ', $value) ?? $value;
+
+        return $value;
+    }
+
+    private static function resolveCategoryId(string $categoryName, string $productName, array $categoryMap): ?int
+    {
+        $normalizedCategoryName = self::normalizeCategoryName($categoryName);
+        if (isset($categoryMap[$normalizedCategoryName])) {
+            return $categoryMap[$normalizedCategoryName];
+        }
+
+        $keywordToCategory = [
+            'зеркал' => 'зеркала',
+            'mirror' => 'зеркала',
+            'зеркальн шкаф' => 'зеркальные шкафы',
+            'навесн шкаф' => 'навесные шкафы',
+            'пенал' => 'пеналы',
+            'тумб' => 'тумбы с раковинами',
+            'унитаз' => 'унитазы',
+            'экран' => 'экраны',
+        ];
+
+        $searchSpace = self::normalizeCategoryName($categoryName . ' ' . $productName);
+        foreach ($keywordToCategory as $keyword => $targetCategoryName) {
+            if (!str_contains($searchSpace, $keyword)) {
+                continue;
+            }
+
+            $targetNormalized = self::normalizeCategoryName($targetCategoryName);
+            if (isset($categoryMap[$targetNormalized])) {
+                return $categoryMap[$targetNormalized];
+            }
+        }
+
+        return null;
+    }
+
+    private static function normalizeProductName(string $name): string
+    {
+        $name = trim($name);
+        if ($name === '') {
+            return '';
+        }
+
+        $name = preg_replace('/\s+/u', ' ', $name) ?? $name;
+        $name = preg_replace('/\s*,\s*/u', ', ', $name) ?? $name;
+        $name = preg_replace('/\s*\(\s*/u', ' (', $name) ?? $name;
+        $name = preg_replace('/\s*\)\s*/u', ') ', $name) ?? $name;
+        $name = preg_replace('/\s{2,}/u', ' ', $name) ?? $name;
+        $name = trim($name, " \t\n\r\0\x0B,");
+
+        $name = preg_replace('/(?<=[\p{Ll}])(?=[\p{Lu}])/u', ' ', $name) ?? $name;
+        $name = preg_replace('/\s{2,}/u', ' ', $name) ?? $name;
+        $name = trim($name);
+
+        $maxLength = 60;
+        if (mb_strlen($name) > $maxLength) {
+            $cut = mb_substr($name, 0, $maxLength); 
+            $lastSpacePos = mb_strrpos($cut, ' ');
+            if ($lastSpacePos !== false && $lastSpacePos >= 35) {
+                $cut = mb_substr($cut, 0, $lastSpacePos);
+            }
+            $name = rtrim($cut, ",.-/ ") . '...';
+        }
+
+        return $name;
     }
 }
