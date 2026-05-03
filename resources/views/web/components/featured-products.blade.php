@@ -22,11 +22,11 @@
                             <div class="product-price-wrap">
                                 @if($product->old_price && $product->old_price > $product->price)
                                     <div class="product-price product-price-old">
-                                        ${{ number_format($product->old_price, 2) }}
+                                        {{ number_format($product->old_price, 2) }} руб.
                                     </div>
                                 @endif
                                 <div class="product-price">
-                                    ${{ number_format($product->price, 2) }}
+                                    {{ number_format($product->price, 2) }} руб.
                                 </div>
                             </div>
                         </div>

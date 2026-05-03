@@ -543,10 +543,12 @@
                                             <span id="price-max-value">{{ $selectedMaxPrice }}</span>
                                             руб.
                                         </div>
+                                        <input id="min_price" type="hidden" name="min_price" value="{{ $selectedMinPrice }}">
+                                        <input id="max_price" type="hidden" name="max_price" value="{{ $selectedMaxPrice }}">
                                     </div>
                                     <div>
                                         <button id="filter-btn" class="button button-sm button-secondary button-zakaria" type="button">
-                                            @lang('messages.filter')
+                                            Показать
                                         </button>
                                     </div>
                                 </div>
