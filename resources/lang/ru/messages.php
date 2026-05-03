@@ -6,6 +6,7 @@ return [
     'my_account' => 'Мой аккаунт',
     'register' => 'Регистрация',
     'login' => 'Войти',
+    'login_by_phone' => 'Войти по телефону',
     'please_login' => 'Войдите в аккаунт, чтобы продолжить.',
     'please_login_to_view_cart' => 'Войдите в аккаунт, чтобы просмотреть корзину.',
     'email_already_registered' => 'Этот email уже зарегистрирован. Войдите в аккаунт или укажите другой email.',

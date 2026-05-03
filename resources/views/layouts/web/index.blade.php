@@ -347,6 +347,10 @@
             gap: 10px;
         }
 
+        .header-top .single-dropdown {
+            display: none;
+        }
+
         .language-label {
             display: none !important;
         }
@@ -423,6 +427,36 @@
 
     .ch-nav-link:hover::after {
         width: 100%;
+    }
+
+    .mobile-account-wrap {
+        margin-left: auto;
+        display: none;
+    }
+
+    .mobile-account-btn {
+        border: 0;
+        border-radius: 20px;
+        padding: 7px 13px;
+        background: linear-gradient(135deg, #50becf 0%, #39b3b8 100%);
+        color: #fff !important;
+        font-size: 13px;
+        font-weight: 600;
+        box-shadow: 0 6px 14px rgba(80, 190, 207, 0.28);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .mobile-account-btn:hover,
+    .mobile-account-btn:focus {
+        color: #fff !important;
+        transform: translateY(-1px);
+        box-shadow: 0 8px 18px rgba(80, 190, 207, 0.35);
+    }
+
+    @media (max-width: 991px) {
+        .mobile-account-wrap {
+            display: block;
+        }
     }
 </style>
 
@@ -504,6 +538,11 @@
         </div>
 
         <!-- Navigation Menu -->
+        @php
+            $loginPhoneRaw = __('messages.phone_number');
+            $loginPhoneDigits = preg_replace('/\D+/', '', (string) $loginPhoneRaw);
+            $loginPhoneHref = $loginPhoneDigits ? ('+' . $loginPhoneDigits) : '';
+        @endphp
         <div class="ch-navbar-wrap">
             <nav class="ch-navbar ch-navbar-classic ch-navbar-static">
                 <!-- Your existing navbar structure -->
@@ -513,6 +552,31 @@
                             <button class="ch-navbar-toggle" data-ch-navbar-toggle=".ch-navbar-nav-wrap"><span></span></button>
                             <div class="ch-navbar-brand">
                                 <a href="{{ route('web.home') }}"> <img class="logo-default" src="{{ asset('img/web/logo-emmy.png') }}" alt="{{ __('messages.seo_default_og_title') }}" title="{{ __('messages.seo_default_site_title') }}" /></a>
+                            </div>
+                            <div class="mobile-account-wrap">
+                                <div class="dropdown">
+                                    <button class="btn dropdown-toggle mobile-account-btn" type="button" id="mobileAccountDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        @lang('messages.my_account')
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mobileAccountDropdown">
+                                        @guest
+                                            <li><a class="dropdown-item" href="{{ route('login') }}">@lang('messages.login')</a></li>
+                                            <li><a class="dropdown-item" href="{{ route('register') }}">@lang('messages.register')</a></li>
+                                            @if($loginPhoneHref !== '')
+                                                <li><a class="dropdown-item" href="tel:{{ $loginPhoneHref }}">@lang('messages.login_by_phone')</a></li>
+                                            @endif
+                                        @else
+                                            <li><span class="dropdown-item-text">👤 {{ Auth::user()->name }}</span></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <form action="{{ route('logout') }}" method="POST" class="m-0">
+                                                    @csrf
+                                                    <button type="submit" class="dropdown-item">@lang('messages.logout')</button>
+                                                </form>
+                                            </li>
+                                        @endguest
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                         <div class="ch-navbar-nav-wrap">

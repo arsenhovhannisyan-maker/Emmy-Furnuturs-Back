@@ -6,6 +6,7 @@ return [
     'my_account' => 'My Account',
     'register' => 'Register',
     'login' => 'Login',
+    'login_by_phone' => 'Login by phone',
     'please_login' => 'Please log in to continue.',
     'please_login_to_view_cart' => 'Please log in to view your cart.',
     'email_already_registered' => 'This email is already registered. Please log in or use another email.',

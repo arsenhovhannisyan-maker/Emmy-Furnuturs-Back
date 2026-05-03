@@ -48,6 +48,31 @@
         <div class="swiper-button-next"></div>
     </section>
     <style>
+        .swiper-slider-4 {
+            height: 400px !important;
+            min-height: 400px !important;
+            overflow: hidden !important;
+        }
+
+        .swiper-slider-4 .swiper-wrapper,
+        .swiper-slider-4 .swiper-slide {
+            height: 100% !important;
+        }
+
+        .swiper-slider-4 .swiper-slide {
+            overflow: hidden !important;
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        @media (max-width: 767px) {
+            .swiper-slider-4 {
+                height: 320px !important;
+                min-height: 320px !important;
+            }
+        }
+
         .swiper-slider-4 .swiper-button-prev,
         .swiper-slider-4 .swiper-button-next {
             background: none !important;
