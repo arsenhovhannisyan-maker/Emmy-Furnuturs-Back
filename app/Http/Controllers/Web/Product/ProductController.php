@@ -64,7 +64,7 @@ class ProductController extends Controller
 
         return response()->json([
             'products' => $products->items(),
-            'pagination' => (string) $products->links('vendor.pagination.bootstrap-5'),
+            'pagination' => (string) $products->links('vendor.pagination.shop-products'),
             'total' => $products->total(),
             'from' => $products->firstItem(),
             'to' => $products->lastItem(),

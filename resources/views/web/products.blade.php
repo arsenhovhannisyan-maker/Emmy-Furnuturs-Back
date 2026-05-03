@@ -355,6 +355,68 @@
         line-height: 1;
     }
 
+    #products-pagination {
+        margin-top: 24px;
+    }
+
+    .shop-pagination-nav {
+        display: flex;
+        justify-content: center;
+    }
+
+    .shop-pagination {
+        margin: 0;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .shop-pagination .page-item {
+        margin: 0;
+    }
+
+    .shop-pagination .page-link {
+        min-width: 42px;
+        height: 42px;
+        padding: 0 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        border: 1px solid #dbe3ef;
+        background: #fff;
+        color: #355070;
+        font-weight: 600;
+        line-height: 1;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 8px rgba(33, 53, 85, 0.06);
+        text-decoration: none;
+    }
+
+    .shop-pagination .page-item:not(.active):not(.disabled) .page-link:hover {
+        background: #eef7ff;
+        border-color: #7bb8ff;
+        color: #1f4e89;
+        transform: translateY(-1px);
+    }
+
+    .shop-pagination .page-item.active .page-link {
+        background: linear-gradient(135deg, #50becf 0%, #39b3b8 100%);
+        border-color: #39b3b8;
+        color: #fff;
+        box-shadow: 0 8px 18px rgba(57, 179, 184, 0.28);
+    }
+
+    .shop-pagination .page-item.disabled .page-link {
+        opacity: 0.45;
+        pointer-events: none;
+    }
+
+    .shop-pagination .page-link--nav {
+        min-width: 52px;
+        padding: 0 18px;
+        font-size: 20px;
+    }
+
     #products-container.products-layout--grid .product-modern .unit {
         flex-direction: column !important;
     }
@@ -440,6 +502,25 @@
 
         .product-modern-text {
             font-size: 13px;
+        }
+
+        .shop-pagination {
+            gap: 6px;
+            justify-content: center;
+        }
+
+        .shop-pagination .page-link {
+            min-width: 36px;
+            height: 36px;
+            padding: 0 10px;
+            border-radius: 10px;
+            font-size: 13px;
+        }
+
+        .shop-pagination .page-link--nav {
+            min-width: 42px;
+            padding: 0 12px;
+            font-size: 18px;
         }
     }
 
@@ -686,7 +767,7 @@
 
                         @if(isset($products) && $products instanceof \Illuminate\Pagination\LengthAwarePaginator && $products->hasPages())
                             <div class="mt-5" id="products-pagination">
-                                {{ $products->links('vendor.pagination.bootstrap-5') }}
+                                {{ $products->links('vendor.pagination.shop-products') }}
                             </div>
                         @else
                             <div class="mt-5" id="products-pagination"></div>
@@ -1001,7 +1082,15 @@
                 const anchor = e.target.closest('a.page-link');
                 if (!anchor || !anchor.getAttribute('href')) return;
                 e.preventDefault();
-                fetchBrowse(anchor.href);
+                let targetPage = 1;
+                try {
+                    const hrefUrl = new URL(anchor.getAttribute('href'), window.location.origin);
+                    const rawPage = Number.parseInt(hrefUrl.searchParams.get('page') || '1', 10);
+                    targetPage = Number.isFinite(rawPage) && rawPage > 0 ? rawPage : 1;
+                } catch (error) {
+                    console.warn('Failed to parse pagination page, fallback to page 1.', error);
+                }
+                fetchBrowse(buildBrowseQueryUrl(targetPage));
             });
         }
 
