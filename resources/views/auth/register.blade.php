@@ -36,7 +36,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="email" class="auth-label">@lang('messages.email')</label>
+                <label for="email" class="auth-label">E-mail адрес</label>
                 <input id="email" type="email"
                        class="auth-input @error('email') is-invalid @enderror"
                        name="email" value="{{ old('email') }}" required autocomplete="email">

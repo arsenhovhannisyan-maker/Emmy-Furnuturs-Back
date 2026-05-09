@@ -116,6 +116,8 @@ return [
     'error_404' => '404 Error',
     'elements' => 'Elements',
     'page_not_found' => 'Page Not Found',
+    'error_404_description' => 'This page does not exist — the link may be outdated or the URL might contain a typo.',
+    'error_404_catalog' => 'Browse catalog',
     'go_to_home_page' => 'Go to home page',
     // Blog page keys
     'blog_list' => 'Blog List',
