@@ -50,6 +50,8 @@ return [
     // Contact page keys
     'contact_us' => 'Контакты',
     'get_in_touch' => 'Свяжитесь с нами',
+    'get_in_touch_line1' => 'Свяжитесь с',
+    'get_in_touch_line2' => 'нами',
     'contact_availability' => 'Мы доступны 24/7 по факсу, электронной почте или телефону. Вы также можете использовать нашу форму быстрой связи, чтобы задать вопрос о нашей продукции.',
     'first_name' => 'Имя',
     'last_name' => 'Фамилия',
@@ -94,7 +96,7 @@ return [
     'summer_sale' => 'Летняя распродажа',
     'summer_sale_desc' => 'На весь ассортимент действуют доступные цены, спецпредложения и скидки. Получите консультацию и подберите комплект для ванной под ваш проект.',
     'your_name' => 'Ваше имя',
-    'your_email_address' => 'Ваш адрес электронной почты',
+    'your_email_address' => 'Ваш e-mail',
     'send_request' => 'Отправить запрос',
     // About page keys
     'america_best_furniture' => 'Лучшая мебель в России',
@@ -167,7 +169,7 @@ return [
     'free' => 'Бесплатно',
     'place_order' => 'Оформить заказ',
     // Gallery page keys
-    'masonry_gallery' => 'Каменная галерея',
+    'masonry_gallery' => 'Галерея',
     // Privacy Policy page keys
     'privacy_policy_title' => 'Политика в отношении обработки персональных данных',
     'privacy_section_1_title' => '1. Общие положения',

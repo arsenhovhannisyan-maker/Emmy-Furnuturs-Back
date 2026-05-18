@@ -50,6 +50,8 @@ return [
     // Contact page keys
     'contact_us' => 'Contact Us',
     'get_in_touch' => 'Get in touch',
+    'get_in_touch_line1' => 'Get in',
+    'get_in_touch_line2' => 'touch',
     'contact_availability' => 'We are available 24/7 by fax, e-mail or by phone. You can also use our quick contact form to ask a question about our products.',
     'first_name' => 'First Name',
     'last_name' => 'Last Name',

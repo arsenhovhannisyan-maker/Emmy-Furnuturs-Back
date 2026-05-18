@@ -49,8 +49,6 @@
     </section>
     <style>
         .swiper-slider-4 {
-            height: 400px !important;
-            min-height: 400px !important;
             overflow: hidden !important;
         }
 
@@ -94,6 +92,182 @@
         .swiper-slider-4 .swiper-button-prev:focus,
         .swiper-slider-4 .swiper-button-next:focus {
             outline: none !important;
+        }
+
+        .contact-subscribe .parallax-content {
+            padding-top: 48px;
+            padding-bottom: 48px;
+        }
+
+        .contact-subscribe__title {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            line-height: 1.1;
+            margin-bottom: 0;
+        }
+
+        .contact-subscribe__title-line {
+            display: block;
+        }
+
+        .contact-subscribe__form.ch-form-inline {
+            margin-bottom: 0;
+        }
+
+        .contact-subscribe__form.form-lg .form-input,
+        .contact-subscribe__form.form-lg .form-label {
+            font-size: 13px;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+        }
+
+        .contact-subscribe__form.form-lg .form-input {
+            min-height: 52px;
+            padding-top: 14px;
+            padding-bottom: 14px;
+            border-color: rgba(255, 255, 255, 0.45);
+        }
+
+        .contact-subscribe__form.form-lg .form-label {
+            top: 26px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+
+        .contact-subscribe__form .form-wrap {
+            min-width: 140px;
+        }
+
+        .contact-subscribe__form .form-wrap.has-focus .form-input {
+            border-color: #50BECF;
+        }
+
+        .contact-subscribe__form .form-button .button.contact-subscribe__btn {
+            padding: 14px 36px !important;
+            min-height: 52px !important;
+            min-width: 0 !important;
+            width: auto !important;
+            margin-top: 0 !important;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            border-radius: 0;
+        }
+
+        .contact-subscribe__form .form-button {
+            display: flex;
+            align-items: center;
+            min-height: auto;
+        }
+
+        @media (min-width: 768px) {
+            .contact-subscribe__form.ch-form-inline {
+                flex-wrap: nowrap;
+                align-items: flex-end;
+            }
+
+            .contact-subscribe__form .form-wrap {
+                flex: 1 1 0;
+                min-width: 160px;
+            }
+
+            .contact-subscribe__form .contact-subscribe__field-email {
+                min-width: 200px;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .contact-subscribe__row {
+                min-height: 250px;
+                align-items: center !important;
+            }
+
+            .contact-subscribe__title-col,
+            .contact-subscribe__form-col {
+                display: flex;
+                align-items: center;
+            }
+
+            .contact-subscribe__form.ch-form-inline {
+                align-items: center;
+                width: 100%;
+            }
+
+            .contact-subscribe__form .form-wrap,
+            .contact-subscribe__form .form-button {
+                margin-bottom: 0;
+            }
+
+            .contact-subscribe__form .contact-subscribe__field-email {
+                min-width: 220px;
+            }
+        }
+
+        @media (max-width: 1199.98px) {
+            .contact-subscribe__title {
+                gap: 10px;
+                margin-bottom: 28px;
+            }
+
+            .contact-subscribe__form .form-button {
+                width: 100%;
+                justify-content: center;
+                margin-top: 8px;
+            }
+
+            .contact-subscribe__form .form-button .button.contact-subscribe__btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .contact-subscribe__title-col,
+            .contact-subscribe__form-col {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+
+            .contact-subscribe__form.ch-form-inline {
+                margin-left: 0;
+                margin-right: 0;
+                margin-bottom: 0;
+                max-width: 100%;
+                width: 100%;
+                padding-left: 0;
+                padding-right: 0;
+            }
+
+            .contact-subscribe__form.ch-form-inline > * {
+                display: block;
+                width: 100%;
+                margin-left: 0 !important;
+                margin-right: 0;
+                box-sizing: border-box;
+            }
+
+            .contact-subscribe__form .form-wrap,
+            .contact-subscribe__form .contact-subscribe__field-email {
+                min-width: 0;
+                width: 100%;
+            }
+
+            .contact-subscribe__form .form-input {
+                width: 100%;
+                box-sizing: border-box;
+                text-align: left;
+            }
+
+            .contact-subscribe__form.form-lg .form-label {
+                text-align: left;
+                left: 0;
+                right: 0;
+            }
         }
     </style>
 
@@ -196,16 +370,18 @@
     @include('web.components.gallery')
 
     <!-- Subscribe to Our Newsletter-->
-    <section class="parallax-container call_section">
+    <section class="parallax-container call_section contact-subscribe">
         <div class="parallax-content section-md context-dark text-lg-left">
             <div class="container">
-                <div class="row row-30 justify-content-center align-items-center align-items-lg-end">
-                    <div class="col-xl-5">
-                        <h2 class="parallax-title text-center text-xl-left wow fadeInLeft" data-wow-delay=".1s">@lang('messages.get_in_touch')</h2>
+                <div class="row row-30 justify-content-center align-items-center contact-subscribe__row">
+                    <div class="col-xl-5 contact-subscribe__title-col">
+                        <h2 class="parallax-title contact-subscribe__title text-center text-xl-left wow fadeInLeft" data-wow-delay=".1s">
+                            <span class="contact-subscribe__title-line">@lang('messages.get_in_touch_line1')</span>
+                            <span class="contact-subscribe__title-line">@lang('messages.get_in_touch_line2')</span>
+                        </h2>
                     </div>
-                    <div class="col-xl-7 inset-lg-bottom-10">
-                        <!-- RD Mailform-->
-                        <form class="ch-form ch-mailform ch-form-inline ch-form-inline-3 form-lg"
+                    <div class="col-xl-7 contact-subscribe__form-col">
+                        <form class="ch-form ch-mailform ch-form-inline ch-form-inline-3 form-lg contact-subscribe__form"
                               data-form-output="form-output-global"
                               data-form-type="subscribe"
                               method="post"
@@ -215,12 +391,12 @@
                                 <input class="form-input" id="login-name" type="text" name="first_name" required/>
                                 <label class="form-label" for="login-name">@lang('messages.your_name')</label>
                             </div>
-                            <div class="form-wrap wow fadeInUp">
+                            <div class="form-wrap contact-subscribe__field-email wow fadeInUp" data-wow-delay=".05s">
                                 <input class="form-input" id="contact-email" type="email" name="email" required/>
                                 <label class="form-label" for="contact-email">@lang('messages.your_email_address')</label>
                             </div>
-                            <div class="form-button wow fadeInRight text-center">
-                                <button class="button button-zakaria button-sm button-primary" type="submit">@lang('messages.send_request')</button>
+                            <div class="form-button wow fadeInRight">
+                                <button class="button button-zakaria button-primary button-shadow-2 contact-subscribe__btn" type="submit">@lang('messages.send_request')</button>
                             </div>
                         </form>
                     </div>
