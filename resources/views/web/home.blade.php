@@ -369,41 +369,8 @@
     <!-- Gallery-->
     @include('web.components.gallery')
 
-    <!-- Subscribe to Our Newsletter-->
-    <section class="parallax-container call_section contact-subscribe">
-        <div class="parallax-content section-md context-dark text-lg-left">
-            <div class="container">
-                <div class="row row-30 justify-content-center align-items-center contact-subscribe__row">
-                    <div class="col-xl-5 contact-subscribe__title-col">
-                        <h2 class="parallax-title contact-subscribe__title text-center text-xl-left wow fadeInLeft" data-wow-delay=".1s">
-                            <span class="contact-subscribe__title-line">@lang('messages.get_in_touch_line1')</span>
-                            <span class="contact-subscribe__title-line">@lang('messages.get_in_touch_line2')</span>
-                        </h2>
-                    </div>
-                    <div class="col-xl-7 contact-subscribe__form-col">
-                        <form class="ch-form ch-mailform ch-form-inline ch-form-inline-3 form-lg contact-subscribe__form"
-                              data-form-output="form-output-global"
-                              data-form-type="subscribe"
-                              method="post"
-                              action="{{ route('contact.submit') }}">
-                            @csrf
-                            <div class="form-wrap wow fadeInUp">
-                                <input class="form-input" id="login-name" type="text" name="first_name" required/>
-                                <label class="form-label" for="login-name">@lang('messages.your_name')</label>
-                            </div>
-                            <div class="form-wrap contact-subscribe__field-email wow fadeInUp" data-wow-delay=".05s">
-                                <input class="form-input" id="contact-email" type="email" name="email" required/>
-                                <label class="form-label" for="contact-email">@lang('messages.your_email_address')</label>
-                            </div>
-                            <div class="form-button wow fadeInRight">
-                                <button class="button button-zakaria button-primary button-shadow-2 contact-subscribe__btn" type="submit">@lang('messages.send_request')</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <!-- Get in touch-->
+    @include('web.components.get-in-touch')
 
     <!-- Our Blog-->
     @include('web.components.our-blog')

@@ -9,6 +9,8 @@
 <script>
     const productBaseUrl = "{{ rtrim(route('web.product', ['id' => 1]), '1') }}";
     const cardUrl = productBaseUrl;
+    const noProductsMsg = {!! json_encode(__('messages.no_products_available')) !!};
+    const noImageUrl    = "{{ asset('img/web/farnitur.png') }}";
 </script>
 
 <script>
@@ -20,7 +22,7 @@
             container.innerHTML = '';
 
             if (!Array.isArray(data) || data.length === 0) {
-                container.innerHTML = '<div class="col-12 text-center"><p>@lang('messages.no_products_available')</p></div>';
+                container.innerHTML = '<div class="col-12 text-center"><p>' + noProductsMsg + '</p></div>';
                 return;
             }
 
@@ -39,7 +41,7 @@
       <div class="product-body">
         <div class="product-figure">
           <img
-            src="${product.photo1 ? product.photo1.file_url : '/images/no-image.png'}"
+            src="${product.photo1 ? product.photo1.file_url : noImageUrl}"
             alt="${product.name}"
             width="148"
             height="128"

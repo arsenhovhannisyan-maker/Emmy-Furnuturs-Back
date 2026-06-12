@@ -39,7 +39,7 @@
                 <label for="email" class="auth-label">E-mail адрес</label>
                 <input id="email" type="email"
                        class="auth-input @error('email') is-invalid @enderror"
-                       name="email" value="{{ old('email') }}" required autocomplete="email">
+                       name="email" value="{{ old('email') }}" required autocomplete="email">r
                 @error('email')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror

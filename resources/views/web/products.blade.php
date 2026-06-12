@@ -248,9 +248,61 @@
     }
 
     .price-filter-slider {
+        -webkit-appearance: none;
+        appearance: none;
         width: 100%;
-        accent-color: #50becf;
+        height: 4px;
+        border-radius: 2px;
         cursor: pointer;
+        outline: none;
+        border: none;
+        /* JS sets background gradient; this is the fallback */
+        background: rgba(255, 255, 255, 0.30);
+    }
+
+    /* Thumb – Chrome / Safari / Edge */
+    .price-filter-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 17px;
+        height: 17px;
+        border-radius: 50%;
+        background: #50BECF;
+        border: 2px solid #fff;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.30);
+        cursor: pointer;
+        transition: transform .15s ease;
+        margin-top: -6px;
+    }
+    .price-filter-slider::-webkit-slider-thumb:hover { transform: scale(1.15); }
+
+    /* Track – Chrome / Safari / Edge */
+    .price-filter-slider::-webkit-slider-runnable-track {
+        height: 4px;
+        border-radius: 2px;
+        background: transparent; /* handled by element background via JS */
+    }
+
+    /* Thumb – Firefox */
+    .price-filter-slider::-moz-range-thumb {
+        width: 17px;
+        height: 17px;
+        border-radius: 50%;
+        background: #50BECF;
+        border: 2px solid #fff;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.30);
+        cursor: pointer;
+    }
+
+    /* Track – Firefox */
+    .price-filter-slider::-moz-range-track {
+        height: 4px;
+        border-radius: 2px;
+        background: rgba(255, 255, 255, 0.30);
+    }
+    .price-filter-slider::-moz-range-progress {
+        height: 4px;
+        border-radius: 2px;
+        background: #50BECF;
     }
 
     .price-filter-values {
@@ -919,6 +971,16 @@
             return Math.min(priceMaxBound, Math.max(priceMinBound, rounded));
         }
 
+        function updateSliderTrack(slider) {
+            if (!slider) return;
+            var lo  = parseFloat(slider.min)   || 0;
+            var hi  = parseFloat(slider.max)   || 100;
+            var val = parseFloat(slider.value) || 0;
+            var pct = hi > lo ? ((val - lo) / (hi - lo)) * 100 : 0;
+            slider.style.background =
+                'linear-gradient(to right, #50BECF 0%, #50BECF ' + pct + '%, rgba(255,255,255,0.28) ' + pct + '%, rgba(255,255,255,0.28) 100%)';
+        }
+
         function updatePricePreview(min, max) {
             if (minValueLabel) {
                 minValueLabel.textContent = String(min);
@@ -989,6 +1051,8 @@
                 maxRangeInput.value = String(max);
             }
             updatePricePreview(min, max);
+            updateSliderTrack(minRangeInput);
+            updateSliderTrack(maxRangeInput);
         }
 
         function buildBrowseQueryUrl(page) {
@@ -1013,6 +1077,8 @@
         sanitizePriceInputs({
             resetToBounds: !hasMinPriceInUrl && !hasMaxPriceInUrl
         });
+        updateSliderTrack(minRangeInput);
+        updateSliderTrack(maxRangeInput);
 
         [minInput, maxInput].forEach(function (input) {
             if (!input) return;

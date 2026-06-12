@@ -15,8 +15,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         :root {
-            --auth-accent: #39b3b8;
-            --auth-accent-hover: #2a9ca1;
+            --auth-accent: #50BECF;
+            --auth-accent-hover: #626469;
             --auth-bg: #eef2f4;
             --auth-card: #ffffff;
             --auth-text: #2f3740;
@@ -34,16 +34,16 @@
             font-family: 'Poppins', sans-serif;
             color: var(--auth-text);
             background:
-                radial-gradient(circle at 15% 15%, rgba(57, 179, 184, 0.16), transparent 35%),
-                radial-gradient(circle at 85% 85%, rgba(57, 179, 184, 0.14), transparent 32%),
+                radial-gradient(circle at 15% 15%, rgba(80, 190, 207, 0.16), transparent 35%),
+                radial-gradient(circle at 85% 85%, rgba(80, 190, 207, 0.14), transparent 32%),
                 var(--auth-bg);
         }
 
         .auth-header {
             width: 100%;
             padding: 5px 50px;
-            background:rgb(90, 187, 190);
-            border-bottom: 1px solid rgba(57, 179, 184, 0.18);
+            background: #50BECF;
+            border-bottom: 1px solid rgba(80, 190, 207, 0.35);
             backdrop-filter: blur(4px);
         }
 
@@ -86,7 +86,7 @@
             max-width: 520px;
             background: var(--auth-card);
             border-radius: 22px;
-            border: 1px solid rgba(57, 179, 184, 0.12);
+            border: 1px solid rgba(80, 190, 207, 0.2);
             box-shadow: 0 16px 40px rgba(27, 39, 51, 0.14);
             padding: 34px 30px 28px;
         }
@@ -127,7 +127,7 @@
 
         .auth-input:focus {
             border-color: var(--auth-accent);
-            box-shadow: 0 0 0 0.2rem rgba(57, 179, 184, 0.2);
+            box-shadow: 0 0 0 0.2rem rgba(80, 190, 207, 0.25);
             outline: 0;
         }
 
@@ -148,7 +148,7 @@
         .auth-submit:hover {
             background: var(--auth-accent-hover);
             transform: translateY(-1px);
-            box-shadow: 0 8px 16px rgba(57, 179, 184, 0.25);
+            box-shadow: 0 8px 16px rgba(80, 190, 207, 0.3);
         }
 
         .auth-helper {
@@ -159,20 +159,25 @@
         }
 
         .auth-helper a {
-            color: var(--auth-accent-hover);
+            color: var(--auth-accent);
             text-decoration: none;
             font-weight: 600;
         }
 
         .auth-helper a:hover {
+            color: var(--auth-accent-hover);
             text-decoration: underline;
+        }
+
+        .auth-header .auth-brand {
+            color: #fff;
         }
     </style>
 </head>
 <body>
     <header class="auth-header">
         <a class="auth-brand" href="{{ url('/') }}" aria-label="Emmy home">
-            <img src="{{ asset('img/web/tab-photo.png') }}" alt="Emmy logo">
+            <img src="{{ asset('img/web/tab-photo-2.png') }}" alt="Emmy logo">
             <span>Emmy</span>
         </a>
     </header>
