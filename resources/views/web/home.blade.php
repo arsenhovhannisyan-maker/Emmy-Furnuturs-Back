@@ -71,6 +71,20 @@
             }
         }
 
+        @media (min-width: 768px) and (max-width: 1180px) {
+            .swiper-slider-4 {
+                height: 52vw !important;
+                min-height: 420px !important;
+            }
+        }
+
+        @media (min-width: 1181px) {
+            .swiper-slider-4 {
+                height: 38vw !important;
+                min-height: 480px !important;
+            }
+        }
+
         .swiper-slider-4 .swiper-button-prev,
         .swiper-slider-4 .swiper-button-next {
             background: none !important;
