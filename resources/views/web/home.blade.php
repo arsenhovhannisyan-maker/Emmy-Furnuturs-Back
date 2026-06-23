@@ -384,7 +384,32 @@
     @include('web.components.gallery')
 
     <!-- Get in touch-->
-    @include('web.components.get-in-touch')
+    <section class="parallax-container call_section"><div class="material-parallax parallax"></div>
+        <div class="parallax-content section-md context-dark text-lg-left">
+            <div class="container">
+                <div class="row row-30 justify-content-center align-items-center align-items-lg-end">
+                    <div class="col-xl-5">
+                        <h2 class="parallax-title text-center text-xl-left wow fadeInLeft" data-wow-delay=".1s">@lang('messages.get_in_touch')</h2>
+                    </div>
+                    <div class="col-xl-7 inset-lg-bottom-10">
+                        <form class="ch-form ch-mailform ch-form-inline ch-form-inline-3 form-lg" data-form-output="form-output-global" data-form-type="subscribe" method="post" action="#" novalidate="novalidate">
+                            <div class="form-wrap wow fadeInUp">
+                                <input class="form-input form-control-has-validation" id="login-name" type="text" name="name" ><span class="form-validation"></span>
+                                <label class="form-label ch-input-label" for="login-name">@lang('messages.your_name')</label>
+                            </div>
+                            <div class="form-wrap wow fadeInUp">
+                                <input class="form-input form-control-has-validation" id="contact-email" type="email" name="email" data-constraints="@Email"><span class="form-validation"></span>
+                                <label class="form-label ch-input-label" for="contact-email">@lang('messages.your_email_address')</label>
+                            </div>
+                            <div class="form-button wow fadeInRight text-center">
+                                <button class="button button-zakaria button-sm button-primary" type="submit">@lang('messages.send_request')</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Our Blog-->
     @include('web.components.our-blog')
