@@ -256,6 +256,16 @@ return [
             'file_type' => FileType::IMAGE,
             'validation' => 'nullable|mimes:jpg,jpeg,png,bmp,tiff|max:10000',
         ],
+        'photo47' => [
+            'field_name' => 'photo47',
+            'file_type' => FileType::IMAGE,
+            'validation' => 'nullable|mimes:jpg,jpeg,png,bmp,tiff|max:10000',
+        ],
+        'photo48' => [
+            'field_name' => 'photo48',
+            'file_type' => FileType::IMAGE,
+            'validation' => 'nullable|mimes:jpg,jpeg,png,bmp,tiff|max:10000',
+        ],
     ],
     Banner::getClassName() => [
         'photo' => [

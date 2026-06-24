@@ -3,11 +3,14 @@
 namespace Database\Seeders\EmmyPhoto;
 
 use App\Models\Categorie\Categorie;
+use App\Models\File\Enums\FileType;
 use App\Models\Product\Product;
 use App\Models\ProductSize\ProductSize;
 use Database\Seeders\EmmyPhotoParser;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use Ramsey\Uuid\Uuid;
 
 class ProductSeeder extends Seeder
 {
@@ -42,6 +45,7 @@ class ProductSeeder extends Seeder
         $usedSkus = [];
         $created = 0;
         $categoryMap = self::buildCategoryMap();
+        $basePath = CategorySeeder::resolveBasePath();
 
         foreach ($products as $item) {
             $categoryName = trim((string) ($item['category'] ?? ''));
@@ -97,6 +101,8 @@ class ProductSeeder extends Seeder
                     'image_shema' => $row['image_shema'] ?? null,
                 ]);
             }
+
+            self::seedProductFiles($product, $sizes, $basePath);
 
             $created++;
         }
@@ -348,6 +354,75 @@ class ProductSeeder extends Seeder
             $targetNormalized = self::normalizeCategoryName($targetCategoryName);
             if (isset($categoryMap[$targetNormalized])) {
                 return $categoryMap[$targetNormalized];
+            }
+        }
+
+        return null;
+    }
+
+    private static function seedProductFiles(Product $product, array $sizes, ?string $basePath): void
+    {
+        $uploadsDisk = Storage::disk('uploads');
+        $dirPrefix = Product::getClassName();
+
+        // Delete existing File records for this product to avoid duplicates
+        $product->files()->delete();
+
+        $photoIndex = 1;
+
+        foreach ($sizes as $sizeRow) {
+            $imageFilename = $sizeRow['image'] ?? null;
+
+            if (!$imageFilename || !$basePath) {
+                $photoIndex += 6;
+                continue;
+            }
+
+            // Try to find the image file in the Emmy Photo directory tree
+            $sourcePath = self::findImageInBasePath($imageFilename, $basePath);
+
+            if (!$sourcePath || !File::exists($sourcePath)) {
+                $photoIndex += 6;
+                continue;
+            }
+
+            $fieldName = 'photo' . $photoIndex;
+            $uniqueFileName = uniqid() . '_' . preg_replace('/[^\w\-.]/', '_', $imageFilename);
+            $destRelative = $dirPrefix . '/' . $fieldName . '/' . $uniqueFileName;
+            $destAbsolute = $uploadsDisk->path($destRelative);
+
+            $destDir = dirname($destAbsolute);
+            if (!File::isDirectory($destDir)) {
+                File::makeDirectory($destDir, 0755, true);
+            }
+
+            if (File::copy($sourcePath, $destAbsolute)) {
+                $product->files()->create([
+                    'id'         => Uuid::uuid4()->toString(),
+                    'field_name' => $fieldName,
+                    'file_name'  => $uniqueFileName,
+                    'file_type'  => FileType::IMAGE,
+                    'dir_prefix' => $dirPrefix,
+                ]);
+            }
+
+            $photoIndex += 6; // Each size occupies 6 photo slots (photo1-6, photo7-12, etc.)
+        }
+    }
+
+    private static function findImageInBasePath(string $filename, string $basePath): ?string
+    {
+        if (!File::isDirectory($basePath)) {
+            return null;
+        }
+
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($basePath, \FilesystemIterator::SKIP_DOTS)
+        );
+
+        foreach ($iterator as $file) {
+            if ($file->isFile() && $file->getFilename() === $filename) {
+                return $file->getPathname();
             }
         }
 
