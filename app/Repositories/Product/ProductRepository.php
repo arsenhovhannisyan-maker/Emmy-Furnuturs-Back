@@ -38,9 +38,23 @@ class ProductRepository extends BaseRepository implements IProductRepository
 
     public function getEightWithPhoto(): Collection
     {
+        $skus = [
+            'Зеркало_Emmy_Аврора',
+            'Тумба_Клермонт_с_раковиной_Клермонт',
+            'Навесной_шкаф_Emmy_Агата',
+            'Зеркало_со_шкафчиком_АГАТА',
+            'Тумба_Мальта_с_раковиной_Sanita_Манго',
+            'Зеркало_Emmy_Адель',
+            'Зеркало_Астра_100_Стандарт',
+            'Навесной_шкаф_Emmy_Верона',
+        ];
+
+        $placeholders = implode(',', array_fill(0, count($skus), '?'));
+
         return $this->model
             ->with(['photo1'])
-            ->take(8)
+            ->whereIn('SKU', $skus)
+            ->orderByRaw("FIELD(SKU, {$placeholders})", $skus)
             ->get();
     }
 

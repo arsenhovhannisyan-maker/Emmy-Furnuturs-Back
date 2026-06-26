@@ -46,11 +46,7 @@ class ProductController extends Controller
 
     public function getEightProducts(): JsonResponse
     {
-        $products = $this->repository->getEightWithPhoto();
-
-        $products = array_slice($products->toArray(), 0, 8);
-
-        return response()->json($products);
+        return response()->json($this->repository->getEightWithPhoto());
     }
 
     public function browse(ShopProductsBrowseRequest $request): JsonResponse
