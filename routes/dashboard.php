@@ -27,6 +27,9 @@ Route::get('/', [DashboardController::class, 'index'])->name('index');
 Route::group(['prefix' => 'files', 'as' => 'files.'], function () {
     Route::delete('delete/{id}', [FileController::class, 'delete'])->whereUuid('id')->name('delete');
     Route::post('store-temp-file', [FileController::class, 'storeTempFile'])->name('storeTempFile');
+    Route::get('pending/{date}/{filename}', [FileController::class, 'servePendingFile'])
+        ->where(['date' => '[0-9\-]+', 'filename' => '[^/]+'])
+        ->name('pending');
 });
 
 // Order routes (public - outside admin middleware) - ПЕРЕИМЕНОВАТЬ!

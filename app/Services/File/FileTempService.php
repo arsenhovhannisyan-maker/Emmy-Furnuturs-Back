@@ -71,7 +71,7 @@ class FileTempService extends FileService
 
         return [
             'status' => 'OK',
-            'file_url' => $this->pendingDisk->url($path . '/' . $filename),
+            'file_url' => route('dashboard.files.pending', ['date' => $path, 'filename' => $filename]),
             'name' => $path . '/' . $filename,
             'original_name' => $file->getClientOriginalName(),
             'file_type' => $config['file_type'],

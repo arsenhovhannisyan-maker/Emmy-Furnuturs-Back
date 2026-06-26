@@ -283,6 +283,33 @@
                 right: 0;
             }
         }
+
+        /* ── Safari / iOS fix ── */
+        /* background-attachment:fixed breaks layout on iOS Safari */
+        @supports (-webkit-touch-callout: none) {
+            .call_section,
+            .call_section_1,
+            .breadcrumbs_section {
+                background-attachment: scroll;
+            }
+            /* hide parallax img layer — dark bg fallback remains */
+            .parallax-container.call_section .material-parallax {
+                display: none;
+            }
+        }
+        /* Safari desktop: same fix via feature query */
+        @media not all and (min-resolution:.001dpcm) {
+            @supports (-webkit-appearance: none) {
+                .call_section,
+                .call_section_1,
+                .breadcrumbs_section {
+                    background-attachment: scroll;
+                }
+                .parallax-container.call_section .material-parallax {
+                    display: none;
+                }
+            }
+        }
     </style>
 
     <section class="section section-md text-md-left quote-about">

@@ -1,3 +1,25 @@
+<style>
+    .post-classic-figure {
+        height: 220px;
+        display: block;
+        overflow: hidden;
+    }
+    .post-classic-figure img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        -webkit-transform: none;
+        transform: none;
+        will-change: auto;
+    }
+    @supports (-webkit-touch-callout: none) {
+        .post-classic-figure img {
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+        }
+    }
+</style>
+
 <section class="section section-md bg-primary-2">
     <div class="container">
         <h2 class="text-transform-capitalize wow fadeScale">@lang('messages.our_blog')</h2>
