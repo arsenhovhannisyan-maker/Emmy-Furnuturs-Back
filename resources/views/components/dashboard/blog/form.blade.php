@@ -20,7 +20,7 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group ">
-                            <x-dashboard.form._input name="shortDescription" :value="$blog->shortDescription"/>
+                            <x-dashboard.form._textarea name="shortDescription" :value="$blog->shortDescription" :rows="4"/>
                             <br>
                             <br>
                             <x-dashboard.form._checkbox

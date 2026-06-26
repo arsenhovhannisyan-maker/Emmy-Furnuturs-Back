@@ -11,7 +11,7 @@ class BlogRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'shortDescription' => 'required|string',
-            'description' => 'nullable|string_with_max',
+            'description' => 'nullable|string',
             'is_active' => 'nullable|boolean',
             'photo' => 'nullable|string_with_max',
         ];
