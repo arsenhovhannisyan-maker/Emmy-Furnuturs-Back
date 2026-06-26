@@ -361,7 +361,7 @@
                     </div>
                 </div>
                 <div class="col-md-12 col-lg-6 col-xl-6">
-                    <div class="decorative-box text-center"><img src="{{asset("img/about/aboutimg.png")}}" alt="@lang('messages.about_image_alt')" /></div>
+                    <div class="decorative-box text-center"><img src="{{asset("img/favicon.png")}}" alt="@lang('messages.about_image_alt')" /></div>
                 </div>
             </div>
         </div>
