@@ -33,8 +33,9 @@
                             <div class="form-group">
                             <x-dashboard.form._select
                                 name="category_id"
-                                :data="[]"
+                                :data="$categories ?? []"
                                 :value="$product->category_id"
+                                :dataSelected="$product->category_id"
                             />
                         </div>
                         <div class="form-group required">

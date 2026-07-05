@@ -22165,16 +22165,11 @@ html#ecwid_html body#ecwid_body .ec-size.ec-size--m .ec-store .details-gallery__
 	}
 }
 .gallery-custom{
-    min-height: 1237px;
-}
-@media(max-width:767px) {
-	.gallery-custom {
-		min-height: 3000px;
-	}
+    min-height: auto;
 }
 @media(max-width:820px) {
     .gallery-custom {
-        min-height: 1500px;
+        min-height: auto;
     }
 }
 .account-button{

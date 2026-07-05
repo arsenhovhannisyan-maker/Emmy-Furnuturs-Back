@@ -23,16 +23,7 @@
         const BaseUrlProduct = "{{ rtrim(route('web.product', ['id' => 1]), '1') }}";
 
         document.addEventListener('DOMContentLoaded', async function () {
-            let iso = null;
-            const grid = document.querySelector('.isotope');
             const galleryContainer = document.getElementById('gallery-products');
-
-            if (grid) {
-                iso = new Isotope(grid, {
-                    itemSelector: '.isotope-item',
-                    layoutMode: 'fitRows'
-                });
-            }
 
             galleryContainer.innerHTML = `
                 <div class="col-12 text-center py-5">
@@ -103,12 +94,7 @@
 
                 galleryContainer.innerHTML = html;
 
-                if (iso) {
-                    imagesLoaded(grid, function () {
-                        iso.reloadItems();
-                        iso.arrange();
-                    });
-                }
+                window.dispatchEvent(new Event('resize'));
 
             } catch (error) {
                 console.error('❌ @lang('messages.gallery_load_error'):', error);
@@ -121,9 +107,6 @@
         });
     </script>
 <style>
-    .gallery-positions{
-        position: static !important;
-    }
     .thumbnail-classic-button-wrap .gallery-btn-view i,
     .thumbnail-classic-button-wrap .gallery-btn-cart i {
         font-size: 1.1rem;

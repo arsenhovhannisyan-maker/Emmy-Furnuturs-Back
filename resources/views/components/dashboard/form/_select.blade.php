@@ -12,6 +12,9 @@
         @isset($dataName)
             data-name="{{$dataName}}"
         @endisset
+        @isset($dataSelected)
+            data-selected="{{ $dataSelected }}"
+        @endisset
         class="form-control {{ $class ?? '' }}"
         @isset($multiple) multiple @endisset
         @isset($allowClear) data-allow-clear="true" @endisset

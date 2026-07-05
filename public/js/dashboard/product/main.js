@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', function () {
       const select = document.querySelector('select[name="category_id"]');
       if (!select) return;
 
+      const selectedValue = select.getAttribute('data-selected') || select.value;
+
       select.innerHTML = '<option value="">Select category</option>';
 
       Object.entries(data).forEach(([id, name]) => {
@@ -17,7 +19,6 @@ document.addEventListener('DOMContentLoaded', function () {
         select.appendChild(option);
       });
 
-      const selectedValue = select.getAttribute('data-selected');
       if (selectedValue) {
         select.value = selectedValue;
       }
