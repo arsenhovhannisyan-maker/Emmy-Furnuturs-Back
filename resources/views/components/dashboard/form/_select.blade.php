@@ -25,16 +25,20 @@
         <option value="">{{ __('__dashboard.select.option.default') }}</option>
     @endif
     @foreach($data as $key => $item)
-        <option value="{{ $key }}"
+        @php
+            $optionKey   = is_array($item) ? ($item['id']    ?? $key)  : $key;
+            $optionLabel = is_array($item) ? ($item['name']  ?? $item['title'] ?? '') : $item;
+        @endphp
+        <option value="{{ $optionKey }}"
             @isset($value)
-                @if(is_array($value) && in_array($key, $value))
+                @if(is_array($value) && in_array($optionKey, $value))
                     selected
                 @else
-                    @if($key == $value) selected @endif
+                    @if($optionKey == $value) selected @endif
                 @endif
             @endisset
         >
-            {{ $item }}
+            {{ $optionLabel }}
         </option>
     @endforeach
 </select>

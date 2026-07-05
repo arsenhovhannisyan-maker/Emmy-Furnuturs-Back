@@ -42,9 +42,12 @@ class ProductController extends BaseController
 
     public function create(): View
     {
+        $viewData = $this->service->getViewData();
+        $viewData['categories'] = Categorie::pluck('name', 'id')->toArray();
+
         return $this->dashboardView(
             view: 'product.form',
-            vars: $this->service->getViewData()
+            vars: $viewData
         );
     }
 
