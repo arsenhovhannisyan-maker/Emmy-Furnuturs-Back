@@ -1,6 +1,9 @@
 @php
     $replacedName = replaceNameWithDots($name);
-    $title = __('label.'.($title ?? $replacedName));
+    $labelKey = 'label.'.($title ?? $replacedName);
+    $title = \Illuminate\Support\Facades\Lang::has($labelKey)
+        ? __($labelKey)
+        : \Illuminate\Support\Str::of($title ?? $replacedName)->replace(['_', '.'], ' ')->title();
     $labelId = empty($id) ? $title.'.'.rand() : $id
 @endphp
 
