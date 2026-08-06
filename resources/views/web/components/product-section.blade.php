@@ -85,3 +85,39 @@
 
     document.addEventListener('DOMContentLoaded', fetchProducts);
 </script>
+<style>
+    .product {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+    .product-body {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+    }
+    .product-figure {
+        display: block;
+        align-items: unset;
+        justify-content: unset;
+        min-height: 0;
+        aspect-ratio: 4 / 5;
+        overflow: hidden;
+        border-radius: 4px;
+    }
+    .product-figure img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+    .product-title {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        line-height: 1.35;
+        min-height: 2.7em;
+    }
+</style>
