@@ -127,6 +127,7 @@ Route::get('/basket/data', [BasketController::class, 'getData'])->name('basket.d
 Route::get('/checkout', [OrderController::class, 'checkoutPage'])->name('order.checkout');
 Route::get('/orders', [OrderController::class, 'indexes'])->name('order.index');
 Route::get('/orders/{id}', [OrderController::class, 'shows'])->name('order.show');
+Route::get('/orders/{id}/pdf', [OrderController::class, 'downloadPdf'])->name('order.pdf');
 
 // Blog
 Route::get('/blog', [BlogController::class, 'getBlogs'])->name('web.blog');

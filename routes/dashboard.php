@@ -32,12 +32,6 @@ Route::group(['prefix' => 'files', 'as' => 'files.'], function () {
         ->name('pending');
 });
 
-// Order routes (public - outside admin middleware) - ПЕРЕИМЕНОВАТЬ!
-Route::post('/order/create', [OrderController::class, 'checkout'])->name('web.order.create');
-Route::get('/checkout', [OrderController::class, 'checkoutPage'])->name('web.checkout.page');
-Route::get('/orders', [OrderController::class, 'indexes'])->name('web.orders.index');
-Route::get('/orders/{id}', [OrderController::class, 'shows'])->name('web.orders.show');
-
 // Translations
 Route::controller(Barryvdh\TranslationManager\Controller::class)->as('translation.')->group(function () {
     Route::get('/translations', 'getIndex')->name('manager');
