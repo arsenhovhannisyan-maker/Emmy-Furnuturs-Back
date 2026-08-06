@@ -44,15 +44,11 @@
                                 </a>
                             </div>
                             <div class="product-button">
-                                <form action="{{ route('basket.add') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                    <button type="submit"
-                                            class="button button-primary-2 button-zakaria"
-                                            title="@lang('messages.add_to_cart')">
-                                        <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
-                                    </button>
-                                </form>
+                                <a href="{{ route('web.product', $product->id) }}"
+                                   class="button button-primary-2 button-zakaria"
+                                   title="@lang('messages.add_to_cart')">
+                                    <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
+                                </a>
                             </div>
                         </div>
                     </article>

@@ -359,7 +359,7 @@
                                     <img src="{{ asset('img/312.png') }}" alt="image">
                                 <h4 class="box-icon-creative-title"><a href="#">@lang('messages.made_with_love')</a></h4>
                                 </div>
-                                <p class="box-icon-creative-text">@lang('messages.made_with_love_desc')</p>
+                                <p class="box-icon-creative-text">@lang('messages.made_with_love_description')</p>
                             </div>
                         </div>
                     </article>

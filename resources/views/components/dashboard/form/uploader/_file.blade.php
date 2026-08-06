@@ -1,6 +1,9 @@
 @php
     $randomNum = rand();
-    $title = __('label.'.(str_replace('[]', '', $title ?? $name)));
+    $labelKey = 'label.'.(str_replace('[]', '', $title ?? $name));
+    $title = \Illuminate\Support\Facades\Lang::has($labelKey)
+        ? __($labelKey)
+        : \Illuminate\Support\Str::of(str_replace('[]', '', $title ?? $name))->replace(['_', '.'], ' ')->title();
     $hasCrop = $crop ?? false;
 @endphp
 <label for="{{ $title }}.{{ $randomNum }}" class="control-label">{{ $title }}</label>

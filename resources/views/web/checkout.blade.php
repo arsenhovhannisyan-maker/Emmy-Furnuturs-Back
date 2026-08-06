@@ -85,15 +85,20 @@
                                         <a class="table-cart-figure" href="{{ route('web.product', $item->product->id) }}">
                                             <img src="{{ $item->product->photo1->file_url ?? 'images/shop/product-placeholder.png' }}" alt="" width="146" height="132"/>
                                         </a>
-                                        <a class="table-cart-link" href="#">{{ $item->product->name }}</a>
+                                        <a class="table-cart-link" href="#">
+                                            {{ $item->product->name }}
+                                            @if($item->productSize)
+                                                <span class="text-muted d-block" style="font-size: 13px;">{{ __('messages.select_size') }}: {{ $item->productSize->size }}</span>
+                                            @endif
+                                        </a>
                                     </td>
-                                    <td>${{ number_format($item->product->price, 2) }}</td>
+                                    <td>{{ number_format($item->unit_price, 2) }} @lang('messages.currency_rub')</td>
                                     <td>
                                         <div class="table-cart-stepper">
                                             {{$item->quantity}}
                                         </div>
                                     </td>
-                                    <td>${{ number_format($item->quantity * $item->product->price, 2) }}</td>
+                                    <td>{{ number_format($item->line_total, 2) }} @lang('messages.currency_rub')</td>
                                 </tr>
                             @empty
                                 <tr>
@@ -124,45 +129,14 @@
                                     </div>
                                 </div>
 
-                                <!-- PayPal -->
+                                <!-- Cash -->
                                 <div class="radio-panel">
                                     <label class="radio-inline">
-                                        <input name="payment_method" value="paypal" type="radio">
-                                        <i class="fab fa-paypal me-2"></i> PayPal
+                                        <input name="payment_method" value="cash" type="radio">
+                                        <i class="fas fa-money-bill-wave me-2"></i> @lang('messages.cash')
                                     </label>
                                     <div class="radio-panel-content">
-                                        <p>@lang('messages.paypal_description')</p>
-                                    </div>
-                                </div>
-
-                                <!-- Credit Card -->
-                                <div class="radio-panel">
-                                    <label class="radio-inline">
-                                        <input name="payment_method" value="credit_card" type="radio">
-                                        <i class="far fa-credit-card me-2"></i> @lang('messages.credit_card')
-                                    </label>
-                                    <div class="radio-panel-content">
-                                        <p>@lang('messages.credit_card_description')</p>
-                                        <div class="mt-3" id="credit-card-fields" style="display: none;">
-                                            <div class="form-wrap">
-                                                <input class="form-input" type="text" name="card_number" placeholder="@lang('messages.card_number')" />
-                                            </div>
-                                            <div class="row mt-2">
-                                                <div class="col-6">
-                                                    <div class="form-wrap">
-                                                        <input class="form-input" type="text" name="expiry_date" placeholder="MM/YY" />
-                                                    </div>
-                                                </div>
-                                                <div class="col-6">
-                                                    <div class="form-wrap">
-                                                        <input class="form-input" type="text" name="cvv" placeholder="CVV" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-wrap mt-2">
-                                                <input class="form-input" type="text" name="card_holder" placeholder="@lang('messages.card_holder_name')" />
-                                            </div>
-                                        </div>
+                                        <p>@lang('messages.cash_description')</p>
                                     </div>
                                 </div>
                             </div>
@@ -174,28 +148,20 @@
                                 @php
                                     $subtotal = 0;
                                     foreach($items as $item) {
-                                        $subtotal += $item->quantity * $item->product->price;
+                                        $subtotal += $item->line_total;
                                     }
-                                    $shippingCost = 10.00;
-                                    $tax = $subtotal * 0.08;
+                                    $shippingCost = 0.00;
+                                    $tax = 0.00;
                                     $total = $subtotal + $shippingCost + $tax;
                                 @endphp
 
                                 <div class="summary-item">
                                     <span>@lang('messages.subtotal')</span>
-                                    <span>${{ number_format($subtotal, 2) }}</span>
-                                </div>
-                                <div class="summary-item">
-                                    <span>@lang('messages.shipping_cost')</span>
-                                    <span>${{ number_format($shippingCost, 2) }}</span>
-                                </div>
-                                <div class="summary-item">
-                                    <span>@lang('messages.tax')</span>
-                                    <span>${{ number_format($tax, 2) }}</span>
+                                    <span>{{ number_format($subtotal, 2) }} @lang('messages.currency_rub')</span>
                                 </div>
                                 <div class="summary-item summary-total">
                                     <span>@lang('messages.total')</span>
-                                    <span>${{ number_format($total, 2) }}</span>
+                                    <span>{{ number_format($total, 2) }} @lang('messages.currency_rub')</span>
                                 </div>
 
                                 <!-- Скрытые поля с ценами -->
@@ -303,8 +269,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('order-form');
             const submitBtn = document.getElementById('create-order-btn');
-            const creditCardFields = document.getElementById('credit-card-fields');
-            const paymentMethods = document.querySelectorAll('input[name="payment_method"]');
             const loadingOverlay = document.getElementById('loading-overlay');
 
             // Функция для показа уведомлений
@@ -340,23 +304,6 @@
                     }, 300);
                 }, 5000);
             }
-
-            // Показ/скрытие полей кредитной карты
-            paymentMethods.forEach(radio => {
-                radio.addEventListener('change', function() {
-                    if (this.value === 'credit_card') {
-                        creditCardFields.style.display = 'block';
-                        creditCardFields.querySelectorAll('input').forEach(input => {
-                            input.required = true;
-                        });
-                    } else {
-                        creditCardFields.style.display = 'none';
-                        creditCardFields.querySelectorAll('input').forEach(input => {
-                            input.required = false;
-                        });
-                    }
-                });
-            });
 
             // Валидация формы
             function validateForm() {
@@ -398,8 +345,8 @@
                 // Get form data
                 const formData = new FormData(this);
 
-                // Send AJAX request - ИСПРАВЛЕННЫЙ ROUTE!
-                fetch('{{ route("dashboard.web.order.create") }}', {
+                // Send AJAX request to the public checkout endpoint
+                fetch('{{ route("order.checkout") }}', {
                     method: 'POST',
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest',
@@ -412,10 +359,10 @@
                         if (data.success) {
                             showNotification('@lang("messages.order_created_successfully")', 'success');
 
-                            // Редирект через 2 секунды
+                            // Редирект на страницу заказа
                             setTimeout(() => {
-                                window.location.href = '/';
-                            }, 2000);
+                                window.location.href = data.redirect_url || '/';
+                            }, 1500);
                         } else {
                             showNotification(data.message || '@lang("messages.error_creating_order")', 'error');
                             submitBtn.disabled = false;

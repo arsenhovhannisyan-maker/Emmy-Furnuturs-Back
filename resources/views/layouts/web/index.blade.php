@@ -434,6 +434,31 @@
         display: none;
     }
 
+    .mobile-cart-btn {
+        display: none;
+        position: relative;
+        margin-left: auto;
+        margin-right: 12px;
+        font-size: 22px;
+        color: #333;
+    }
+
+    .mobile-cart-badge {
+        position: absolute;
+        top: -6px;
+        right: -10px;
+        min-width: 16px;
+        height: 16px;
+        padding: 0 3px;
+        border-radius: 50%;
+        background: #50becf;
+        color: #fff;
+        font-size: 11px;
+        font-weight: 700;
+        line-height: 16px;
+        text-align: center;
+    }
+
     .mobile-account-btn {
         border: 0;
         border-radius: 20px;
@@ -456,6 +481,11 @@
     @media (max-width: 991px) {
         .mobile-account-wrap {
             display: block;
+        }
+
+        .mobile-cart-btn {
+            display: inline-flex;
+            align-items: center;
         }
     }
 </style>
@@ -522,6 +552,7 @@
                                             <a class="dropdown-item" href="{{ route('login') }}">@lang('messages.login')</a>
                                         @else
                                             <span class="dropdown-item-text">👤 {{ Auth::user()->name }}</span>
+                                            <a class="dropdown-item" href="{{ route('order.index') }}">@lang('messages.my_orders')</a>
                                             <div class="dropdown-divider"></div>
                                             <form action="{{ route('logout') }}" method="POST" class="m-0">
                                                 @csrf
@@ -553,6 +584,10 @@
                             <div class="ch-navbar-brand">
                                 <a href="{{ route('web.home') }}"> <img class="logo-default" src="{{ asset('img/web/logo-emmy.png') }}" alt="{{ __('messages.seo_default_og_title') }}" title="{{ __('messages.seo_default_site_title') }}" /></a>
                             </div>
+                            <a class="mobile-cart-btn" href="{{ route('web.cart') }}" aria-label="@lang('messages.cart_page')">
+                                <span class="mdi mdi-cart-outline" aria-hidden="true"></span>
+                                <span class="mobile-cart-badge cart-badge-count">0</span>
+                            </a>
                             <div class="mobile-account-wrap">
                                 <div class="dropdown">
                                     <button class="btn dropdown-toggle mobile-account-btn" type="button" id="mobileAccountDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -567,6 +602,7 @@
                                             @endif
                                         @else
                                             <li><span class="dropdown-item-text">👤 {{ Auth::user()->name }}</span></li>
+                                            <li><a class="dropdown-item" href="{{ route('order.index') }}">@lang('messages.my_orders')</a></li>
                                             <li><hr class="dropdown-divider"></li>
                                             <li>
                                                 <form action="{{ route('logout') }}" method="POST" class="m-0">
@@ -616,7 +652,8 @@
                                 </li>
                             </ul>
                         </div>
-                        <!-- Your existing search and basket components -->
+                        <!-- Cart icon + badge -->
+                        @include('web.components.basket-navbar')
                     </div>
                 </div>
             </nav>

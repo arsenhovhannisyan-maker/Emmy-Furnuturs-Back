@@ -6,23 +6,23 @@
             <div class="card-body">
                 <x-dashboard.datatable._filters_form>
                     <div class="col-md-4 form-group">
-                        <x-dashboard.form._input name="id" type="number" label="ID"/>
+                        <x-dashboard.form._input name="id" type="number"/>
                     </div>
 
                     <div class="col-md-4 form-group">
-                        <x-dashboard.form._input name="status" label="Status"/>
+                        <x-dashboard.form._input name="status"/>
                     </div>
 
                     <div class="col-md-4 form-group">
-                        <x-dashboard.form._input name="order_number" label="Order Number"/>
+                        <x-dashboard.form._input name="order_number"/>
                     </div>
 
                     <div class="col-md-4 form-group">
-                        <x-dashboard.form._input name="shipping_email" label="Email"/>
+                        <x-dashboard.form._input name="shipping_email" title="email"/>
                     </div>
 
                     <div class="col-md-4 form-group">
-                        <x-dashboard.form._input name="shipping_phone" label="Phone"/>
+                        <x-dashboard.form._input name="shipping_phone" title="phone"/>
                     </div>
                 </x-dashboard.datatable._filters_form>
 

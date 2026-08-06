@@ -41,9 +41,14 @@
                                     <a class="table-cart-figure" href="{{ route('web.product', $item->product->id) }}">
                                         <img src="{{ $item->product->photo1->file_url ?? asset('images/shop/product-placeholder.png') }}" alt="{{ $item->product->name }}" width="146" height="132"/>
                                     </a>
-                                    <a class="table-cart-link" href="{{ route('web.product', $item->product->id) }}">{{ $item->product->name }}</a>
+                                    <a class="table-cart-link" href="{{ route('web.product', $item->product->id) }}">
+                                        {{ $item->product->name }}
+                                        @if($item->productSize)
+                                            <span class="text-muted d-block" style="font-size: 13px;">{{ __('messages.select_size') }}: {{ $item->productSize->size }}</span>
+                                        @endif
+                                    </a>
                                 </td>
-                                <td>{{ number_format($item->product->price, 2) }} @lang('messages.currency_rub')</td>
+                                <td>{{ number_format($item->unit_price, 2) }} @lang('messages.currency_rub')</td>
                                 <td>
                                     <div class="table-cart-stepper" data-item-id="{{ $item->id }}">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -52,7 +57,7 @@
                                         <button type="button" class="cart-qty-btn cart-qty-plus" aria-label="+">+</button>
                                     </div>
                                 </td>
-                                <td class="cart-row-total" data-item-id="{{ $item->id }}">{{ number_format($item->quantity * $item->product->price, 2) }} @lang('messages.currency_rub')</td>
+                                <td class="cart-row-total" data-item-id="{{ $item->id }}">{{ number_format($item->line_total, 2) }} @lang('messages.currency_rub')</td>
                                 <td>
                                     <button type="button" class="btn-delete" data-item-id="{{ $item->id }}" data-item-name="{{ $item->product->name }}">
                                         <span class="mdi mdi-trash-can-outline" aria-hidden="true"></span>
@@ -461,6 +466,7 @@
                         .then(data => {
                             if (data.success) {
                                 updateCartDisplay(itemId, data.line_total, data.cart_total);
+                                document.dispatchEvent(new CustomEvent('cart:updated'));
                             }
                         })
                         .catch(err => console.error(err));

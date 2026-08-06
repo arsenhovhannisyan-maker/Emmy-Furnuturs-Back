@@ -749,6 +749,22 @@
             right: 8px;
         }
     }
+
+    .fly-to-cart-clone {
+        pointer-events: none;
+    }
+
+    @keyframes cartBounce {
+        0% { transform: scale(1); }
+        30% { transform: scale(1.35); }
+        60% { transform: scale(0.92); }
+        100% { transform: scale(1); }
+    }
+
+    .ch-navbar-basket.cart-bounce {
+        animation: cartBounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        color: #50BECF;
+    }
 </style>
 
 @php
@@ -1152,6 +1168,43 @@
         const addToCartBtn = document.getElementById('add-to-cart');
         const addToCartForm = document.getElementById('add-to-cart-form');
 
+        function flyToCart(sourceImg) {
+            const cartIcon = document.querySelector('.ch-navbar-basket');
+            if (!sourceImg || !cartIcon) return;
+
+            const startRect = sourceImg.getBoundingClientRect();
+            const endRect = cartIcon.getBoundingClientRect();
+
+            const flyer = sourceImg.cloneNode();
+            flyer.classList.add('fly-to-cart-clone');
+            flyer.style.position = 'fixed';
+            flyer.style.zIndex = '10060';
+            flyer.style.left = startRect.left + 'px';
+            flyer.style.top = startRect.top + 'px';
+            flyer.style.width = startRect.width + 'px';
+            flyer.style.height = startRect.height + 'px';
+            flyer.style.margin = '0';
+            flyer.style.borderRadius = '10px';
+            flyer.style.objectFit = 'cover';
+            flyer.style.transition = 'transform 0.7s cubic-bezier(0.55, 0, 0.1, 1), opacity 0.7s ease';
+            flyer.style.willChange = 'transform, opacity';
+            document.body.appendChild(flyer);
+
+            const deltaX = (endRect.left + endRect.width / 2) - (startRect.left + startRect.width / 2);
+            const deltaY = (endRect.top + endRect.height / 2) - (startRect.top + startRect.height / 2);
+
+            requestAnimationFrame(function () {
+                flyer.style.transform = 'translate(' + deltaX + 'px, ' + deltaY + 'px) scale(0.1)';
+                flyer.style.opacity = '0.3';
+            });
+
+            setTimeout(function () {
+                flyer.remove();
+                cartIcon.classList.add('cart-bounce');
+                setTimeout(function () { cartIcon.classList.remove('cart-bounce'); }, 500);
+            }, 700);
+        }
+
         addToCartBtn.addEventListener('click', function(e) {
             e.preventDefault();
 
@@ -1167,6 +1220,7 @@
             }
 
             const formData = new FormData(addToCartForm);
+            addToCartBtn.disabled = true;
 
             fetch("{{ route('basket.add') }}", {
                 method: "POST",
@@ -1177,19 +1231,37 @@
                 body: formData
             })
                 .then(response => {
-                    return response.json().then(data => ({ ok: response.ok, status: response.status, data }));
+                    return response.json().then(data => ({ ok: response.ok, data }));
                 })
                 .then(({ ok, data }) => {
+                    addToCartBtn.disabled = false;
+
+                    if (!ok || !data || data.success === false) {
+                        const errorModal = document.getElementById('select-size-modal') || document.getElementById('added-to-cart-modal');
+                        const errorTitleEl = document.getElementById('select-size-modal-title') || document.getElementById('added-to-cart-modal-title');
+                        if (errorTitleEl) errorTitleEl.textContent = (data && data.message) ? data.message : "@lang('messages.error_creating_order')";
+                        if (errorModal) errorModal.classList.add('is-open');
+                        return;
+                    }
+
+                    const activeImg = mainCarouselEl ? mainCarouselEl.querySelector('img') : null;
+                    flyToCart(activeImg);
+
                     const modal = document.getElementById('added-to-cart-modal');
                     const textEl = document.getElementById('added-to-cart-modal-title');
-                    if (textEl) textEl.textContent = (data && data.message) ? data.message : "@lang('messages.product_added_to_cart')";
-                    if (modal) modal.classList.add('is-open');
+                    if (textEl) textEl.textContent = data.message || "@lang('messages.product_added_to_cart')";
+                    setTimeout(function () {
+                        if (modal) modal.classList.add('is-open');
+                    }, 350);
+
+                    document.dispatchEvent(new CustomEvent('cart:updated'));
                 })
                 .catch(error => {
+                    addToCartBtn.disabled = false;
                     console.error('Error:', error);
                     const modal = document.getElementById('added-to-cart-modal');
                     const textEl = document.getElementById('added-to-cart-modal-title');
-                    if (textEl) textEl.textContent = "@lang('messages.product_added_to_cart')";
+                    if (textEl) textEl.textContent = "@lang('messages.network_error_try_again')";
                     if (modal) modal.classList.add('is-open');
                 });
         });

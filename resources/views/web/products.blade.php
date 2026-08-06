@@ -469,8 +469,21 @@
         font-size: 20px;
     }
 
+    #products-container.products-layout--grid {
+        justify-content: center;
+    }
+
+    #products-container.products-layout--grid .product-col {
+        display: flex;
+    }
+
+    #products-container.products-layout--grid .product-modern {
+        width: 100%;
+    }
+
     #products-container.products-layout--grid .product-modern .unit {
         flex-direction: column !important;
+        height: 100%;
     }
 
     #products-container.products-layout--grid .product-modern .unit-left {
@@ -789,12 +802,7 @@
                                                             <div class="product-price">{{ number_format($product->price, 2) }} @lang('messages.currency_rub')</div>
                                                         </div>
                                                         <p class="product-modern-text">{{ Str::limit($product->description, 100) }}</p>
-                                                        <form action="{{ route('basket.add') }}" method="POST">
-                                                            @csrf
-                                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                                            <input type="hidden" name="quantity" value="1">
-                                                            <button class="button button-primary button-zakaria" type="submit">@lang('messages.add_to_cart')</button>
-                                                        </form>
+                                                        <a class="button button-primary button-zakaria" href="{{ route('web.product', $product->id) }}">@lang('messages.add_to_cart')</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -852,7 +860,6 @@
         const browseUrl = "{{ route('web.shop.products') }}";
         const productUrlTemplate = "{{ route('web.product', ['id' => '__ID__']) }}";
         const currencyLabel = " @lang('messages.currency_rub')";
-        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}';
         const layoutStorageKey = 'shopProductsView';
         const priceMinBound = 0;
         const priceMaxBound = Number("{{ $rangeMax ?? 50000 }}") || 50000;
@@ -1216,12 +1223,7 @@
                 const productUrl = productUrlTemplate.replace('__ID__', String(product.id));
 
                 const formHtml = `
-                    <form action="{{ route('basket.add') }}" method="POST">
-                        <input type="hidden" name="_token" value="${escapeHtml(csrfToken)}">
-                        <input type="hidden" name="product_id" value="${escapeHtml(product.id)}">
-                        <input type="hidden" name="quantity" value="1">
-                        <button class="button button-primary button-zakaria" type="submit">@lang('messages.add_to_cart')</button>
-                    </form>
+                    <a class="button button-primary button-zakaria" href="${productUrl}">@lang('messages.add_to_cart')</a>
                 `;
 
                 const discountBadge = hasDiscount

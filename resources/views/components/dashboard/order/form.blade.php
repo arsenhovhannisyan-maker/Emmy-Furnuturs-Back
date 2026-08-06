@@ -27,10 +27,20 @@
                         <div class="form-group required">
                             <x-dashboard.form._input
                                 name="order_number"
-                                label="Номер заказа"
                                 :value="$order->order_number ?? ''"
                                 required
                             />
+                        </div>
+                    </div>
+
+                    <!-- Payment Method -->
+                    <div class="col-lg-6">
+                        <div class="form-group required">
+                            <label for="payment_method">Payment Method</label>
+                            <select class="form-control" name="payment_method" id="payment_method" required>
+                                <option value="bank_transfer" {{ ($order->payment_method ?? '') == 'bank_transfer' ? 'selected' : '' }}>Bank Transfer</option>
+                                <option value="cash" {{ ($order->payment_method ?? '') == 'cash' ? 'selected' : '' }}>Cash</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -64,7 +74,6 @@
                         <div class="form-group required">
                             <x-dashboard.form._input
                                 name="subtotal"
-                                label="Подытог"
                                 :value="$order->subtotal ?? 0"
                                 type="number"
                                 step="0.01"
@@ -77,7 +86,6 @@
                         <div class="form-group">
                             <x-dashboard.form._input
                                 name="tax"
-                                label="Налог"
                                 :value="$order->tax ?? 0"
                                 type="number"
                                 step="0.01"
@@ -89,7 +97,6 @@
                         <div class="form-group">
                             <x-dashboard.form._input
                                 name="shipping_cost"
-                                label="Стоимость доставки"
                                 :value="$order->shipping_cost ?? 0"
                                 type="number"
                                 step="0.01"
@@ -101,7 +108,6 @@
                         <div class="form-group required">
                             <x-dashboard.form._input
                                 name="total"
-                                label="Общая сумма"
                                 :value="$order->total ?? 0"
                                 type="number"
                                 step="0.01"
@@ -124,7 +130,6 @@
                         <div class="form-group required">
                             <x-dashboard.form._input
                                 name="shipping_first_name"
-                                label="Имя"
                                 :value="$order->shipping_first_name ?? ''"
                                 required
                             />
@@ -135,7 +140,6 @@
                         <div class="form-group required">
                             <x-dashboard.form._input
                                 name="shipping_last_name"
-                                label="Фамилия"
                                 :value="$order->shipping_last_name ?? ''"
                                 required
                             />
@@ -146,7 +150,6 @@
                         <div class="form-group">
                             <x-dashboard.form._input
                                 name="shipping_company"
-                                label="Компания"
                                 :value="$order->shipping_company ?? ''"
                             />
                         </div>
@@ -156,7 +159,6 @@
                         <div class="form-group required">
                             <x-dashboard.form._input
                                 name="shipping_email"
-                                label="Email"
                                 type="email"
                                 :value="$order->shipping_email ?? ''"
                                 required
@@ -168,7 +170,6 @@
                         <div class="form-group required">
                             <x-dashboard.form._input
                                 name="shipping_address"
-                                label="Адрес"
                                 :value="$order->shipping_address ?? ''"
                                 required
                             />
@@ -179,7 +180,6 @@
                         <div class="form-group required">
                             <x-dashboard.form._input
                                 name="shipping_city"
-                                label="Город"
                                 :value="$order->shipping_city ?? ''"
                                 required
                             />
@@ -190,7 +190,6 @@
                         <div class="form-group">
                             <x-dashboard.form._input
                                 name="shipping_state"
-                                label="Область/Регион"
                                 :value="$order->shipping_state ?? ''"
                             />
                         </div>
@@ -200,7 +199,6 @@
                         <div class="form-group">
                             <x-dashboard.form._input
                                 name="shipping_country"
-                                label="Страна"
                                 :value="$order->shipping_country ?? ''"
                             />
                         </div>
@@ -210,7 +208,6 @@
                         <div class="form-group">
                             <x-dashboard.form._input
                                 name="shipping_zip_code"
-                                label="Почтовый индекс"
                                 :value="$order->shipping_zip_code ?? ''"
                             />
                         </div>
@@ -220,7 +217,6 @@
                         <div class="form-group required">
                             <x-dashboard.form._input
                                 name="shipping_phone"
-                                label="Телефон"
                                 :value="$order->shipping_phone ?? ''"
                                 required
                             />
