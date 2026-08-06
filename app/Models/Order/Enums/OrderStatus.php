@@ -23,6 +23,18 @@ enum OrderStatus: string
         };
     }
 
+    public function labelRu(): string
+    {
+        return match ($this) {
+            self::Pending => 'В обработке',
+            self::Paid => 'Оплачен',
+            self::Shipped => 'Отправлен',
+            self::Delivered => 'Доставлен',
+            self::Cancelled => 'Отменён',
+            self::Refunded => 'Возвращён',
+        };
+    }
+
     public static function values(): array
     {
         return array_column(self::cases(), 'value');

@@ -9,6 +9,7 @@ use App\Mail\OrderStatusMail;
 use App\Models\Basket\Basket;
 use App\Models\Order\Order;
 use App\Models\Order\OrderSearch;
+use App\Models\OrderItems\OrderItem;
 use App\Models\User\User;
 use App\Services\Order\OrderService;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -161,27 +162,26 @@ class OrderController extends BaseController
 
     public function shows($id): View
     {
-        $order = Order::where('user_id', Auth::id())->findOrFail($id);
-        $items = json_decode($order->items, true);
+        $order = Order::with('items.product', 'items.productSize')
+            ->where('user_id', Auth::id())
+            ->findOrFail($id);
 
-        return view('web.orders.show', compact('order', 'items'));
+        return view('web.orders.show', compact('order'));
     }
 
     public function checkoutPage(): RedirectResponse|View
     {
-        $basket = Basket::with('items.product')->where('user_id', Auth::id())->first();
+        $basket = Basket::with('items.product', 'items.productSize')->where('user_id', Auth::id())->first();
 
         if (!$basket || $basket->items->isEmpty()) {
-            return redirect()->route('web.cart')->with('error', 'Your cart is empty.');
+            return redirect()->route('web.cart')->with('error', __('messages.cart_empty'));
         }
 
         $items = $basket->items;
 
-        $subtotal = $basket->items->sum(function ($item) {
-            return $item->quantity * $item->product->price;
-        });
-        $shippingCost = 10.00;
-        $tax = $subtotal * 0.08;
+        $subtotal = $items->sum(fn($item) => $item->line_total);
+        $shippingCost = 0.00;
+        $tax = 0.00;
         $total = $subtotal + $shippingCost + $tax;
 
         return view('web.checkout', [
@@ -198,12 +198,12 @@ class OrderController extends BaseController
     public function checkout(Request $request): JsonResponse
     {
         $user = Auth::user();
-        $basket = Basket::with('items.product')->where('user_id', $user->id)->first();
+        $basket = Basket::with('items.product', 'items.productSize')->where('user_id', $user->id)->first();
 
         if (!$basket || $basket->items->isEmpty()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Your cart is empty.'
+                'message' => __('messages.cart_empty')
             ], 400);
         }
 
@@ -218,13 +218,13 @@ class OrderController extends BaseController
                 'shipping_phone' => 'required|string|max:20',
                 'shipping_company' => 'nullable|string|max:255',
                 'notes' => 'nullable|string|max:1000',
-                'payment_method' => 'required|string|in:bank_transfer,paypal,credit_card',
+                'payment_method' => 'required|string|in:bank_transfer,cash',
             ]);
 
-            // Calculate prices
-            $subtotal = $basket->items->sum(fn($item) => $item->quantity * $item->product->price);
-            $shippingCost = 10.00;
-            $tax = $subtotal * 0.08;
+            // Calculate prices from the current basket state (never trust client-submitted totals)
+            $subtotal = $basket->items->sum(fn($item) => $item->line_total);
+            $shippingCost = 0.00;
+            $tax = 0.00;
             $total = $subtotal + $shippingCost + $tax;
 
             // Create order
@@ -241,12 +241,14 @@ class OrderController extends BaseController
 
             // Create order items
             foreach ($basket->items as $basketItem) {
-                \App\Models\Order\OrderItem::create([
+                OrderItem::create([
                     'order_id' => $order->id,
                     'product_id' => $basketItem->product_id,
+                    'product_size_id' => $basketItem->product_size_id,
+                    'size_label' => $basketItem->productSize?->size,
                     'quantity' => $basketItem->quantity,
-                    'price' => $basketItem->product->price,
-                    'total' => $basketItem->quantity * $basketItem->product->price,
+                    'price' => $basketItem->unit_price,
+                    'total' => $basketItem->line_total,
                 ]);
             }
 
@@ -257,10 +259,11 @@ class OrderController extends BaseController
 
             return response()->json([
                 'success' => true,
-                'message' => 'Order created successfully!',
+                'message' => __('messages.order_created_successfully'),
                 'order_id' => $order->id,
                 'order_number' => $order->order_number,
-                'redirect_url' => route('web.orders.show', $order->id)
+                'redirect_url' => route('order.show', $order->id),
+                'pdf_url' => route('order.pdf', $order->id),
             ]);
 
         } catch (Exception $e) {
@@ -269,9 +272,23 @@ class OrderController extends BaseController
 
             return response()->json([
                 'success' => false,
-                'message' => 'Error creating order: ' . $e->getMessage()
+                'message' => __('messages.error_creating_order') . ': ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    public function downloadPdf($id): Response
+    {
+        $order = Order::with('items.product', 'items.productSize', 'customer')
+            ->where('user_id', Auth::id())
+            ->findOrFail($id);
+
+        $pdf = Pdf::loadView('components.order.pdf.pdf', [
+            'order' => $order,
+            'customer' => $order->customer,
+        ])->setPaper('a4', 'portrait');
+
+        return $pdf->stream("order-{$order->order_number}.pdf");
     }
     public function sendStatusEmail(Request $request): JsonResponse
     {
@@ -304,12 +321,12 @@ class OrderController extends BaseController
 
     public function exportPdf(Request $request): Response
     {
-        $order = Order::with('customer')->findOrFail($request->order_id);
-        $pdf = Pdf::loadView('components.dashboard.order.pdf.pdf', [
+        $order = Order::with('items.product', 'items.productSize', 'customer')->findOrFail($request->order_id);
+        $pdf = Pdf::loadView('components.order.pdf.pdf', [
             'order' => $order,
             'customer' => $order->customer,
         ])->setPaper('a4', 'portrait');
 
-        return $pdf->download("order-{$order->id}.pdf");
+        return $pdf->download("order-{$order->order_number}.pdf");
     }
 }

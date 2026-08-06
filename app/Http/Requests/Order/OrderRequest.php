@@ -16,7 +16,7 @@ class OrderRequest extends FormRequest
             // Order Information
             'status' => ['required', Rule::enum(OrderStatus::class)],
             'order_number' => 'sometimes|string|max:50|unique:orders,order_number,' . $orderId,
-            'payment_method' => 'required|string|in:bank_transfer,paypal,credit_card',
+            'payment_method' => 'required|string|in:bank_transfer,cash',
 
             // Pricing
             'subtotal' => 'required|numeric|min:0',

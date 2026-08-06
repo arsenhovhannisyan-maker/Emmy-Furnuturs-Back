@@ -14,6 +14,17 @@ class BasketItem extends BaseModel
     protected $fillable = [
         'basket_id',
         'product_id',
+        'product_size_id',
         'quantity',
     ];
+
+    public function getUnitPriceAttribute(): float
+    {
+        return (float) ($this->productSize?->price ?? $this->product->price);
+    }
+
+    public function getLineTotalAttribute(): float
+    {
+        return $this->unit_price * $this->quantity;
+    }
 }
