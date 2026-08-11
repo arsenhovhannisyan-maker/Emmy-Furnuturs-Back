@@ -487,16 +487,26 @@
     }
 
     #products-container.products-layout--grid .product-modern .unit-left {
+        display: block !important;
+        flex: 0 0 100% !important;
         width: 100% !important;
         max-width: none !important;
     }
 
     #products-container.products-layout--grid .product-modern-figure {
+        display: block !important;
+        width: 100% !important;
+        text-align: center !important;
         border-radius: 12px 12px 0 0 !important;
     }
 
     #products-container.products-layout--grid .product-modern-figure img {
-        height: 200px;
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 200px !important;
+        margin: 0 auto !important;
+        object-fit: cover !important;
     }
 
     #products-container.products-layout--grid .product-modern-body {

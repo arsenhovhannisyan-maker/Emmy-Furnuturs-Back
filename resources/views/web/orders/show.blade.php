@@ -30,8 +30,8 @@
                 </div>
 
                 <div class="row row-30 mt-4">
-                    <div class="col-lg-7">
-                        <div class="table-custom-responsive">
+                    <div class="col-12 col-lg-7">
+                        <div class="table-custom-responsive order-items-table-wrap">
                             <table class="table-custom table-cart">
                                 <thead>
                                 <tr>
