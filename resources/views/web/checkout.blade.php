@@ -121,7 +121,8 @@
                                 <!-- Bank Transfer -->
                                 <div class="radio-panel">
                                     <label class="radio-inline active">
-                                        <input name="payment_method" value="bank_transfer" type="radio" checked>
+                                        <input class="radio-custom" name="payment_method" value="bank_transfer" type="radio" checked>
+                                        <span class="radio-custom-dummy"></span>
                                         <i class="fas fa-university me-2"></i> @lang('messages.bank_transfer')
                                     </label>
                                     <div class="radio-panel-content">
@@ -132,7 +133,8 @@
                                 <!-- Cash -->
                                 <div class="radio-panel">
                                     <label class="radio-inline">
-                                        <input name="payment_method" value="cash" type="radio">
+                                        <input class="radio-custom" name="payment_method" value="cash" type="radio">
+                                        <span class="radio-custom-dummy"></span>
                                         <i class="fas fa-money-bill-wave me-2"></i> @lang('messages.cash')
                                     </label>
                                     <div class="radio-panel-content">

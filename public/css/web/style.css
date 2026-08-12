@@ -4755,14 +4755,15 @@ textarea.textarea-lg {
 .radio .radio-custom-dummy::after,
 .radio-inline .radio-custom::after,
 .radio-inline .radio-custom-dummy::after {
-	content: '\f222';
-	font-family: material design icons;
+	content: '';
 	position: absolute;
-	top: 0;
-	left: 0;
-	font-size: 20px;
-	line-height: 1;
-	color: #505050
+	top: 6px;
+	left: 5px;
+	width: 9px;
+	height: 5px;
+	border-left: 2px solid #505050;
+	border-bottom: 2px solid #505050;
+	transform: rotate(-45deg)
 }
 
 .checkbox,
@@ -4795,14 +4796,15 @@ textarea.textarea-lg {
 .checkbox .checkbox-custom-dummy::after,
 .checkbox-inline .checkbox-custom::after,
 .checkbox-inline .checkbox-custom-dummy::after {
-	content: '\f222';
-	font-family: material design icons;
+	content: '';
 	position: absolute;
-	top: 0;
-	left: 0;
-	font-size: 20px;
-	line-height: 1;
-	color: #505050
+	top: 6px;
+	left: 5px;
+	width: 9px;
+	height: 5px;
+	border-left: 2px solid #505050;
+	border-bottom: 2px solid #505050;
+	transform: rotate(-45deg)
 }
 
 *+.checkbox-inline {

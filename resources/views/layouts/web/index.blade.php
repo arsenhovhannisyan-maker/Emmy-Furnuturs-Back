@@ -488,6 +488,28 @@
             align-items: center;
         }
     }
+
+    /* Mobile burger menu: show "Страницы"/"Магазин" submenus expanded by default,
+       instead of requiring a separate tap on the arrow toggle. */
+    .ch-navbar-fixed .ch-nav-item > .ch-menu,
+    .ch-navbar-fixed .ch-nav-item > .ch-navbar-dropdown {
+        display: block !important;
+        position: static !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        height: auto !important;
+        overflow: visible !important;
+        padding: 4px 0 0 !important;
+        margin: 0 !important;
+        transform: none !important;
+        width: auto !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+
+    .ch-navbar-fixed .ch-navbar-submenu-toggle {
+        display: none !important;
+    }
 </style>
 
 

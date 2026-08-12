@@ -1,13 +1,7 @@
-<script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
-
 <!-- Grid Gallery-->
     <section class="section section-md bg-default">
-        <div class="container-fluid isotope-wrap isotope-custom-2">
-            <div class="isotope-filters">
-                <button class="isotope-filters-toggle button button-sm button-icon button-icon-right button-default-outline" data-custom-toggle=".isotope-filters-list" data-custom-toggle-disable-on-blur="true" data-custom-toggle-hide-on-blur="true"><span class="icon mdi mdi-chevron-down"></span>@lang('messages.filter')</button>
-                
-            </div>
-            <div class="row row-30 isotope gallery-custom" data-lightgallery="group" id="gallery-products" style="display: flex">
+        <div class="container-fluid gallery-section-wrap">
+            <div class="row row-30 gallery-custom" id="gallery-products">
                 <!-- Products will be loaded here -->
                 <div class="col-12 text-center py-5">
                     <div class="spinner-border" role="status">
@@ -52,15 +46,14 @@
                 }
 
                 let html = '';
-                products.forEach((product, index) => {
+                products.forEach((product) => {
                     const productImage = product.photo1 ? product.photo1.file_url : '/images/no-image.png';
                     const productName = product.name || 'Product';
                     const productPrice = product.price ? parseFloat(product.price).toFixed(2) + ' руб.' : '$0.00 руб.';
                     const productId = product.id;
-                    const filterType = index % 2 === 0 ? 'Type 1' : 'Type 2';
 
                     html += `
-                        <div class="col-sm-6 col-md-6 col-xl-4 isotope-item gallery-positions" data-filter="${filterType}"  >
+                        <div class="col-sm-6 col-md-6 col-xl-4">
                             <article class="thumbnail-classic block-1">
                                 <div class="thumbnail-classic-figure">
                                     <img src="${productImage}" alt="${productName}" width="370" height="315"
@@ -94,21 +87,6 @@
 
                 galleryContainer.innerHTML = html;
 
-                if (typeof Isotope !== 'undefined' && typeof imagesLoaded !== 'undefined') {
-                    if (galleryContainer.__isotopeInstance) {
-                        galleryContainer.__isotopeInstance.destroy();
-                    }
-                    imagesLoaded(galleryContainer, function () {
-                        galleryContainer.__isotopeInstance = new Isotope(galleryContainer, {
-                            itemSelector: '.isotope-item',
-                            percentPosition: true,
-                            masonry: { columnWidth: '.isotope-item' }
-                        });
-                    });
-                } else {
-                    window.dispatchEvent(new Event('resize'));
-                }
-
             } catch (error) {
                 console.error('❌ @lang('messages.gallery_load_error'):', error);
                 galleryContainer.innerHTML = `
@@ -128,6 +106,20 @@
     .thumbnail-classic-button-wrap .gallery-btn-cart i {
         color: #fff;
     }
+    /* Plain CSS grid, no JS-driven masonry: layout is computed synchronously by the
+       browser on every load, so it can never render mid-calculation or race with
+       async data/image loading (that was the source of the gallery jumping on top
+       of neighboring sections after a cached/instant reload). */
+    #gallery-products {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: stretch;
+    }
+    .thumbnail-classic {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
     .thumbnail-classic-figure {
         aspect-ratio: 4 / 5;
         overflow: hidden;
@@ -136,5 +128,43 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
+    }
+    .thumbnail-classic-caption {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+    }
+    .thumbnail-classic-title {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        line-height: 1.35;
+        min-height: 2.7em;
+    }
+    .gallery-section-wrap {
+        margin-top: 30px;
+    }
+    @media (min-width: 768px) {
+        .gallery-section-wrap {
+            margin-top: 44px;
+        }
+    }
+    @media (min-width: 992px) {
+        .desktop .gallery-section-wrap {
+            padding-left: 0;
+            padding-right: 0;
+        }
+        .desktop .gallery-section-wrap .row {
+            margin-right: 0;
+            margin-left: 0;
+            margin-bottom: 0;
+        }
+        .desktop .gallery-section-wrap .row > [class*="col-"] {
+            padding-right: 0;
+            padding-left: 0;
+            margin-bottom: 0;
+        }
     }
 </style>
