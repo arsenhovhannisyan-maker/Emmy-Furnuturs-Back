@@ -117,27 +117,27 @@
                     <div class="row row-50 justify-content-center">
                         <div class="col-md-10 col-lg-6">
                             <h3 class="font-weight-medium">@lang('messages.payment_methods')</h3>
-                            <div class="box-radio">
+                            <div class="payment-options">
                                 <!-- Bank Transfer -->
-                                <div class="radio-panel">
-                                    <label class="radio-inline active">
-                                        <input class="radio-custom" name="payment_method" value="bank_transfer" type="radio" checked>
-                                        <span class="radio-custom-dummy"></span>
-                                        <i class="fas fa-university me-2"></i> @lang('messages.bank_transfer')
+                                <div class="payment-option-panel">
+                                    <label class="payment-option active">
+                                        <input class="payment-option-input" name="payment_method" value="bank_transfer" type="radio" checked>
+                                        <span class="payment-option-check"></span>
+                                        <span class="payment-option-text"><i class="fas fa-university me-2"></i> @lang('messages.bank_transfer')</span>
                                     </label>
-                                    <div class="radio-panel-content">
+                                    <div class="payment-option-desc">
                                         <p>@lang('messages.bank_transfer_description')</p>
                                     </div>
                                 </div>
 
                                 <!-- Cash -->
-                                <div class="radio-panel">
-                                    <label class="radio-inline">
-                                        <input class="radio-custom" name="payment_method" value="cash" type="radio">
-                                        <span class="radio-custom-dummy"></span>
-                                        <i class="fas fa-money-bill-wave me-2"></i> @lang('messages.cash')
+                                <div class="payment-option-panel">
+                                    <label class="payment-option">
+                                        <input class="payment-option-input" name="payment_method" value="cash" type="radio">
+                                        <span class="payment-option-check"></span>
+                                        <span class="payment-option-text"><i class="fas fa-money-bill-wave me-2"></i> @lang('messages.cash')</span>
                                     </label>
-                                    <div class="radio-panel-content">
+                                    <div class="payment-option-desc">
                                         <p>@lang('messages.cash_description')</p>
                                     </div>
                                 </div>
@@ -265,6 +265,96 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Payment method selector — self-contained, no dependency on theme icon fonts */
+        .payment-options {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .payment-option-panel + .payment-option-panel {
+            margin-top: 14px;
+        }
+
+        .payment-option {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 15px;
+            color: #505050;
+            user-select: none;
+        }
+
+        .payment-option-input {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .payment-option-check {
+            position: relative;
+            flex-shrink: 0;
+            width: 21px;
+            height: 21px;
+            border: 1px solid #e1e1e1;
+            border-radius: 3px;
+            background: #fff;
+            transition: background .2s ease, border-color .2s ease;
+        }
+
+        .payment-option-check::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 4px;
+            width: 9px;
+            height: 5px;
+            border-left: 2px solid #fff;
+            border-bottom: 2px solid #fff;
+            transform: rotate(-45deg);
+            opacity: 0;
+            transition: opacity .15s ease;
+        }
+
+        /* Bound to the label's own .active class (set by our JS below) rather than
+           an adjacent-sibling :checked selector — the theme's global script.js
+           auto-injects its own <span> after every input[type=radio] on the page,
+           which would otherwise sit between the input and this element and break
+           a sibling-based selector. */
+        .payment-option.active .payment-option-check {
+            background: #50becf;
+            border-color: #50becf;
+        }
+
+        .payment-option.active .payment-option-check::after {
+            opacity: 1;
+        }
+
+        .payment-option-input:focus-visible ~ .payment-option-check {
+            outline: 2px solid #50becf;
+            outline-offset: 2px;
+        }
+
+        .payment-option-desc {
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            transition: max-height .3s ease, opacity .3s ease;
+            color: #9b9b9b;
+            font-size: 14px;
+            padding-left: 31px;
+        }
+
+        .payment-option.active ~ .payment-option-desc,
+        .payment-option-panel:has(.payment-option.active) .payment-option-desc {
+            max-height: 200px;
+            opacity: 1;
+            margin-top: 8px;
+        }
     </style>
 
     <script>
@@ -379,6 +469,15 @@
                         submitBtn.textContent = originalText;
                         loadingOverlay.classList.remove('show');
                     });
+            });
+
+            // Переключение способа оплаты (своя логика, без зависимости от JS темы)
+            const paymentOptions = document.querySelectorAll('.payment-option');
+            paymentOptions.forEach(option => {
+                option.addEventListener('click', function () {
+                    paymentOptions.forEach(o => o.classList.remove('active'));
+                    this.classList.add('active');
+                });
             });
 
             // Убираем красную обводку при вводе
