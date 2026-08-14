@@ -71,19 +71,19 @@
         bottom: 28px;
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        padding: 14px 26px;
+        gap: 10px;
+        padding: 19px 38px;
         border: none;
-        border-radius: 50px;
-        background: linear-gradient(135deg, #18798d 0%, #0f5f6d 100%);
-        color: #fff;
-        font-weight: 700;
-        font-size: 14px;
+        border-radius: 60px;
+        background: linear-gradient(135deg, #5ccedf 0%, #39b3b8 100%);
+        color: #123138;
+        font-weight: 800;
+        font-size: 17px;
         letter-spacing: .03em;
         text-transform: uppercase;
         cursor: pointer;
-        box-shadow: 0 10px 30px rgba(15, 23, 42, .28);
-        transition: transform .25s ease, box-shadow .25s ease;
+        box-shadow: 0 14px 30px rgba(57, 179, 184, .45), 0 6px 16px rgba(15, 23, 42, .2);
+        transition: transform .25s ease, box-shadow .25s ease, filter .25s ease;
         text-decoration: none;
         line-height: 1.2;
     }
@@ -91,13 +91,14 @@
     .qb-trigger:hover,
     .qb-trigger:focus {
         transform: translateY(-3px);
-        box-shadow: 0 14px 36px rgba(15, 23, 42, .34);
-        color: #fff;
+        box-shadow: 0 18px 38px rgba(57, 179, 184, .55), 0 8px 20px rgba(15, 23, 42, .24);
+        filter: brightness(1.05);
+        color: #123138;
         text-decoration: none;
     }
 
     .qb-trigger-icon {
-        font-size: 20px;
+        font-size: 26px;
         line-height: 1;
     }
 
@@ -105,8 +106,12 @@
         .qb-trigger {
             right: 16px;
             bottom: 20px;
-            padding: 12px 20px;
-            font-size: 13px;
+            padding: 16px 30px;
+            font-size: 15px;
+        }
+
+        .qb-trigger-icon {
+            font-size: 22px;
         }
     }
 
@@ -116,8 +121,8 @@
             right: auto;
             transform: translateX(-50%);
             bottom: 14px;
-            padding: 10px 18px;
-            font-size: 12px;
+            padding: 14px 26px;
+            font-size: 14px;
             white-space: nowrap;
             max-width: calc(100% - 24px);
         }
