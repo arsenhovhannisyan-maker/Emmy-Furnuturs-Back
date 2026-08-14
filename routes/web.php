@@ -116,6 +116,22 @@ Route::get('/shop/products', [ProductController::class, 'browse'])->name('web.sh
 Route::get('/shop/filter', [ProductController::class, 'browse'])->name('web.shop.filter');
 Route::get('/search-products', [ProductController::class, 'search'])->name('products.search');
 
+// Быстрая покупка ("Купить одним кликом")
+Route::get('/quick-buy/start', function () {
+    if (!Auth::check()) {
+        // Don't clobber an intended URL a guest may already have pending
+        // (e.g. from being bounced off /basket) - only set ours if none exists yet.
+        if (!session()->has('url.intended')) {
+            session()->put('url.intended', route('web.home', ['quickbuy' => 1]));
+        }
+        return redirect()->route('login');
+    }
+
+    return redirect()->route('web.home', ['quickbuy' => 1]);
+})->name('web.quick-buy.start');
+Route::get('/quick-buy/categories', [ProductController::class, 'quickBuyCategories'])->name('web.quick-buy.categories');
+Route::get('/quick-buy/categories/{categoryId}/products', [ProductController::class, 'quickBuyProducts'])->name('web.quick-buy.products');
+
 // Корзина
 Route::get('/basket', [BasketController::class, 'show'])->name('web.cart');
 Route::post('/basket/add', [BasketController::class, 'add'])->name('basket.add');

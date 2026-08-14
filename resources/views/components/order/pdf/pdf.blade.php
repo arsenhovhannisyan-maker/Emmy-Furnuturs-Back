@@ -158,10 +158,39 @@
         .invoice-footer {
             background-color: #f8fafc;
             padding: 14px 30px;
-            text-align: center;
             color: #6b7280;
             font-size: 12px;
             border-top: 1px solid #e5e7eb;
+        }
+
+        .invoice-footer-table {
+            width: 100%;
+        }
+
+        .invoice-footer-text {
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        .invoice-footer-text p {
+            margin: 4px 0;
+        }
+
+        .invoice-footer-qr {
+            width: 90px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .invoice-footer-qr img {
+            width: 70px;
+            height: 70px;
+        }
+
+        .invoice-footer-qr .qr-caption {
+            font-size: 10px;
+            color: #6b7280;
+            margin-top: 4px;
         }
     </style>
 </head>
@@ -258,8 +287,20 @@
     </div>
 
     <div class="invoice-footer">
-        <p>Спасибо, что выбрали Emmy Furniture! Если у вас есть вопросы по заказу, свяжитесь с нашей службой поддержки.</p>
-        <p>mebelemmy@mail.ru &nbsp;•&nbsp; +7 (926) 820-65-74</p>
+        <table class="invoice-footer-table" cellpadding="0" cellspacing="0">
+            <tr>
+                <td class="invoice-footer-text">
+                    <p>Спасибо, что выбрали Emmy Furniture! Если у вас есть вопросы по заказу, свяжитесь с нашей службой поддержки.</p>
+                    <p>mebelemmy@mail.ru &nbsp;•&nbsp; +7 (926) 820-65-74</p>
+                </td>
+                @if(!empty($siteQrDataUri))
+                    <td class="invoice-footer-qr">
+                        <img src="{{ $siteQrDataUri }}" alt="QR-код на emmymebel.ru" width="70" height="70">
+                        <div class="qr-caption">emmymebel.ru</div>
+                    </td>
+                @endif
+            </tr>
+        </table>
     </div>
 </div>
 </body>

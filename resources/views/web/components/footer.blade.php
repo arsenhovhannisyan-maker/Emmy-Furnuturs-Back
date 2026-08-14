@@ -138,8 +138,9 @@
                         <div class="payment-icons">
 {{--                            <img src="{{ asset('img/payments/Visa.png') }}" alt="Visa" loading="lazy">--}}
 {{--                            <img src="{{ asset('img/payments/MasterCard.png') }}" alt="Mastercard" loading="lazy">--}}
-                            <img src="{{ asset('img/payments/sbp.png') }}" alt="PayPal" loading="lazy">
-                            <img src="{{ asset('img/payments/Mir.png') }}" alt="Apple Pay" loading="lazy">
+                            <img src="{{ asset('img/payments/sbp.png') }}" alt="СБП" loading="lazy">
+                            <img src="{{ asset('img/payments/Mir.png') }}" alt="Мир" loading="lazy">
+                            <img src="{{ asset('img/payments/Sber.png') }}" alt="СберПлатеж" loading="lazy">
                         </div>
                     </div>
                 </div>

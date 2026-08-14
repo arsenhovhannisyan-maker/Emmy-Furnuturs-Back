@@ -46,9 +46,18 @@
         </div>
         <div class="swiper-button-prev"></div>
         <div class="swiper-button-next"></div>
+
+        <a href="{{ auth()->guest() ? route('web.quick-buy.start') : '#' }}"
+           id="quick-buy-trigger"
+           class="qb-trigger"
+           aria-haspopup="dialog">
+            <span class="qb-trigger-icon mdi mdi-flash-outline" aria-hidden="true"></span>
+            <span class="qb-trigger-text">@lang('messages.buy_one_click')</span>
+        </a>
     </section>
     <style>
         .swiper-slider-4 {
+            position: relative;
             overflow: hidden !important;
         }
 
@@ -444,5 +453,8 @@
     <!-- Our brand-->
     @include('web.components.our-brand')
     @include('SEO.home-seo')
+
+    <!-- Quick buy modal ("Покупать одним кликом") -->
+    @include('web.components.quick-buy-modal')
 
 </x-web-layout>

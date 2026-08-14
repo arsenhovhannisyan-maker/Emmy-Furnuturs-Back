@@ -1159,6 +1159,24 @@
             filterButton.addEventListener('click', applyFilters);
         }
 
+        function scrollToProductsTop() {
+            const target = document.querySelector('.product-top-panel') || productsContainer;
+            if (!target) return;
+
+            // Account for the theme's sticky navbar clone (adds `.ch-navbar-fixed` once
+            // pinned to the top) so the products toolbar doesn't end up hidden behind it.
+            let stickyOffset = 0;
+            document.querySelectorAll('.ch-navbar-fixed').forEach(function (el) {
+                const position = window.getComputedStyle(el).position;
+                if (position === 'fixed' || position === 'sticky') {
+                    stickyOffset = Math.max(stickyOffset, el.getBoundingClientRect().height);
+                }
+            });
+
+            const targetTop = target.getBoundingClientRect().top + window.pageYOffset - stickyOffset - 20;
+            window.scrollTo({ top: Math.max(targetTop, 0), behavior: 'smooth' });
+        }
+
         const productsPaginationEl = document.getElementById('products-pagination');
         if (productsPaginationEl) {
             productsPaginationEl.addEventListener('click', function (e) {
@@ -1173,6 +1191,7 @@
                 } catch (error) {
                     console.warn('Failed to parse pagination page, fallback to page 1.', error);
                 }
+                scrollToProductsTop();
                 fetchBrowse(buildBrowseQueryUrl(targetPage));
             });
         }

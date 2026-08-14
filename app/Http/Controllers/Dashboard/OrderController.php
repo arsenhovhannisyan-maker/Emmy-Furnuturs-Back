@@ -13,6 +13,8 @@ use App\Models\OrderItems\OrderItem;
 use App\Models\User\User;
 use App\Services\Order\OrderService;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Writer\SvgWriter;
 use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
@@ -286,9 +288,20 @@ class OrderController extends BaseController
         $pdf = Pdf::loadView('components.order.pdf.pdf', [
             'order' => $order,
             'customer' => $order->customer,
+            'siteQrDataUri' => $this->buildSiteQrDataUri(),
         ])->setPaper('a4', 'portrait');
 
         return $pdf->stream("order-{$order->order_number}.pdf");
+    }
+
+    private function buildSiteQrDataUri(): string
+    {
+        return (new Builder(
+            writer: new SvgWriter(),
+            data: 'https://emmymebel.ru',
+            size: 140,
+            margin: 4,
+        ))->build()->getDataUri();
     }
     public function sendStatusEmail(Request $request): JsonResponse
     {
@@ -325,6 +338,7 @@ class OrderController extends BaseController
         $pdf = Pdf::loadView('components.order.pdf.pdf', [
             'order' => $order,
             'customer' => $order->customer,
+            'siteQrDataUri' => $this->buildSiteQrDataUri(),
         ])->setPaper('a4', 'portrait');
 
         return $pdf->download("order-{$order->order_number}.pdf");

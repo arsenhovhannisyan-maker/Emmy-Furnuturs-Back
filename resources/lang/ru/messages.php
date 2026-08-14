@@ -342,4 +342,17 @@ return [
     'continue_shopping' => 'Продолжить покупки',
     'my_orders' => 'Мои заказы',
     'no_orders_found' => 'У вас еще нет заказов',
+    // Quick buy ("Купить одним кликом") modal keys
+    'buy_one_click' => 'Покупать одним кликом',
+    'quick_buy_login_required_title' => 'Войдите в аккаунт',
+    'quick_buy_login_required_text' => 'Чтобы оформить покупку в один клик, пожалуйста, войдите в аккаунт.',
+    'quick_buy_login_button' => 'Войти и продолжить',
+    'quick_buy_select_category' => 'Выберите категорию, чтобы увидеть товары',
+    'quick_buy_back_to_categories' => 'Назад к категориям',
+    'quick_buy_no_products_in_category' => 'В этой категории пока нет товаров',
+    'quick_buy_added_short' => 'Добавлено',
+    'quick_buy_adding' => 'Добавляем...',
+    'quick_buy_products_one' => 'товар',
+    'quick_buy_products_few' => 'товара',
+    'quick_buy_products_many' => 'товаров',
 ];

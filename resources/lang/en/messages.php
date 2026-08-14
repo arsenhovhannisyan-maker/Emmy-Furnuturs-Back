@@ -309,4 +309,21 @@ return [
     'quantity_decrease' => 'Decrease quantity',
     'products_view_grid' => 'Grid',
     'products_view_list' => 'List',
+    // Shared error/status keys used by the quick buy modal
+    'no_categories_found' => 'No categories found',
+    'network_error_try_again' => 'Network error. Please try again.',
+    'error_creating_order' => 'Error creating order',
+    // Quick buy ("Buy in one click") modal keys
+    'buy_one_click' => 'Buy in one click',
+    'quick_buy_login_required_title' => 'Please log in',
+    'quick_buy_login_required_text' => 'To use one-click buy, please log in to your account first.',
+    'quick_buy_login_button' => 'Log in and continue',
+    'quick_buy_select_category' => 'Choose a category to see products',
+    'quick_buy_back_to_categories' => 'Back to categories',
+    'quick_buy_no_products_in_category' => 'There are no products in this category yet',
+    'quick_buy_added_short' => 'Added',
+    'quick_buy_adding' => 'Adding...',
+    'quick_buy_products_one' => 'product',
+    'quick_buy_products_few' => 'products',
+    'quick_buy_products_many' => 'products',
 ];

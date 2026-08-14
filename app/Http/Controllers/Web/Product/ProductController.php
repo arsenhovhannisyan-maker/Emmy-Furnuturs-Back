@@ -49,6 +49,65 @@ class ProductController extends Controller
         return response()->json($this->repository->getEightWithPhoto());
     }
 
+    public function quickBuyCategories(): JsonResponse
+    {
+        $categories = Categorie::query()
+            ->withCount('products')
+            ->having('products_count', '>', 0)
+            ->orderBy('name')
+            ->get(['id', 'name'])
+            ->map(fn (Categorie $categorie) => [
+                'id' => $categorie->id,
+                'name' => $categorie->name,
+                'products_count' => $categorie->products_count,
+            ]);
+
+        return response()->json($categories);
+    }
+
+    public function quickBuyProducts($categoryId): JsonResponse
+    {
+        $categorie = Categorie::select('id', 'name')->findOrFail((int) $categoryId);
+
+        $products = Product::query()
+            ->where('category_id', $categorie->id)
+            ->with(['photo1', 'sizes'])
+            ->orderBy('name')
+            ->get()
+            ->map(function (Product $product) {
+                $sizes = $product->sizes->sortBy('id')->values();
+                $hasSizes = $sizes->isNotEmpty();
+
+                // The price actually charged at checkout is always the raw `price` column
+                // (see BasketItem::getUnitPriceAttribute) - discount is only ever used to
+                // reconstruct a higher "was" price for display (Product::getOldPriceAttribute),
+                // never subtracted from the charged price.
+                $chargedPrice = (float) $product->price;
+                $oldPrice = $product->old_price;
+
+                return [
+                    'id' => $product->id,
+                    'name' => $product->name,
+                    'url' => route('web.product', $product->id),
+                    'image' => $product->photo1?->file_url,
+                    'has_sizes' => $hasSizes,
+                    'sizes' => $sizes->map(fn ($size) => [
+                        'id' => $size->id,
+                        'label' => $size->size,
+                        'formatted_price' => number_format((float) $size->price, 0, '', ' '),
+                    ])->values(),
+                    'price' => $hasSizes ? null : number_format($chargedPrice, 0, '', ' '),
+                    'old_price' => (!$hasSizes && $oldPrice !== null) ? number_format($oldPrice, 0, '', ' ') : null,
+                    'min_price' => $hasSizes ? number_format($sizes->min('price'), 0, '', ' ') : null,
+                ];
+            });
+
+        return response()->json([
+            'category' => ['id' => $categorie->id, 'name' => $categorie->name],
+            'products' => $products,
+        ]);
+    }
+
     public function browse(ShopProductsBrowseRequest $request): JsonResponse
     {
         $min = (float) $request->validated('min_price');

@@ -28,6 +28,7 @@
     <meta name="author" content="Emmy Furniture">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="robots" content="index, follow">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="canonical" href="{{ url()->current() }}">
 
     <!-- Open Graph / Facebook, VK, Telegram, WhatsApp - превью при отправке ссылки -->
