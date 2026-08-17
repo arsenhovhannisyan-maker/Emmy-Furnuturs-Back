@@ -205,7 +205,7 @@
         -webkit-column-break-inside: avoid;
         page-break-inside: avoid;
         display: inline-block;
-        width: 110%;
+        width: 100%;
     }
 
 

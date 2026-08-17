@@ -293,9 +293,22 @@
                     <p>Спасибо, что выбрали Emmy Furniture! Если у вас есть вопросы по заказу, свяжитесь с нашей службой поддержки.</p>
                     <p>mebelemmy@mail.ru &nbsp;•&nbsp; +7 (926) 820-65-74</p>
                 </td>
-                @if(!empty($siteQrDataUri))
+                @php
+                    // PNG embedding in dompdf requires the PHP GD extension, which this server
+                    // does not have installed - only SVG/JPEG can be embedded without it, so we
+                    // only ever look for those two formats here.
+                    $siteQrPath = null;
+                    foreach (['svg', 'jpg', 'jpeg'] as $qrExtension) {
+                        $candidatePath = public_path("img/uploads/qr-emmymebel.{$qrExtension}");
+                        if (file_exists($candidatePath)) {
+                            $siteQrPath = $candidatePath;
+                            break;
+                        }
+                    }
+                @endphp
+                @if($siteQrPath)
                     <td class="invoice-footer-qr">
-                        <img src="{{ $siteQrDataUri }}" alt="QR-код на emmymebel.ru" width="70" height="70">
+                        <img src="{{ $siteQrPath }}" alt="QR-код на emmymebel.ru" width="70" height="70">
                         <div class="qr-caption">emmymebel.ru</div>
                     </td>
                 @endif

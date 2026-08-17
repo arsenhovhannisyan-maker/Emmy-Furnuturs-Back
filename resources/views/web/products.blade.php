@@ -717,7 +717,7 @@
                                     <li class="list-shop-filter__item">
                                         <label class="list-shop-filter__label">
                                             <input type="checkbox" name="categories[]" value="all" id="category-all"
-                                                   checked class="category-filter">
+                                                   @if(empty($selectedCategoryId)) checked @endif class="category-filter">
                                             <span class="list-shop-filter__text">@lang('messages.all_categories')</span>
                                         </label>
                                     </li>
@@ -742,7 +742,8 @@
                                                 <li class="list-shop-filter__item">
                                                     <label class="list-shop-filter__label">
                                                         <input type="checkbox" name="categories[]" value="{{ $categoryId }}"
-                                                               id="category-{{ $categoryId }}" class="category-filter">
+                                                               id="category-{{ $categoryId }}" class="category-filter"
+                                                               @if(!empty($selectedCategoryId) && (int) $categoryId === (int) $selectedCategoryId) checked @endif>
                                                         <span class="list-shop-filter__text">{{ $categoryName }}</span>
                                                     </label>
                                                 </li>
@@ -1159,22 +1160,39 @@
             filterButton.addEventListener('click', applyFilters);
         }
 
+        function getFixedHeaderOffset() {
+            // Ask the browser what is actually painted at the top of the viewport right now
+            // and walk up to find a fixed/sticky ancestor, instead of hardcoding one theme
+            // class name. Desktop and mobile can pin the navbar via different mechanisms
+            // (a ".ch-navbar-fixed" clone on desktop, the mobile menu bar staying fixed on
+            // small screens, etc.) - probing the live layout works for either case.
+            if (typeof document.elementFromPoint !== 'function') return 0;
+
+            const probeX = Math.max(0, Math.floor(window.innerWidth / 2));
+            let node = document.elementFromPoint(probeX, 2);
+
+            while (node && node !== document.body && node !== document.documentElement) {
+                const style = window.getComputedStyle(node);
+                if (style.position === 'fixed' || style.position === 'sticky') {
+                    const rect = node.getBoundingClientRect();
+                    if (rect.top <= 5 && rect.height > 0) {
+                        return rect.bottom;
+                    }
+                }
+                node = node.parentElement;
+            }
+            return 0;
+        }
+
         function scrollToProductsTop() {
             const target = document.querySelector('.product-top-panel') || productsContainer;
             if (!target) return;
 
-            // Account for the theme's sticky navbar clone (adds `.ch-navbar-fixed` once
-            // pinned to the top) so the products toolbar doesn't end up hidden behind it.
-            let stickyOffset = 0;
-            document.querySelectorAll('.ch-navbar-fixed').forEach(function (el) {
-                const position = window.getComputedStyle(el).position;
-                if (position === 'fixed' || position === 'sticky') {
-                    stickyOffset = Math.max(stickyOffset, el.getBoundingClientRect().height);
-                }
+            requestAnimationFrame(function () {
+                const stickyOffset = getFixedHeaderOffset();
+                const targetTop = target.getBoundingClientRect().top + window.pageYOffset - stickyOffset - 20;
+                window.scrollTo({ top: Math.max(targetTop, 0), behavior: 'smooth' });
             });
-
-            const targetTop = target.getBoundingClientRect().top + window.pageYOffset - stickyOffset - 20;
-            window.scrollTo({ top: Math.max(targetTop, 0), behavior: 'smooth' });
         }
 
         const productsPaginationEl = document.getElementById('products-pagination');

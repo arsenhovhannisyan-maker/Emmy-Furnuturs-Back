@@ -22,15 +22,23 @@ class ProductController extends Controller
         $this->repository = $repository;
     }
 
-    public function index(): View
+    public function index(Request $request): View
     {
-        $products = $this->repository->getPaginationProducts(6);
         $categories = Categorie::withCount('products')->orderBy('name')->get();
         $totalProducts = Product::count();
         $dbMaxPrice = (int) ceil((float) (Product::query()->max('price') ?? 0));
         $priceMax = max(50000, $dbMaxPrice);
 
-        return view('web.products', compact('products', 'categories', 'totalProducts', 'priceMax'));
+        $requestedCategoryId = (int) $request->query('categoryId', 0);
+        $selectedCategoryId = ($requestedCategoryId > 0 && $categories->contains('id', $requestedCategoryId))
+            ? $requestedCategoryId
+            : null;
+
+        $products = $selectedCategoryId
+            ? $this->repository->browseForShop(0, $priceMax, [$selectedCategoryId], 6)
+            : $this->repository->getPaginationProducts(6);
+
+        return view('web.products', compact('products', 'categories', 'totalProducts', 'priceMax', 'selectedCategoryId'));
     }
 
     public function getProductForCategories($categoryId): View
