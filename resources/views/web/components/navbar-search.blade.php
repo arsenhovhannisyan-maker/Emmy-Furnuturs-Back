@@ -55,7 +55,8 @@
     .search-result-item img {
         width: 50px;
         height: 50px;
-        object-fit: cover;
+        object-fit: contain;
+        background-color: #ffffff;
         border-radius: 8px;
         margin-right: 12px;
         flex-shrink: 0;

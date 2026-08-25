@@ -123,11 +123,12 @@
     .thumbnail-classic-figure {
         aspect-ratio: 4 / 5;
         overflow: hidden;
+        background-color: #ffffff;
     }
     .thumbnail-classic-figure img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
     }
     .thumbnail-classic-caption {
         display: flex;

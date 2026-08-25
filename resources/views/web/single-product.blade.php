@@ -14,7 +14,8 @@
     .carousel-parent img {
         width: 100%;
         height: 480px;
-        object-fit: cover;
+        object-fit: contain;
+        background-color: #ffffff;
         transition: transform 0.5s ease;
         cursor: zoom-in;
     }
@@ -42,7 +43,8 @@
     .child-carousel .thumbnail {
         width: 100px;
         height: 100px;
-        object-fit: cover;
+        object-fit: contain;
+        background-color: #ffffff;
         cursor: zoom-in;
         border: 2px solid transparent;
         transition: all 0.3s ease;

@@ -55,6 +55,47 @@ class FileTempService extends FileService
         }
     }
 
+    /**
+     * Move one pending temp file into a model's "photos" gallery, attached to a
+     * specific product size (or none) at a specific position. Unlike create(), this
+     * never deletes sibling files for the field - the caller (ProductPhotoService)
+     * decides what stays and what goes.
+     */
+    public function createProductPhoto(Model $model, ?int $productSizeId, int $sortOrder, string $tempToken): bool
+    {
+        $config = $model->getFileConfig()['photos'] ?? null;
+        $fileBaseName = explode('/', $tempToken)[1] ?? null;
+
+        if (!$config || !$fileBaseName) {
+            return false;
+        }
+
+        $fieldName = $config['field_name'];
+        $dirPrefix = $model::getClassName();
+        $path = $dirPrefix . '/' . $fieldName;
+
+        $moved = $this->movePendingFileToUploadsFolder(fileName: $fileBaseName, config: $config, directoryData: [
+            'pending' => $tempToken,
+            'uploads' => $path,
+        ]);
+
+        if (!$moved) {
+            return false;
+        }
+
+        $model->files($fieldName)->create([
+            'id' => Uuid::uuid4(),
+            'field_name' => $fieldName,
+            'file_name' => $fileBaseName,
+            'file_type' => $config['file_type'],
+            'dir_prefix' => $dirPrefix,
+            'product_size_id' => $productSizeId,
+            'sort_order' => $sortOrder,
+        ]);
+
+        return true;
+    }
+
     public function storeTempFile(array $data): array
     {
         $file = $data['file'];

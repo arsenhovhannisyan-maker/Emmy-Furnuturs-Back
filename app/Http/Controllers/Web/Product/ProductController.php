@@ -177,29 +177,20 @@ class ProductController extends Controller
             });
         }
 
-        $filesByField = $product->files()->get()->keyBy('field_name');
+        $filesBySize = $product->photos()->get()->groupBy('product_size_id');
         $photosBySize = [];
         if ($product->sizes->isNotEmpty()) {
-            foreach ($product->sizes as $s => $size) {
-                $photos = [];
-                for ($p = 1; $p <= 6; $p++) {
-                    $field = 'photo' . ($s * 6 + $p);
-                    $file = $filesByField->get($field);
-                    if ($file && $file->file_url) {
-                        $photos[] = ['url' => $file->file_url];
-                    }
-                }
-                $photosBySize[] = $photos;
+            foreach ($product->sizes as $size) {
+                $photosBySize[] = ($filesBySize->get($size->id) ?? collect())
+                    ->map(fn ($file) => ['url' => $file->file_url])
+                    ->values()
+                    ->toArray();
             }
         } else {
-            $photos = [];
-            foreach (['photo1', 'photo2', 'photo3', 'photo4'] as $field) {
-                $file = $filesByField->get($field);
-                if ($file && $file->file_url) {
-                    $photos[] = ['url' => $file->file_url];
-                }
-            }
-            $photosBySize[] = $photos;
+            $photosBySize[] = ($filesBySize->get(null) ?? collect())
+                ->map(fn ($file) => ['url' => $file->file_url])
+                ->values()
+                ->toArray();
         }
 
         return view('web.single-product', [

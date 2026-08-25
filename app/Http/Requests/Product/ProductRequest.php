@@ -10,7 +10,6 @@ class ProductRequest extends FormRequest
     {
         return array_merge(
             $this->baseRules(),
-            $this->photoRules(),
             $this->sizeRules()
         );
     }
@@ -27,28 +26,23 @@ class ProductRequest extends FormRequest
         ];
     }
 
-    private function photoRules(): array
-    {
-        $rules = [];
-        for ($i = 1; $i <= 48; ++$i) {
-            $rules["photo{$i}"] = 'nullable|string_with_max';
-        }
-
-        return $rules;
-    }
-
     private function sizeRules(): array
     {
         return [
             'sizes' => 'nullable|array|max:8',
+            'sizes.*.id' => 'nullable|integer',
             'sizes.*.size' => 'required|string_with_max',
             'sizes.*.price' => 'required|numeric|min:0',
+            'sizes.*.existing_photos' => 'nullable|array|max:20',
+            'sizes.*.existing_photos.*' => 'nullable|string_with_max',
+            'sizes.*.new_photos' => 'nullable|array|max:20',
+            'sizes.*.new_photos.*' => 'nullable|string_with_max',
         ];
     }
 
     public function attributes(): array
     {
-        $attributes = [
+        return [
             'name' => 'name',
             'price' => 'price',
             'quantity' => 'quantity',
@@ -60,12 +54,6 @@ class ProductRequest extends FormRequest
             'sizes.*.size' => 'size',
             'sizes.*.price' => 'size price',
         ];
-
-        for ($i = 1; $i <= 48; ++$i) {
-            $attributes["photo{$i}"] = "Photo {$i}";
-        }
-
-        return $attributes;
     }
 
     public function authorize(): bool

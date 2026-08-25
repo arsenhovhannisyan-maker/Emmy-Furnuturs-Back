@@ -9,6 +9,7 @@ use App\Http\Requests\Product\ProductSearchRequest;
 use App\Models\Categorie\Categorie;
 use App\Models\Product\Product;
 use App\Models\Product\ProductSearch;
+use App\Services\Product\ProductPhotoService;
 use App\Services\Product\ProductService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
@@ -19,6 +20,7 @@ class ProductController extends BaseController
     public function __construct(
         ProductService $service,
         IProductRepository $repository,
+        private readonly ProductPhotoService $photoService,
     ) {
         $this->service = $service;
         $this->repository = $repository;
@@ -119,6 +121,7 @@ class ProductController extends BaseController
 
     public function destroy(Product $product): JsonResponse
     {
+        $this->photoService->deleteAllPhotos($product);
         $this->repository->destroy($product->id);
 
         return $this->sendOkDeleted();
@@ -141,29 +144,20 @@ class ProductController extends BaseController
             });
         }
 
-        $filesByField = $product->files()->get()->keyBy('field_name');
+        $filesBySize = $product->photos()->get()->groupBy('product_size_id');
         $photosBySize = [];
         if ($product->sizes->isNotEmpty()) {
-            foreach ($product->sizes as $s => $size) {
-                $photos = [];
-                for ($p = 1; $p <= 6; $p++) {
-                    $field = 'photo' . ($s * 6 + $p);
-                    $file = $filesByField->get($field);
-                    if ($file && $file->file_url) {
-                        $photos[] = ['url' => $file->file_url];
-                    }
-                }
-                $photosBySize[] = $photos;
+            foreach ($product->sizes as $size) {
+                $photosBySize[] = ($filesBySize->get($size->id) ?? collect())
+                    ->map(fn ($file) => ['url' => $file->file_url])
+                    ->values()
+                    ->toArray();
             }
         } else {
-            $photos = [];
-            foreach (['photo1', 'photo2', 'photo3', 'photo4'] as $field) {
-                $file = $filesByField->get($field);
-                if ($file && $file->file_url) {
-                    $photos[] = ['url' => $file->file_url];
-                }
-            }
-            $photosBySize[] = $photos;
+            $photosBySize[] = ($filesBySize->get(null) ?? collect())
+                ->map(fn ($file) => ['url' => $file->file_url])
+                ->values()
+                ->toArray();
         }
 
         return view('web.single-product', [

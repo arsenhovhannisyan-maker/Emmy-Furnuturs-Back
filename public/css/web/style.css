@@ -3451,6 +3451,10 @@ h5+.table-custom-responsive {
 	background: #f5f5f5
 }
 
+.table-cart-figure img {
+	object-fit: contain;
+}
+
 @media(min-width:992px) {
 	.table-cart-figure {
 		max-width: 146px

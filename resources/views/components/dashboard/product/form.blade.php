@@ -56,18 +56,6 @@
                     </div>
                 </div>
 
-                <div class="all-photo-components">
-                    @for($i = 1; $i <= 48; $i++)
-                        <div class="photo-component-container" id="photo-container-{{ $i }}" style="display: none;">
-                            <x-dashboard.form.uploader._file
-                                name="photo{{ $i }}"
-                                :value="$product->{'photo'.$i} ?? null"
-                                :configKey="$product->getFileConfigName()"
-                            />
-                        </div>
-                    @endfor
-                </div>
-
             </x-dashboard.form._form>
         </div>
     </div>
@@ -95,16 +83,18 @@
                 </div>
             </div>
 
-            <div class="photos-row mt-2" data-start-photo="__start_photo__">
-            </div>
-
-            <div class="row mt-2">
-                <div class="col-12">
-                    <button type="button" class="btn btn-outline-primary add-photo-btn">
-                        <i class="fas fa-plus"></i> Oткрыть или Добавить фото
-                    </button>
-                    <small class="text-muted ml-2">Максимум 6 фото на размер</small>
-                </div>
+            <div class="photo-gallery" data-config-key="product.photos" data-max="20">
+                <label class="form-label d-block">Фото размера</label>
+                <div class="photo-gallery-grid"></div>
+                <label class="photo-dropzone">
+                    <input type="file" class="photo-dropzone-input d-none" accept="image/*" multiple>
+                    <div class="photo-dropzone-hint">
+                        <i class="flaticon2-photo-camera"></i> Перетащите фото сюда или нажмите, чтобы выбрать
+                    </div>
+                </label>
+                <div class="photo-gallery-error text-danger small mt-1" style="display:none"></div>
+                <div class="photo-gallery-hidden-inputs"></div>
+                <small class="text-muted">Можно выбрать сразу несколько фото. Перетаскивайте, чтобы изменить порядок — первое фото становится главным.</small>
             </div>
         </div>
     </div>
@@ -112,36 +102,17 @@
     <script>
 
         const categoriesUrl = "{{ route('dashboard.categories.list') }}";
-        const existingSizes = @json($sizes ?? []); 
+        const existingSizes = @json($sizes ?? []);
         let currentRowCount = 0;
-        let availablePhotos = Array.from({length: 48}, (_, i) => i + 1);
 
         document.addEventListener('DOMContentLoaded', function() {
             const sizesContainer = document.getElementById('sizes-container');
             const addSizeBtn = document.getElementById('add-size-row');
             const template = document.getElementById('size-row-template');
-            const allPhotoComponents = document.querySelector('.all-photo-components');
-
-            function getStartPhotoForRow(rowIndex) {
-                return (rowIndex * 6) + 1;
-            }
-
-            function moveContainerToPool(container) {
-                if (!container || !allPhotoComponents) return;
-                const num = container.id.replace('photo-container-', '');
-                if (num && !availablePhotos.includes(parseInt(num, 10))) {
-                    availablePhotos.push(parseInt(num, 10));
-                    availablePhotos.sort((a, b) => a - b);
-                }
-                container.style.display = 'none';
-                allPhotoComponents.appendChild(container);
-            }
 
             function createSizeRow(rowIndex, sizeData = null) {
-                const startPhoto = getStartPhotoForRow(rowIndex);
                 let newRowHTML = template.innerHTML
-                    .replace(/__index__/g, rowIndex)
-                    .replace(/__start_photo__/g, startPhoto);
+                    .replace(/__index__/g, rowIndex);
 
                 if (sizeData) {
                     newRowHTML = newRowHTML
@@ -175,11 +146,13 @@
                 const newRow = createSizeRow(currentRowCount, sizeData);
                 sizesContainer.appendChild(newRow);
                 currentRowCount++;
+
+                initPhotoGallery(newRow.querySelector('.photo-gallery'), (sizeData && sizeData.photos) || []);
             }
 
             function initializeExistingSizes() {
                 if (existingSizes && existingSizes.length > 0) {
-                    existingSizes.forEach((size, index) => {
+                    existingSizes.forEach((size) => {
                         addSizeRow(size);
                     });
                 } else {
@@ -194,112 +167,18 @@
             sizesContainer.addEventListener('click', function(e) {
                 if (e.target.closest('.remove-size-row')) {
                     const row = e.target.closest('.size-row');
-                    hideAllPhotosInRow(row);
                     row.remove();
                     currentRowCount--;
                     reindexAllRows();
-                    return;
-                }
-
-                if (e.target.closest('.add-photo-btn')) {
-                    const row = e.target.closest('.size-row');
-                    const photosRow = row.querySelector('.photos-row');
-                    addPhotoInput(photosRow);
-                    return;
-                }
-
-                if (e.target.closest('.remove-photo')) {
-                    const photoItem = e.target.closest('.photo-item');
-                    const container = getContainerFromPhotoItem(photoItem);
-                    if (container) moveContainerToPool(container);
-                    photoItem.remove();
-                    return;
                 }
             });
-
-            function getContainerFromPhotoItem(photoItem) {
-                const wrap = photoItem.querySelector('.current-photo-container');
-                return wrap ? wrap.querySelector('.photo-component-container') : null;
-            }
-
-            function hidePhotoComponent(photoNumber) {
-                const container = document.getElementById('photo-container-' + photoNumber);
-                if (container) {
-                    moveContainerToPool(container);
-                }
-            }
-
-            function hideAllPhotosInRow(row) {
-                const photoItems = row.querySelectorAll('.photo-item');
-                photoItems.forEach(item => {
-                    const container = getContainerFromPhotoItem(item);
-                    if (container) moveContainerToPool(container);
-                });
-            }
-
-            function addPhotoInput(photosRow) {
-                const currentPhotos = photosRow.querySelectorAll('.photo-item').length;
-                const startPhoto = parseInt(photosRow.dataset.startPhoto);
-                const currentPhotoNumber = startPhoto + currentPhotos;
-
-                if (currentPhotos >= 6) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Максимум 6 фото',
-                        text: 'На один размер можно добавить не более 6 фото.',
-                        confirmButtonColor: '#3085d6',
-                        confirmButtonText: 'Ок'
-                    });
-                    return;
-                }
-
-                if (currentPhotoNumber > 48) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Превышен лимит фото',
-                        text: 'Вы не можете использовать более 48 фото для всех размеров.',
-                        confirmButtonColor: '#d33',
-                        confirmButtonText: 'Ок'
-                    });
-                    return;
-                }
-
-                const photoCol = document.createElement('div');
-                photoCol.className = 'photo-item d-inline-block mr-3 mb-3';
-                photoCol.dataset.photoNumber = currentPhotoNumber;
-
-                photoCol.innerHTML = `
-                    <div class="form-group" style="min-width: 200px;">
-                        <label class="form-label">Фото ${currentPhotoNumber}</label>
-                        <div class="current-photo-container"></div>
-                        <button type="button" class="btn btn-sm btn-danger mt-2 remove-photo">
-                            <i class="fas fa-times"></i> Удалить
-                        </button>
-                    </div>
-                `;
-
-                photosRow.appendChild(photoCol);
-
-                var container = document.getElementById('photo-container-' + currentPhotoNumber);
-                if (container && allPhotoComponents) {
-                    var index = availablePhotos.indexOf(currentPhotoNumber);
-                    if (index > -1) availablePhotos.splice(index, 1);
-                    var target = photoCol.querySelector('.current-photo-container');
-                    if (target) {
-                        target.appendChild(container);
-                        container.style.display = 'block';
-                    }
-                }
-            }
 
             function reindexAllRows() {
                 const allRows = document.querySelectorAll('.size-row');
                 currentRowCount = allRows.length;
 
                 allRows.forEach((row, index) => {
-                    const startPhoto = getStartPhotoForRow(index);
-                    const photosRow = row.querySelector('.photos-row');
-                    photosRow.dataset.startPhoto = startPhoto;
+                    row.dataset.rowIndex = index;
 
                     const sizeInput = row.querySelector('input[name*="[size]"]');
                     const priceInput = row.querySelector('input[name*="[price]"]');
@@ -309,16 +188,7 @@
                     if (priceInput) priceInput.name = `sizes[${index}][price]`;
                     if (idInput) idInput.name = `sizes[${index}][id]`;
 
-                    const photoItems = photosRow.querySelectorAll('.photo-item');
-                    photoItems.forEach((item) => {
-                        const container = getContainerFromPhotoItem(item);
-                        const actualNum = container ? container.id.replace('photo-container-', '') : '';
-                        if (actualNum) {
-                            const label = item.querySelector('label');
-                            if (label) label.textContent = 'Фото ' + actualNum;
-                            item.dataset.photoNumber = actualNum;
-                        }
-                    });
+                    window.reserializePhotoGalleries(row);
                 });
             }
 
@@ -327,19 +197,82 @@
     </script>
 
     <style>
-        .photos-row {
+        .photo-gallery-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
-            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 10px;
         }
 
-        .photo-item {
-            flex: 0 0 auto;
+        .photo-thumb {
+            position: relative;
+            width: 110px;
+            height: 110px;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+            cursor: grab;
+            background: #f8fafc;
         }
 
-        .photo-item .form-group {
+        .photo-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .photo-thumb.is-dragging {
+            opacity: 0.4;
+        }
+
+        .photo-thumb.is-pending img {
+            opacity: 0.5;
+        }
+
+        .photo-thumb-spinner {
+            display: none;
+            position: absolute;
+            inset: 0;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.25);
+        }
+
+        .photo-thumb.is-pending .photo-thumb-spinner {
+            display: flex;
+        }
+
+        .photo-thumb-remove {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 22px;
+            height: 22px;
+            border: 0;
+            border-radius: 50%;
+            background: rgba(220, 53, 69, 0.9);
+            color: #fff;
+            font-size: 11px;
+            line-height: 1;
+            padding: 0;
+        }
+
+        .photo-dropzone {
+            display: block;
+            border: 2px dashed #cbd5e1;
+            border-radius: 6px;
+            padding: 16px;
+            text-align: center;
+            color: #64748b;
+            cursor: pointer;
             margin-bottom: 0;
+        }
+
+        .photo-dropzone.is-dragover {
+            border-color: #3085d6;
+            background: #f0f7ff;
+            color: #3085d6;
         }
     </style>
 

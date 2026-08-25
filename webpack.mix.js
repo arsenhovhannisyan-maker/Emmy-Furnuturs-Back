@@ -20,6 +20,7 @@ mix.combine([
   'resources/js/core/Modal.js',
   'resources/js/core/MultipleInputs.js',
   'resources/js/core/FileUploader.js',
+  'resources/js/core/PhotoGallery.js',
   'resources/js/common/main.js',
 ], 'public/js/dashboard/bundle.js').minify('public/js/dashboard/bundle.js');
 

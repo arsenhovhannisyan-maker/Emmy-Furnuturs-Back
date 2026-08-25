@@ -54,7 +54,8 @@
     .product-modern-figure img {
         width: 100%;
         height: 250px;
-        object-fit: cover;
+        object-fit: contain;
+        background-color: #ffffff;
         transition: transform 0.5s ease;
     }
 
@@ -506,7 +507,8 @@
         max-width: 100% !important;
         height: 200px !important;
         margin: 0 auto !important;
-        object-fit: cover !important;
+        object-fit: contain !important;
+        background-color: #ffffff;
     }
 
     #products-container.products-layout--grid .product-modern-body {

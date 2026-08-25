@@ -92,17 +92,18 @@ class ProductSeeder extends Seeder
             );
 
             ProductSize::where('product_id', $product->id)->delete();
+            $sizeIds = [];
             foreach ($sizes as $row) {
-                ProductSize::create([
+                $sizeIds[] = ProductSize::create([
                     'product_id' => $product->id,
                     'size' => $row['size'],
                     'price' => $row['price'],
                     'image' => $row['image'] ?? null,
                     'image_shema' => $row['image_shema'] ?? null,
-                ]);
+                ])->id;
             }
 
-            self::seedProductFiles($product, $sizes, $basePath);
+            self::seedProductFiles($product, $sizes, $sizeIds, $basePath);
 
             $created++;
         }
@@ -360,21 +361,19 @@ class ProductSeeder extends Seeder
         return null;
     }
 
-    private static function seedProductFiles(Product $product, array $sizes, ?string $basePath): void
+    private static function seedProductFiles(Product $product, array $sizes, array $sizeIds, ?string $basePath): void
     {
         $uploadsDisk = Storage::disk('uploads');
         $dirPrefix = Product::getClassName();
+        $fieldName = 'photos';
 
         // Delete existing File records for this product to avoid duplicates
         $product->files()->delete();
 
-        $photoIndex = 1;
-
-        foreach ($sizes as $sizeRow) {
+        foreach ($sizes as $index => $sizeRow) {
             $imageFilename = $sizeRow['image'] ?? null;
 
             if (!$imageFilename || !$basePath) {
-                $photoIndex += 6;
                 continue;
             }
 
@@ -382,11 +381,9 @@ class ProductSeeder extends Seeder
             $sourcePath = self::findImageInBasePath($imageFilename, $basePath);
 
             if (!$sourcePath || !File::exists($sourcePath)) {
-                $photoIndex += 6;
                 continue;
             }
 
-            $fieldName = 'photo' . $photoIndex;
             $uniqueFileName = uniqid() . '_' . preg_replace('/[^\w\-.]/', '_', $imageFilename);
             $destRelative = $dirPrefix . '/' . $fieldName . '/' . $uniqueFileName;
             $destAbsolute = $uploadsDisk->path($destRelative);
@@ -398,15 +395,15 @@ class ProductSeeder extends Seeder
 
             if (File::copy($sourcePath, $destAbsolute)) {
                 $product->files()->create([
-                    'id'         => Uuid::uuid4()->toString(),
-                    'field_name' => $fieldName,
-                    'file_name'  => $uniqueFileName,
-                    'file_type'  => FileType::IMAGE,
-                    'dir_prefix' => $dirPrefix,
+                    'id'              => Uuid::uuid4()->toString(),
+                    'field_name'      => $fieldName,
+                    'file_name'       => $uniqueFileName,
+                    'file_type'       => FileType::IMAGE,
+                    'dir_prefix'      => $dirPrefix,
+                    'product_size_id' => $sizeIds[$index] ?? null,
+                    'sort_order'      => 0,
                 ]);
             }
-
-            $photoIndex += 6; // Each size occupies 6 photo slots (photo1-6, photo7-12, etc.)
         }
     }
 
