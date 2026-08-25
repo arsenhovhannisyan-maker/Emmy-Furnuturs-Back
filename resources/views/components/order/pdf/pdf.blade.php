@@ -18,7 +18,7 @@
         }
 
         .brand-header {
-            background-color: #8B4513;
+            background-color: #50BECF;
             color: white;
             padding: 22px 30px;
             text-align: center;
@@ -38,7 +38,7 @@
 
         .invoice-header-table {
             width: 100%;
-            background-color: #4f46e5;
+            background-color: #39B3B8;
             color: white;
         }
 
@@ -75,7 +75,7 @@
         .section-title {
             font-size: 16px;
             font-weight: 700;
-            color: #4f46e5;
+            color: #39B3B8;
             margin-bottom: 10px;
             padding-bottom: 6px;
             border-bottom: 1px solid #e5e7eb;
@@ -83,7 +83,7 @@
 
         .info-card {
             background-color: #f8fafc;
-            border-left: 3px solid #4f46e5;
+            border-left: 3px solid #50BECF;
             padding: 4px 16px;
             margin-bottom: 10px;
         }
@@ -111,8 +111,8 @@
         }
 
         .items-table th {
-            background-color: #eef2ff;
-            color: #4f46e5;
+            background-color: #e5f6f8;
+            color: #39B3B8;
             text-align: left;
             padding: 8px 10px;
             font-weight: 700;
@@ -128,7 +128,7 @@
         }
 
         .payment-summary {
-            background-color: #eef2ff;
+            background-color: #e5f6f8;
             padding: 4px 18px;
             margin-top: 12px;
         }
@@ -144,8 +144,8 @@
         .payment-summary .total-row td {
             font-weight: 700;
             font-size: 16px;
-            color: #4f46e5;
-            border-top: 2px solid #4f46e5;
+            color: #39B3B8;
+            border-top: 2px solid #39B3B8;
             padding-top: 8px;
         }
 
@@ -198,7 +198,7 @@
 <div class="invoice-container">
     <div class="brand-header">
         <div class="brand-title">EMMY FURNITURE</div>
-        <div class="brand-subtitle">Мебель для ванной комнаты премиального качества</div>
+        <div class="brand-subtitle">Мебель комнаты премиального качества</div>
     </div>
 
     <table class="invoice-header-table" cellpadding="0" cellspacing="0">
@@ -299,7 +299,7 @@
                     // only ever look for those two formats here.
                     $siteQrPath = null;
                     foreach (['svg', 'jpg', 'jpeg'] as $qrExtension) {
-                        $candidatePath = public_path("img/uploads/qr-emmymebel.{$qrExtension}");
+                        $candidatePath = public_path("img/uploads/qr-mebelemmy.{$qrExtension}");
                         if (file_exists($candidatePath)) {
                             $siteQrPath = $candidatePath;
                             break;
@@ -308,8 +308,8 @@
                 @endphp
                 @if($siteQrPath)
                     <td class="invoice-footer-qr">
-                        <img src="{{ $siteQrPath }}" alt="QR-код на emmymebel.ru" width="70" height="70">
-                        <div class="qr-caption">emmymebel.ru</div>
+                        <img src="{{ $siteQrPath }}" alt="QR-код на mebelemmy.ru" width="70" height="70">
+                        <div class="qr-caption">mebelemmy.ru</div>
                     </td>
                 @endif
             </tr>
