@@ -147,7 +147,13 @@ abstract class FileService
         $filename = basename($originalName, '.' . pathinfo($originalName, PATHINFO_EXTENSION));
         $uniqueID = uniqid() . '_' . mb_ereg_replace('([^\\w\\s\\d\\-_~,;\\[\\]\\(\\).])', '', $filename);
 
-        return $uniqueID . '.' . $file->getClientOriginalExtension();
+        // The extension is client-supplied too (it comes straight from the upload's
+        // original filename) and, unlike $filename above, was never sanitized - an
+        // extension crafted with quotes/angle-brackets would otherwise land unescaped
+        // in the stored file_name/file_url wherever that later gets rendered as HTML.
+        $extension = preg_replace('/[^A-Za-z0-9]/', '', $file->getClientOriginalExtension());
+
+        return $uniqueID . '.' . $extension;
     }
 
     protected function makeDirectory(string $path): void

@@ -5,16 +5,33 @@
 // the server until the product form is actually saved.
 (function () {
   function buildThumb(kind, value, imgUrl, isPending) {
+    // Built via DOM APIs rather than innerHTML+template-literal on purpose: imgUrl can
+    // come from a server-stored file_url derived from an admin-supplied upload filename,
+    // which is not HTML-escaped anywhere upstream. Assigning to img.src (a DOM property,
+    // not parsed as markup) keeps a crafted filename from ever being interpreted as HTML.
     const thumb = document.createElement('div');
     thumb.className = 'photo-thumb' + (isPending ? ' is-pending' : '');
     thumb.draggable = true;
     thumb.dataset.kind = kind;
     thumb.dataset.value = value || '';
-    thumb.innerHTML = `
-            <img src="${imgUrl}" alt="">
-            <div class="photo-thumb-spinner"><div class="spinner-border spinner-border-sm text-light"></div></div>
-            <button type="button" class="photo-thumb-remove" title="Удалить"><i class="fas fa-times"></i></button>
-        `;
+
+    const img = document.createElement('img');
+    img.src = imgUrl;
+    img.alt = '';
+    thumb.appendChild(img);
+
+    const spinner = document.createElement('div');
+    spinner.className = 'photo-thumb-spinner';
+    spinner.innerHTML = '<div class="spinner-border spinner-border-sm text-light"></div>';
+    thumb.appendChild(spinner);
+
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'photo-thumb-remove';
+    removeBtn.title = 'Удалить';
+    removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+    thumb.appendChild(removeBtn);
+
     return thumb;
   }
 
@@ -80,11 +97,6 @@
     }
 
     function uploadFile(file) {
-      if (currentCount() >= maxPhotos) {
-        showError(`Максимум ${maxPhotos} фото на размер`);
-        return;
-      }
-
       const reader = new FileReader();
       reader.onload = (e) => {
         const thumb = buildThumb('new', '', e.target.result, true);
@@ -95,7 +107,7 @@
         formData.append('config_key', configKey);
 
         // eslint-disable-next-line no-undef
-        axios.post(route('dashboard.files.storeTempFile'), formData)
+        axios.post(route('dashboard.files.storeTempFile'), formData, { timeout: 30000 })
           .then((resp) => {
             thumb.classList.remove('is-pending');
             thumb.dataset.value = resp.data.name;
@@ -112,7 +124,23 @@
 
     function handleFiles(fileList) {
       showError('');
-      Array.from(fileList).forEach(uploadFile);
+      // Slice to the available slot count synchronously, before any async work starts -
+      // uploadFile()'s own thumb only appears in the DOM inside FileReader.onload, which
+      // fires later, so checking currentCount() per-file inside a batch would let every
+      // file in that same batch see the same stale (too-low) count and all pass the cap.
+      const files = Array.from(fileList);
+      const available = maxPhotos - currentCount();
+
+      if (available <= 0) {
+        showError(`Максимум ${maxPhotos} фото на размер`);
+        return;
+      }
+
+      if (files.length > available) {
+        showError(`Можно добавить только ${available} фото (максимум ${maxPhotos} на размер)`);
+      }
+
+      files.slice(0, available).forEach(uploadFile);
     }
 
     fileInput.addEventListener('change', () => {

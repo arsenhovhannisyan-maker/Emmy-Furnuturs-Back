@@ -26,6 +26,7 @@ trait ProductRelations
     {
         return $this->morphMany(File::class, 'fileable')
             ->where('field_name', 'photos')
+            ->orderByRaw('product_size_id is null')
             ->orderBy('product_size_id')
             ->orderBy('sort_order');
     }
@@ -34,11 +35,15 @@ trait ProductRelations
      * The main/thumbnail photo shown in listings - the first photo (by sort_order)
      * of the first size (by product_size_id, i.e. creation order), so it stays
      * deterministic even though several sizes each have their own sort_order 0.
+     * Photos with no size (product_size_id null - orphaned/unassigned) are ordered
+     * last on purpose: MySQL sorts NULL first in ASC order, and without this an
+     * unassigned photo would otherwise outrank every real size's first photo here.
      */
     public function photo1(): MorphOne
     {
         return $this->morphOne(File::class, 'fileable')
             ->where('field_name', 'photos')
+            ->orderByRaw('product_size_id is null')
             ->orderBy('product_size_id')
             ->orderBy('sort_order');
     }

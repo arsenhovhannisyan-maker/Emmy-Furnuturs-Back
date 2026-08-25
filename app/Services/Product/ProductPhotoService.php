@@ -13,15 +13,35 @@ class ProductPhotoService
 
     /**
      * Sync each size's photo gallery against what the admin submitted: delete photos
-     * that were removed in the UI, persist the drag-and-drop order for the ones kept,
-     * and attach newly uploaded ones after them.
+     * that were removed in the UI (or moved to a different size - see below), persist
+     * the drag-and-drop order for the ones kept, and attach newly uploaded ones after
+     * them.
+     *
+     * Deletion is decided ONCE up front from the union of every group's existing_photos,
+     * not per group: a photo that's absent from its current group's list but present in
+     * a DIFFERENT group's list is being moved (dragged to another size), not removed, and
+     * must survive. Deciding deletion per group instead would destroy it - the group it's
+     * leaving sees it missing from its own keepIds and deletes it before the group it's
+     * moving to is ever processed. This also incidentally makes a duplicate `sizes[].id`
+     * in the submitted data harmless: since no group's pass can delete anything anymore,
+     * a stale/duplicate row for the same size just re-applies (or no-ops) its own
+     * ordering instead of erasing what an earlier row for that same id had just kept.
      *
      * @param array<int, array{id?: int|null, existing_photos?: array, new_photos?: array}> $sizesData
      */
     public function sync(Product $product, array $sizesData): void
     {
+        $keptEverywhere = [];
         foreach ($sizesData as $sizeData) {
-            $this->syncGroup(
+            $keptEverywhere = array_merge($keptEverywhere, array_filter($sizeData['existing_photos'] ?? []));
+        }
+        $keptEverywhere = array_values(array_unique($keptEverywhere));
+
+        $product->photos()->whereNotIn('id', $keptEverywhere ?: [''])->get()
+            ->each(fn ($file) => $this->fileService->deleteFile($file->id));
+
+        foreach ($sizesData as $sizeData) {
+            $this->reorderAndAppend(
                 product: $product,
                 productSizeId: $sizeData['id'] ?? null,
                 keepIds: array_values(array_filter($sizeData['existing_photos'] ?? [])),
@@ -51,23 +71,14 @@ class ProductPhotoService
         $product->photos()->get()->each(fn ($file) => $this->fileService->deleteFile($file->id));
     }
 
-    private function syncGroup(Product $product, ?int $productSizeId, array $keepIds, array $newTokens): void
+    private function reorderAndAppend(Product $product, ?int $productSizeId, array $keepIds, array $newTokens): void
     {
-        $query = $product->photos();
-        $productSizeId === null ? $query->whereNull('product_size_id') : $query->where('product_size_id', $productSizeId);
-        $current = $query->get()->keyBy('id');
-
-        foreach ($current as $fileId => $file) {
-            if (!in_array($fileId, $keepIds, true)) {
-                $this->fileService->deleteFile($fileId);
-            }
-        }
-
         foreach ($keepIds as $index => $fileId) {
-            $file = $current->get($fileId);
-            if ($file) {
-                $file->update(['sort_order' => $index, 'product_size_id' => $productSizeId]);
-            }
+            // Scoped through $product->photos() (fileable-scoped to this product), so a
+            // stray/foreign id here just matches zero rows and no-ops - see the mass
+            // -assignment audit note on why a cross-product id can't land here anyway.
+            $product->photos()->where('id', $fileId)
+                ->update(['sort_order' => $index, 'product_size_id' => $productSizeId]);
         }
 
         $nextOrder = count($keepIds);

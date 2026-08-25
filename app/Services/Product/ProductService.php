@@ -56,15 +56,15 @@ class ProductService extends BaseService
      */
     private function upsertSizes(Model $product, array $sizesData): array
     {
-        $existingIds = $product->sizes()->pluck('id')->all();
+        $existingSizes = $product->sizes()->get()->keyBy('id');
         $submittedIds = [];
         $resolved = [];
 
         foreach ($sizesData as $sizeRow) {
             $sizeId = $sizeRow['id'] ?? null;
+            $size = $sizeId ? $existingSizes->get((int) $sizeId) : null;
 
-            if ($sizeId && in_array((int) $sizeId, $existingIds, true)) {
-                $size = $product->sizes()->whereKey($sizeId)->first();
+            if ($size) {
                 $size->update(['size' => $sizeRow['size'], 'price' => $sizeRow['price']]);
             } else {
                 $size = $product->sizes()->create(['size' => $sizeRow['size'], 'price' => $sizeRow['price']]);
@@ -74,7 +74,7 @@ class ProductService extends BaseService
             $resolved[] = array_merge($sizeRow, ['id' => $size->id]);
         }
 
-        $removedIds = array_diff($existingIds, $submittedIds);
+        $removedIds = array_diff($existingSizes->keys()->all(), $submittedIds);
         if ($removedIds) {
             $this->photoService->deletePhotosForSizes($product, $removedIds);
             $product->sizes()->whereIn('id', $removedIds)->delete();
@@ -100,20 +100,31 @@ class ProductService extends BaseService
         $variableKey = $model::getClassNameCamelCase();
 
         $photosBySize = $model->photos()->get()->groupBy('product_size_id');
+        $toPhotoArray = fn ($files) => $files->map(fn ($file) => ['id' => $file->id, 'url' => $file->file_url])->values()->toArray();
+        // Photos with no size (product_size_id null) shouldn't happen for a product that
+        // has sizes, but can exist on a legacy product edited before it ever had any, or
+        // on one where a historical size was removed out from under its photos. Surface
+        // them somewhere editable rather than letting them silently vanish from the form.
+        $unassignedPhotos = $toPhotoArray($photosBySize->get(null) ?? collect());
 
-        $data = [
-            $variableKey => $model,
-            'sizes' => $model->sizes->map(function ($size) use ($photosBySize) {
+        if ($model->sizes->isEmpty()) {
+            $sizes = $unassignedPhotos ? [['id' => null, 'size' => '', 'price' => '', 'photos' => $unassignedPhotos]] : [];
+        } else {
+            $sizes = $model->sizes->values()->map(function ($size, $index) use ($photosBySize, $toPhotoArray, $unassignedPhotos) {
+                $photos = $toPhotoArray($photosBySize->get($size->id) ?? collect());
+
                 return [
                     'id' => $size->id,
                     'size' => $size->size,
                     'price' => $size->price,
-                    'photos' => ($photosBySize->get($size->id) ?? collect())
-                        ->map(fn ($file) => ['id' => $file->id, 'url' => $file->file_url])
-                        ->values()
-                        ->toArray(),
+                    'photos' => $index === 0 ? array_merge($unassignedPhotos, $photos) : $photos,
                 ];
-            })->toArray(),
+            })->toArray();
+        }
+
+        $data = [
+            $variableKey => $model,
+            'sizes' => $sizes,
         ];
 
         if ($model->mls) {
