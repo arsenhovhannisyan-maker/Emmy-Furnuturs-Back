@@ -31,7 +31,15 @@ class ProductRequest extends FormRequest
         return [
             'sizes' => 'nullable|array|max:8',
             'sizes.*.id' => 'nullable|integer',
-            'sizes.*.size' => 'required|string_with_max',
+            'sizes.*.mode' => 'nullable|in:text,dimensions',
+            // "text" mode needs `size`; "dimensions" mode needs all three of
+            // height/width/depth instead - required_if/required_unless resolve the
+            // wildcard `sizes.*.mode` against the SAME row index, not just row 0.
+            'sizes.*.size' => 'required_unless:sizes.*.mode,dimensions|nullable|string_with_max',
+            'sizes.*.height' => 'required_if:sizes.*.mode,dimensions|nullable|string_with_max',
+            'sizes.*.width' => 'required_if:sizes.*.mode,dimensions|nullable|string_with_max',
+            'sizes.*.depth' => 'required_if:sizes.*.mode,dimensions|nullable|string_with_max',
+            'sizes.*.orientation' => 'nullable|in:left,right',
             'sizes.*.price' => 'required|numeric|min:0',
             'sizes.*.existing_photos' => 'nullable|array|max:20',
             'sizes.*.existing_photos.*' => 'nullable|string_with_max',
@@ -52,6 +60,10 @@ class ProductRequest extends FormRequest
             'discount' => 'discount',
             'sizes' => 'sizes',
             'sizes.*.size' => 'size',
+            'sizes.*.height' => 'height',
+            'sizes.*.width' => 'width',
+            'sizes.*.depth' => 'depth',
+            'sizes.*.orientation' => 'orientation',
             'sizes.*.price' => 'size price',
         ];
     }

@@ -62,24 +62,68 @@
 
     <div id="size-row-template" style="display: none;">
         <div class="size-row border p-3 mb-3" data-row-index="__index__" data-size-id="__size_id__">
-            <div class="row align-items-center">
+            <div class="row align-items-end">
                 <div class="col-md-3">
-                    <div class="form-group required">
-                        <label>Размер (например: 1600x2000)</label>
-                        <x-dashboard.form._input name="sizes[__index__][size]" value="__size_value__"/>
+                    <div class="form-group">
+                        <label>Как описать размер</label>
+                        <select class="form-control size-mode-select">
+                            <option value="text">Одна строка</option>
+                            <option value="dimensions">По размерам (В×Ш×Г)</option>
+                        </select>
+                        <input type="hidden" name="sizes[__index__][mode]" value="text" class="size-mode-input">
                         <input type="hidden" name="sizes[__index__][id]" value="__size_id__">
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group required">
-                        <label>Цена для этого размера</label>
-                        <x-dashboard.form._input name="sizes[__index__][price]" type="number" value="__price_value__"/>
+                        <label class="control-label">Цена для этого размера</label>
+                        <x-dashboard.form._input name="sizes[__index__][price]" type="number" value="__price_value__" title="Цена" :noLabel="true"/>
                     </div>
                 </div>
-                <div class="col-md-6 text-right">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Сторона</label>
+                        <select class="form-control size-orientation-select" name="sizes[__index__][orientation]">
+                            <option value="">Без стороны</option>
+                            <option value="left">Слева</option>
+                            <option value="right">Справа</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3 text-right">
                     <button type="button" class="btn btn-danger remove-size-row">
                         <i class="fas fa-trash"></i> Удалить размер
                     </button>
+                </div>
+            </div>
+
+            <div class="row size-text-group">
+                <div class="col-md-6">
+                    <div class="form-group required">
+                        <label class="control-label">Размер (например: 1600x2000)</label>
+                        <x-dashboard.form._input name="sizes[__index__][size]" value="__size_value__" title="Размер" :noLabel="true"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row size-dimensions-group" style="display:none;">
+                <div class="col-md-4">
+                    <div class="form-group required">
+                        <label class="control-label">Высота</label>
+                        <x-dashboard.form._input name="sizes[__index__][height]" value="__height_value__" title="Высота" :noLabel="true"/>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group required">
+                        <label class="control-label">Ширина</label>
+                        <x-dashboard.form._input name="sizes[__index__][width]" value="__width_value__" title="Ширина" :noLabel="true"/>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group required">
+                        <label class="control-label">Глубина</label>
+                        <x-dashboard.form._input name="sizes[__index__][depth]" value="__depth_value__" title="Глубина" :noLabel="true"/>
+                    </div>
                 </div>
             </div>
 
@@ -110,25 +154,46 @@
             const addSizeBtn = document.getElementById('add-size-row');
             const template = document.getElementById('size-row-template');
 
+            // The row template is built by string-replacing placeholders directly into
+            // an HTML string, then assigned via innerHTML - values must be HTML-escaped
+            // first or admin-typed text containing a quote/angle-bracket could break out
+            // of the value="..." attribute and inject markup (stored XSS in the dashboard).
+            function escapeHtml(value) {
+                const div = document.createElement('div');
+                div.textContent = String(value);
+                return div.innerHTML;
+            }
+
             function createSizeRow(rowIndex, sizeData = null) {
                 let newRowHTML = template.innerHTML
                     .replace(/__index__/g, rowIndex);
 
-                if (sizeData) {
-                    newRowHTML = newRowHTML
-                        .replace(/__size_id__/g, sizeData.id || '')
-                        .replace(/__size_value__/g, sizeData.size || '')
-                        .replace(/__price_value__/g, sizeData.price || '');
-                } else {
-                    newRowHTML = newRowHTML
-                        .replace(/__size_id__/g, '')
-                        .replace(/__size_value__/g, '')
-                        .replace(/__price_value__/g, '');
-                }
+                const d = sizeData || {};
+                newRowHTML = newRowHTML
+                    .replace(/__size_id__/g, escapeHtml(d.id || ''))
+                    .replace(/__size_value__/g, escapeHtml(d.size || ''))
+                    .replace(/__price_value__/g, escapeHtml(d.price || ''))
+                    .replace(/__height_value__/g, escapeHtml(d.height || ''))
+                    .replace(/__width_value__/g, escapeHtml(d.width || ''))
+                    .replace(/__depth_value__/g, escapeHtml(d.depth || ''));
 
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = newRowHTML;
                 return tempDiv.firstElementChild;
+            }
+
+            function applySizeMode(row, mode) {
+                const isDimensions = mode === 'dimensions';
+                row.querySelector('.size-mode-select').value = isDimensions ? 'dimensions' : 'text';
+                row.querySelector('.size-mode-input').value = isDimensions ? 'dimensions' : 'text';
+                row.querySelector('.size-text-group').style.display = isDimensions ? 'none' : '';
+                row.querySelector('.size-dimensions-group').style.display = isDimensions ? '' : 'none';
+            }
+
+            function clearGroupInputs(row, groupSelector) {
+                row.querySelector(groupSelector).querySelectorAll('input').forEach((input) => {
+                    input.value = '';
+                });
             }
 
             function addSizeRow(sizeData = null) {
@@ -146,6 +211,9 @@
                 const newRow = createSizeRow(currentRowCount, sizeData);
                 sizesContainer.appendChild(newRow);
                 currentRowCount++;
+
+                applySizeMode(newRow, (sizeData && sizeData.mode) || 'text');
+                newRow.querySelector('.size-orientation-select').value = (sizeData && sizeData.orientation) || '';
 
                 initPhotoGallery(newRow.querySelector('.photo-gallery'), (sizeData && sizeData.photos) || []);
             }
@@ -173,6 +241,23 @@
                 }
             });
 
+            sizesContainer.addEventListener('change', function(e) {
+                if (e.target.classList.contains('size-mode-select')) {
+                    const row = e.target.closest('.size-row');
+                    const mode = e.target.value;
+                    applySizeMode(row, mode);
+                    // Clear BOTH groups, not just the one being hidden: the one being
+                    // shown may still be holding whatever was hydrated for the OTHER
+                    // mode when this row was first loaded (e.g. switching dimensions ->
+                    // text would otherwise leave the now-visible text field pre-filled
+                    // with the old composed "В..хШ..хГ.." label instead of starting blank).
+                    clearGroupInputs(row, '.size-text-group');
+                    clearGroupInputs(row, '.size-dimensions-group');
+                }
+            });
+
+            const SIZE_ROW_FIELDS = ['size', 'price', 'id', 'height', 'width', 'depth', 'orientation', 'mode'];
+
             function reindexAllRows() {
                 const allRows = document.querySelectorAll('.size-row');
                 currentRowCount = allRows.length;
@@ -180,13 +265,10 @@
                 allRows.forEach((row, index) => {
                     row.dataset.rowIndex = index;
 
-                    const sizeInput = row.querySelector('input[name*="[size]"]');
-                    const priceInput = row.querySelector('input[name*="[price]"]');
-                    const idInput = row.querySelector('input[name*="[id]"]');
-
-                    if (sizeInput) sizeInput.name = `sizes[${index}][size]`;
-                    if (priceInput) priceInput.name = `sizes[${index}][price]`;
-                    if (idInput) idInput.name = `sizes[${index}][id]`;
+                    SIZE_ROW_FIELDS.forEach((field) => {
+                        const input = row.querySelector(`[name*="[${field}]"]`);
+                        if (input) input.name = `sizes[${index}][${field}]`;
+                    });
 
                     window.reserializePhotoGalleries(row);
                 });

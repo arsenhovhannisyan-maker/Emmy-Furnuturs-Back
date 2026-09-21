@@ -63,11 +63,27 @@ class ProductService extends BaseService
         foreach ($sizesData as $sizeRow) {
             $sizeId = $sizeRow['id'] ?? null;
             $size = $sizeId ? $existingSizes->get((int) $sizeId) : null;
+            $mode = ($sizeRow['mode'] ?? 'text') === 'dimensions' ? 'dimensions' : 'text';
+
+            $attributes = [
+                'size' => $this->composeSizeLabel($sizeRow, $mode),
+                'price' => $sizeRow['price'],
+                'mode' => $mode,
+                // Only meaningful in dimensions mode - null them out here rather than
+                // trusting the submitted row, so a stray/replayed value for the other
+                // mode's fields (the client normally clears these on toggle, but that's
+                // a UI nicety, not something the DB should have to rely on) can't get
+                // persisted and then resurface as a wrong mode next time this loads.
+                'height' => $mode === 'dimensions' ? ($sizeRow['height'] ?? null) : null,
+                'width' => $mode === 'dimensions' ? ($sizeRow['width'] ?? null) : null,
+                'depth' => $mode === 'dimensions' ? ($sizeRow['depth'] ?? null) : null,
+                'orientation' => $sizeRow['orientation'] ?? null,
+            ];
 
             if ($size) {
-                $size->update(['size' => $sizeRow['size'], 'price' => $sizeRow['price']]);
+                $size->update($attributes);
             } else {
-                $size = $product->sizes()->create(['size' => $sizeRow['size'], 'price' => $sizeRow['price']]);
+                $size = $product->sizes()->create($attributes);
             }
 
             $submittedIds[] = $size->id;
@@ -81,6 +97,38 @@ class ProductService extends BaseService
         }
 
         return $resolved;
+    }
+
+    /**
+     * The admin can describe a size as one free-text line (mode=text, unchanged
+     * behavior) or as height/width/depth (mode=dimensions), matching the "В..хШ..хГ.."
+     * convention already used by hand in this catalog. Either way the result lands in
+     * the same `size` column every other part of the app already reads, so nothing
+     * downstream (storefront selector, cart, checkout, orders) needs to change.
+     *
+     * Text mode is the one case where the stored `size` column is BOTH the display
+     * string and the value that gets fed back into the admin's editable text field on
+     * the next edit (dimensions mode always rebuilds fresh from height/width/depth,
+     * which never carry a suffix). Without stripping a previously-applied suffix first,
+     * re-saving an oriented text-mode size unchanged would append " (Слева)" again on
+     * every save - this makes composing idempotent instead.
+     */
+    private function composeSizeLabel(array $sizeRow, string $mode): string
+    {
+        $label = $mode === 'dimensions'
+            ? 'В' . ($sizeRow['height'] ?? '') . 'хШ' . ($sizeRow['width'] ?? '') . 'хГ' . ($sizeRow['depth'] ?? '')
+            : $this->stripOrientationSuffix(trim($sizeRow['size'] ?? ''));
+
+        return match ($sizeRow['orientation'] ?? null) {
+            'left' => $label . ' (Слева)',
+            'right' => $label . ' (Справа)',
+            default => $label,
+        };
+    }
+
+    private function stripOrientationSuffix(string $label): string
+    {
+        return preg_replace('/ \((?:Слева|Справа)\)$/u', '', $label);
     }
 
     public function getViewData(?int $id = null): array
@@ -108,7 +156,9 @@ class ProductService extends BaseService
         $unassignedPhotos = $toPhotoArray($photosBySize->get(null) ?? collect());
 
         if ($model->sizes->isEmpty()) {
-            $sizes = $unassignedPhotos ? [['id' => null, 'size' => '', 'price' => '', 'photos' => $unassignedPhotos]] : [];
+            $sizes = $unassignedPhotos
+                ? [['id' => null, 'size' => '', 'price' => '', 'height' => null, 'width' => null, 'depth' => null, 'orientation' => null, 'mode' => 'text', 'photos' => $unassignedPhotos]]
+                : [];
         } else {
             $sizes = $model->sizes->values()->map(function ($size, $index) use ($photosBySize, $toPhotoArray, $unassignedPhotos) {
                 $photos = $toPhotoArray($photosBySize->get($size->id) ?? collect());
@@ -117,6 +167,11 @@ class ProductService extends BaseService
                     'id' => $size->id,
                     'size' => $size->size,
                     'price' => $size->price,
+                    'height' => $size->height,
+                    'width' => $size->width,
+                    'depth' => $size->depth,
+                    'orientation' => $size->orientation,
+                    'mode' => $size->mode ?? 'text',
                     'photos' => $index === 0 ? array_merge($unassignedPhotos, $photos) : $photos,
                 ];
             })->toArray();
