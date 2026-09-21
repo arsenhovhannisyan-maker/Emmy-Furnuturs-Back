@@ -255,6 +255,10 @@
         margin: 25px 0;
     }
 
+    .product-description {
+        white-space: pre-wrap;
+    }
+
     .list.list-description {
         margin-bottom: 25px;
     }
@@ -880,7 +884,7 @@
                                     @endif
                                 </div>
                             </div>
-                            <p>{{ $product->description }}</p>
+                            <p class="product-description">{{ $product->description }}</p>
                             <hr class="hr-gray-100">
                             <ul class="list list-description">
                                 <li><span>@lang('messages.categories'):</span><span>{{ $product->categories->name }}</span></li>
