@@ -40,6 +40,7 @@ class ProductRequest extends FormRequest
             'sizes.*.width' => 'required_if:sizes.*.mode,dimensions|nullable|string_with_max',
             'sizes.*.depth' => 'required_if:sizes.*.mode,dimensions|nullable|string_with_max',
             'sizes.*.orientation' => 'nullable|in:left,right',
+            'sizes.*.characteristics' => 'nullable|string|max:60000',
             'sizes.*.price' => 'required|numeric|min:0',
             'sizes.*.existing_photos' => 'nullable|array|max:20',
             'sizes.*.existing_photos.*' => 'nullable|string_with_max',

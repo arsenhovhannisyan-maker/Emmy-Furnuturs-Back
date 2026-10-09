@@ -260,6 +260,7 @@ return [
     'select_size' => 'Select Size',
     'choose_size' => 'Choose a size',
     'additional_info' => 'Additional information',
+    'characteristics' => 'Specifications',
     'delivery_payment' => 'Delivery and payment',
     'leave_review' => 'Leave a Review',
     'please_select_size' => 'Please select a size first',

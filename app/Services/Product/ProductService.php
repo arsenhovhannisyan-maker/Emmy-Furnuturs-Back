@@ -78,6 +78,7 @@ class ProductService extends BaseService
                 'width' => $mode === 'dimensions' ? ($sizeRow['width'] ?? null) : null,
                 'depth' => $mode === 'dimensions' ? ($sizeRow['depth'] ?? null) : null,
                 'orientation' => $sizeRow['orientation'] ?? null,
+                'characteristics' => $this->sanitizeCharacteristics($sizeRow['characteristics'] ?? null),
             ];
 
             if ($size) {
@@ -131,6 +132,15 @@ class ProductService extends BaseService
         return preg_replace('/ \((?:Слева|Справа)\)$/u', '', $label);
     }
 
+    // Rendered unescaped on the storefront: keep plain formatting tags only and drop every attribute (no on*/style/href).
+    private function sanitizeCharacteristics(?string $html): ?string
+    {
+        $allowed = '<p><br><strong><b><em><i><u><s><h2><h3><h4><ul><ol><li><figure><table><thead><tbody><tr><th><td><blockquote>';
+        $html = preg_replace('/<(\/?)(\w+)[^>]*>/', '<$1$2>', strip_tags((string) $html, $allowed));
+
+        return trim(strip_tags($html)) === '' ? null : $html;
+    }
+
     public function getViewData(?int $id = null): array
     {
         // Create Mode
@@ -157,7 +167,7 @@ class ProductService extends BaseService
 
         if ($model->sizes->isEmpty()) {
             $sizes = $unassignedPhotos
-                ? [['id' => null, 'size' => '', 'price' => '', 'height' => null, 'width' => null, 'depth' => null, 'orientation' => null, 'mode' => 'text', 'photos' => $unassignedPhotos]]
+                ? [['id' => null, 'size' => '', 'price' => '', 'height' => null, 'width' => null, 'depth' => null, 'orientation' => null, 'mode' => 'text', 'characteristics' => null, 'photos' => $unassignedPhotos]]
                 : [];
         } else {
             $sizes = $model->sizes->values()->map(function ($size, $index) use ($photosBySize, $toPhotoArray, $unassignedPhotos) {
@@ -172,6 +182,7 @@ class ProductService extends BaseService
                     'depth' => $size->depth,
                     'orientation' => $size->orientation,
                     'mode' => $size->mode ?? 'text',
+                    'characteristics' => $size->characteristics,
                     'photos' => $index === 0 ? array_merge($unassignedPhotos, $photos) : $photos,
                 ];
             })->toArray();

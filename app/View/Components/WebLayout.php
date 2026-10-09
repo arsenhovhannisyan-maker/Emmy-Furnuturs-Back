@@ -13,6 +13,7 @@ class WebLayout extends Component
         public ?string $seoKeywords = null,
         public ?string $seoImage = null,
         public ?string $seoType = null,
+        public ?string $seoRobots = null,
     ) {}
 
     public function render(): View
@@ -23,6 +24,7 @@ class WebLayout extends Component
             'seoKeywords' => $this->seoKeywords,
             'seoImage' => $this->seoImage,
             'seoType' => $this->seoType,
+            'seoRobots' => $this->seoRobots,
         ]);
     }
 }
