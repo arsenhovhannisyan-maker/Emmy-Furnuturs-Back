@@ -1,4 +1,4 @@
-<x-web-layout>
+<x-web-layout seo-robots="noindex, follow">
     <div class="page">
         <!--+breadcrumbs-->
         <section class="breadcrumbs-custom">

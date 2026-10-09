@@ -1,4 +1,4 @@
-<x-web-layout>
+<x-web-layout seo-robots="noindex, follow">
     <div class="page">
         <!-- Единая форма для всего заказа -->
         <form class="ch-form ch-mailform form-checkout" id="order-form" method="POST">

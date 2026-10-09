@@ -15,7 +15,7 @@
     <meta name="description" content="{{ $meta->getDescription() }}">
     <meta name="keywords" content="{{ $meta->getKeywords() }}">
     <meta name="robots" content="index, follow">
-    <meta name="author" content="Emmy Furniture">
+    <meta name="author" content="Emmy">
 
     <!-- Canonical URL -->
     <link rel="canonical" href="{{ url()->current() }}">
@@ -26,7 +26,7 @@
     <meta property="og:title" content="{{ $meta->getTitle() }}">
     <meta property="og:description" content="{{ $meta->getDescription() }}">
     <meta property="og:image" content="{{ $meta->getOgImage() }}">
-    <meta property="og:site_name" content="Emmy Furniture">
+    <meta property="og:site_name" content="Emmy">
     <meta property="og:locale" content="{{ app()->getLocale() }}">
 
     <!-- Twitter Card -->
@@ -46,7 +46,7 @@
 {{--        {--}}
 {{--            "@context": "https://schema.org",--}}
 {{--            "@type": "FurnitureStore",--}}
-{{--            "name": "Emmy Furniture",--}}
+{{--            "name": "Emmy",--}}
 {{--            "description": "{{ $meta->getDescription() }}",--}}
 {{--        "url": "{{ url('/') }}",--}}
 {{--        "logo": "{{ url('/img/logo.png') }}",--}}
@@ -76,7 +76,7 @@
 {{--        {--}}
 {{--            "@context": "https://schema.org",--}}
 {{--            "@type": "WebSite",--}}
-{{--            "name": "Emmy Furniture",--}}
+{{--            "name": "Emmy",--}}
 {{--            "url": "{{ url('/') }}",--}}
 {{--        "potentialAction": {--}}
 {{--            "@type": "SearchAction",--}}
@@ -106,8 +106,8 @@
     <!-- Improved Navigation with SEO-friendly links -->
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="{{ url('/') }}" title="Emmy Furniture - Главная страница">
-                <img src="{{ asset('img/logo.png') }}" alt="Emmy Furniture - магазин качественной мебели" width="120" height="40">
+            <a class="navbar-brand" href="{{ url('/') }}" title="Emmy - Главная страница">
+                <img src="{{ asset('img/logo.png') }}" alt="Emmy - магазин мебели для ванной комнаты" width="120" height="40">
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Переключить навигацию">
@@ -118,13 +118,13 @@
                 <!-- Main Navigation -->
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/') }}" title="Главная страница Emmy Furniture">Главная</a>
+                        <a class="nav-link" href="{{ url('/') }}" title="Главная страница Emmy">Главная</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('web.shop') }}" title="Каталог мебели">Магазин</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/about" title="О компании Emmy Furniture">О нас</a>
+                        <a class="nav-link" href="/about" title="О компании Emmy">О нас</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/contact" title="Контакты мебельного магазина">Контакты</a>
@@ -166,8 +166,8 @@
 
     <!-- Hidden SEO Text for better rankings -->
     <div style="position: absolute; left: -9999px; top: -9999px;">
-        <h1>Emmy Furniture - магазин качественной мебели</h1>
-        <p>Купить мебель в интернет-магазине Emmy Furniture. {{ $meta->getKeywords() }}</p>
+        <h1>Emmy - магазин мебели для ванной комнаты</h1>
+        <p>Купить мебель для ванной комнаты в интернет-магазине Emmy. {{ $meta->getKeywords() }}</p>
     </div>
 </div>
 </body>

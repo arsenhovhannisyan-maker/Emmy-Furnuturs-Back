@@ -127,6 +127,11 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                <label>Характеристики этого размера</label>
+                <textarea class="form-control size-characteristics" name="sizes[__index__][characteristics]"></textarea>
+            </div>
+
             <div class="photo-gallery" data-config-key="product.photos" data-max="20">
                 <label class="form-label d-block">Фото размера</label>
                 <div class="photo-gallery-grid"></div>
@@ -215,6 +220,15 @@
                 applySizeMode(newRow, (sizeData && sizeData.mode) || 'text');
                 newRow.querySelector('.size-orientation-select').value = (sizeData && sizeData.orientation) || '';
 
+                const characteristics = newRow.querySelector('.size-characteristics');
+                characteristics.value = (sizeData && sizeData.characteristics) || '';
+                ClassicEditor.create(characteristics, {
+                    toolbar: ['heading', '|', 'bold', 'italic', 'bulletedList', 'numberedList', '|', 'insertTable', '|', 'undo', 'redo'],
+                    table: { contentToolbar: ['tableColumn', 'tableRow'] },
+                }).then((editor) => {
+                    editor.model.document.on('change:data', () => editor.updateSourceElement());
+                }).catch(console.error);
+
                 initPhotoGallery(newRow.querySelector('.photo-gallery'), (sizeData && sizeData.photos) || []);
             }
 
@@ -256,7 +270,7 @@
                 }
             });
 
-            const SIZE_ROW_FIELDS = ['size', 'price', 'id', 'height', 'width', 'depth', 'orientation', 'mode'];
+            const SIZE_ROW_FIELDS = ['size', 'price', 'id', 'height', 'width', 'depth', 'orientation', 'mode', 'characteristics'];
 
             function reindexAllRows() {
                 const allRows = document.querySelectorAll('.size-row');

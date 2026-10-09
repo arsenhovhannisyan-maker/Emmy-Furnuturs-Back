@@ -259,6 +259,69 @@
         white-space: pre-wrap;
     }
 
+    /* Desktop: characteristics float up right under the photos, beside the taller info column.
+       Mobile keeps DOM order (photos, info + buy button, then characteristics). */
+    @media (min-width: 992px) {
+        .row.product-main-row {
+            display: flow-root;
+        }
+
+        .product-main-row > [class*="col-"] {
+            float: left;
+            clear: left;
+        }
+
+        .product-main-row > .product-main-row__info {
+            float: right;
+            clear: none;
+        }
+    }
+
+    .product-characteristics {
+        text-align: left;
+    }
+
+    .product-characteristics__title {
+        margin-bottom: 15px;
+    }
+
+    .product-characteristics figure {
+        margin: 0;
+    }
+
+    .product-characteristics ul,
+    .product-characteristics ol {
+        list-style: disc;
+        padding-left: 20px;
+        margin: 10px 0;
+    }
+
+    .product-characteristics ol {
+        list-style: decimal;
+    }
+
+    .product-characteristics li {
+        display: list-item;
+        list-style: inherit;
+    }
+
+    .product-characteristics table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .product-characteristics th,
+    .product-characteristics td {
+        padding: 8px 12px;
+        border-bottom: 1px solid #f0f0f0;
+        text-align: left;
+        vertical-align: top;
+    }
+
+    .product-characteristics tr:nth-child(odd) td {
+        background: #fafafa;
+    }
+
     .list.list-description {
         margin-bottom: 25px;
     }
@@ -808,7 +871,7 @@
         </section>
         <section class="section section-md section-first bg-default">
             <div class="container">
-                <div class="row row-30">
+                <div class="row row-30 product-main-row">
                     <div class="col-lg-6">
                         <div class="slick-vertical slick-product">
                             @php
@@ -848,7 +911,7 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 product-main-row__info">
                         <div class="single-product">
                             <div class="product-heading-block">
                                 <h3 class="text-transform-none font-weight-medium product-page-title">{{ $product->name }}</h3>
@@ -916,6 +979,21 @@
                             @include('web.components.social-media')
                         </div>
                     </div>
+
+                    @php
+                        $sizesWithCharacteristics = $product->sizes->filter(fn ($size) => filled($size->characteristics));
+                    @endphp
+                    @if($sizesWithCharacteristics->isNotEmpty())
+                        <div class="col-lg-6">
+                            @foreach($sizesWithCharacteristics as $sizeIndex => $size)
+                                <div class="product-characteristics" data-size-index="{{ $sizeIndex }}" @if($sizeIndex !== 0) hidden @endif>
+                                    <h4 class="product-characteristics__title">@lang('messages.characteristics')</h4>
+                                    {{-- Sanitized on save (ProductService::sanitizeCharacteristics) --}}
+                                    {!! $size->characteristics !!}
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
                 <div class="tabs-custom tabs-horizontal tabs-line" id="tabs-1">
                     <div class="nav-tabs-wrap">
@@ -1057,6 +1135,12 @@
 
         initCarousels();
 
+        function showCharacteristics(sizeIndex) {
+            document.querySelectorAll('.product-characteristics').forEach(function (el) {
+                el.hidden = el.getAttribute('data-size-index') !== String(sizeIndex);
+            });
+        }
+
         function syncPhotosToSelectedSize() {
             if (!sizeSelect || sizeSelect.value === '') return;
             var opt = sizeSelect.options[sizeSelect.selectedIndex];
@@ -1064,7 +1148,10 @@
             var idx = opt.getAttribute('data-size-index');
             if (idx === null || idx === '') return;
             var sizeIndex = parseInt(idx, 10);
-            if (!isNaN(sizeIndex)) switchPhotosBySize(sizeIndex);
+            if (!isNaN(sizeIndex)) {
+                switchPhotosBySize(sizeIndex);
+                showCharacteristics(sizeIndex);
+            }
         }
 
         if (sizeSelect && sizeSelect.options.length === 2) {
@@ -1096,6 +1183,7 @@
                 var sizeIndex = parseInt(sizeIndexRaw, 10);
                 if (!isNaN(sizeIndex)) {
                     switchPhotosBySize(sizeIndex);
+                    showCharacteristics(sizeIndex);
                 }
             }
 

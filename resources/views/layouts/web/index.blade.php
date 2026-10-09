@@ -25,9 +25,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="description" content="{{ $resolvedDescription }}">
     <meta name="keywords" content="{{ $resolvedKeywords }}">
-    <meta name="author" content="Emmy Furniture">
+    <meta name="author" content="Emmy">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="{{ $seoRobots ?? 'index, follow' }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="canonical" href="{{ url()->current() }}">
 
@@ -41,7 +41,7 @@
         <meta property="og:image:width" content="1200">
         <meta property="og:image:height" content="630">
     @endif
-    <meta property="og:site_name" content="Emmy Furniture">
+    <meta property="og:site_name" content="Emmy">
     <meta property="og:locale" content="{{ app()->getLocale() === 'ru' ? 'ru_RU' : 'en_US' }}">
 
     <!-- Twitter Card -->
